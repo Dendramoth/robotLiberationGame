@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 //super dendrova hra :)
+//doufam ze na ni bude elfa otrocit
 /**
  *
  * @author Dendra
