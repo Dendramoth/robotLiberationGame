@@ -34,11 +34,12 @@ public class PlayerRobot {
 
     private GraphicsContext robotGraphicsContext;
     private Image robotImage;
+    private PlayerRobotTurret playerRobotTurret;
 
     public PlayerRobot(GraphicsContext robotGraphicsContext) {
         this.robotGraphicsContext = robotGraphicsContext;
-        robotImage = LoadAllImages.getMapOfAllImages().get("robotBase1");
-        
+        robotImage = LoadAllImages.getMapOfAllImages().get("basePassive");
+        playerRobotTurret = new PlayerRobotTurret(robotGraphicsContext);
     }
 
     public void paintPlayerRobot() {
@@ -49,6 +50,17 @@ public class PlayerRobot {
         robotGraphicsContext.rotate(facingAngle);
         robotGraphicsContext.drawImage(robotImage, -robotImage.getWidth() / 2, -robotImage.getHeight() / 2);
         robotGraphicsContext.restore();
+        
+        
+        
+        
+        robotGraphicsContext.save();
+        robotGraphicsContext.translate(possitionX, possitionY);
+        robotGraphicsContext.rotate(playerRobotTurret.getTurretAngle());
+        playerRobotTurret.paintTurret(possitionX, possitionY);
+        playerRobotTurret.moveToMouseCursor();
+        robotGraphicsContext.restore();
+        
     }
 
     public void movePlayerRobot(String direction) {

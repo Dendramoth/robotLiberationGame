@@ -28,6 +28,8 @@ public class GameMainInfrastructure {
     public static int WINDOW_WIDTH = 640;
     public static int WINDOW_HEIGH = 860;
     public static int FRAMERATE = 60;
+    public static double windowPositionX = 0.0;
+    public static double windowPositionY = 0.0;
 
     private static Timeline gameLoop;
     private GameEnviroment gameEnviroment;
@@ -77,7 +79,7 @@ public class GameMainInfrastructure {
         gameEnviroment = new GameEnviroment(enviromentGraphicsContext);
         playerRobot = new PlayerRobot(robotGraphicsContext);
 
-        buildAndSetGameLoop(enviromentGraphicsContext, robotGraphicsContext);
+        buildAndSetGameLoop(enviromentGraphicsContext, robotGraphicsContext, stage);
     }
 
     private void setUpKeyAsPressed(final boolean pressed, final KeyEvent event) {
@@ -96,7 +98,7 @@ public class GameMainInfrastructure {
         }
     }
 
-    private void buildAndSetGameLoop(final GraphicsContext baseGraphicsContext, final GraphicsContext robotGraphicsContext) {
+    private void buildAndSetGameLoop(final GraphicsContext baseGraphicsContext, final GraphicsContext robotGraphicsContext, final Stage stage) {
         final Duration oneFrameDuration = Duration.millis(1000 / FRAMERATE);
         final KeyFrame oneFrame = new KeyFrame(oneFrameDuration,
                 new EventHandler() {
@@ -107,8 +109,10 @@ public class GameMainInfrastructure {
              */
             @Override
             public void handle(Event event) {
+                windowPositionX = stage.getX();
+                windowPositionY = stage.getY();
+                        
                 gameEnviroment.paintEnviroment();
-
                 movePlayerRobot();
                 playerRobot.paintPlayerRobot();
             }

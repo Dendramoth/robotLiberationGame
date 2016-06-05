@@ -18,8 +18,14 @@ import javafx.scene.image.Image;
     static HashMap<String, Image> mapOfAllImages = new HashMap<String, Image>();
 
     public LoadAllImages() {
-        Image image = new Image("/robotBase1.png", 64, 64, false, false);
-        mapOfAllImages.put("robotBase1", image);
+        Image image = new Image("/base_passive.png", 64, 64, false, false);
+        mapOfAllImages.put("basePassive", image);
+        
+        image = new Image("/base_moving.png", 64, 64, false, false);
+        mapOfAllImages.put("baseMoving", image);
+        
+        image = new Image("/tower_passive.png", 64, 64, false, false);
+        mapOfAllImages.put("towerPassive", image);
     }
 
     public static HashMap<String, Image> getMapOfAllImages() {
