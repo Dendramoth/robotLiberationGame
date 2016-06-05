@@ -34,11 +34,14 @@ public class PlayerRobot {
 
     private GraphicsContext robotGraphicsContext;
     private Image robotImage;
+    private Image robotImageMoving;
     private PlayerRobotTurret playerRobotTurret;
+    private int moveTracks = 0; 
 
     public PlayerRobot(GraphicsContext robotGraphicsContext) {
         this.robotGraphicsContext = robotGraphicsContext;
         robotImage = LoadAllImages.getMapOfAllImages().get("basePassive");
+        robotImageMoving = LoadAllImages.getMapOfAllImages().get("baseMoving");
         playerRobotTurret = new PlayerRobotTurret(robotGraphicsContext);
     }
 
@@ -51,9 +54,6 @@ public class PlayerRobot {
         robotGraphicsContext.drawImage(robotImage, -robotImage.getWidth() / 2, -robotImage.getHeight() / 2);
         robotGraphicsContext.restore();
         
-        
-        
-        
         robotGraphicsContext.save();
         robotGraphicsContext.translate(possitionX, possitionY);
         robotGraphicsContext.rotate(playerRobotTurret.getTurretAngle());
@@ -63,29 +63,32 @@ public class PlayerRobot {
         
     }
 
-    public void movePlayerRobot(String direction) {
-        switch (direction) {
-            case FORWARD:
-                moveRobotForward();
-                break;
-            case BACKWARD:
-                moveRobotBackward();
-                break;
-            case LEFT:
-                facingAngle = facingAngle - 2;
-                break;
-            case RIGHT:
-                facingAngle = facingAngle + 2;
+    public void moveRobotForward(){
+        possitionX = possitionX - Math.cos(Math.toRadians(facingAngle + 90)) * 2.5;
+        possitionY = possitionY - Math.sin(Math.toRadians(facingAngle + 90)) * 2.5;
+    }
+    
+    public void moveRobotBackward(){
+        possitionX = possitionX - Math.cos(Math.toRadians(facingAngle -90)) * 2.5;
+        possitionY = possitionY - Math.sin(Math.toRadians(facingAngle -90)) * 2.5;
+    }
+    
+    public void moveRobotLeft(){
+        facingAngle = facingAngle - 2;
+    }
+    
+    public void moveRobotRight(){
+        facingAngle = facingAngle + 2;
+    }
+    
+    public void moveTracks(){
+        moveTracks++;
+        if (moveTracks >= 10){
+            Image changeImage = robotImageMoving;
+            robotImageMoving = robotImage;
+            robotImage = changeImage;
+            
+            moveTracks = 0;
         }
-    }
-    
-    private void moveRobotForward(){
-        possitionX = possitionX - Math.cos(Math.toRadians(facingAngle + 90)) * 5;
-        possitionY = possitionY - Math.sin(Math.toRadians(facingAngle + 90)) * 5;
-    }
-    
-    private void moveRobotBackward(){
-        possitionX = possitionX - Math.cos(Math.toRadians(facingAngle -90)) * 5;
-        possitionY = possitionY - Math.sin(Math.toRadians(facingAngle -90)) * 5;
     }
 }

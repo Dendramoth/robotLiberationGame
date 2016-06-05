@@ -126,17 +126,21 @@ public class GameMainInfrastructure {
     }
 
     private void movePlayerRobot() {
+        if (keyAPressed == true || keySPressed == true || keyWPressed == true || keyDPressed == true){
+            playerRobot.moveTracks();
+        } 
+        
         if (keyAPressed == true) {
-            playerRobot.movePlayerRobot(PlayerRobot.LEFT);
+            playerRobot.moveRobotLeft();
         }
         if (keySPressed == true) {
-            playerRobot.movePlayerRobot(PlayerRobot.BACKWARD);
+            playerRobot.moveRobotBackward();
         }
         if (keyWPressed == true) {
-            playerRobot.movePlayerRobot(PlayerRobot.FORWARD);
+            playerRobot.moveRobotForward();
         }
         if (keyDPressed == true) {
-            playerRobot.movePlayerRobot(PlayerRobot.RIGHT);
+            playerRobot.moveRobotRight();
         }
     }
 
