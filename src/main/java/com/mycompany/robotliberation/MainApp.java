@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 
 public class MainApp extends Application {
     
+    
     public LoadAllImages loadAllImages = new LoadAllImages();
 
     @Override
@@ -29,16 +30,6 @@ public class MainApp extends Application {
         stage.setTitle("Robot Liberation Day");
         stage.setScene(scene);
         stage.show();
-    }
-
-    private void setWindowSizeToMaximum(Stage stage) {
-        Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-
-        //set Stage boundaries to visible bounds of the main screen
-        stage.setX(primaryScreenBounds.getMinX());
-        stage.setY(primaryScreenBounds.getMinY());
-        stage.setWidth(primaryScreenBounds.getWidth());
-        stage.setHeight(primaryScreenBounds.getHeight());
     }
 
     /**

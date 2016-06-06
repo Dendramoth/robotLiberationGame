@@ -10,6 +10,8 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TimelineBuilder;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -21,12 +23,13 @@ import javafx.scene.input.MouseEvent;
 
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-
+import javafx.scene.paint.Color;
 
 public class GameMainInfrastructure {
 
-    public static int WINDOW_WIDTH = 640;
-    public static int WINDOW_HEIGH = 860;
+    public static double WINDOW_WIDTH = 640;
+    public static double WINDOW_HEIGH = 860;
+
     public static int FRAMERATE = 60;
     public static double windowPositionX = 0.0;
     public static double windowPositionY = 0.0;
@@ -35,6 +38,7 @@ public class GameMainInfrastructure {
     private GameEnviroment gameEnviroment;
     private PlayerRobot playerRobot;
 
+    private boolean mousePressed = false;
     private boolean keyAPressed = false;
     private boolean keySPressed = false;
     private boolean keyWPressed = false;
@@ -42,26 +46,47 @@ public class GameMainInfrastructure {
 
     public GameMainInfrastructure(Stage stage, VBox gamePanel) throws Exception {
         StackPane gameCanvasPanel = new StackPane();
+        //   WINDOW_WIDTH = stage.getWidth();
+        //   WINDOW_HEIGH = stage.getHeight();
 
-        Canvas baseCanvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGH);
+        final Canvas baseCanvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGH);
         GraphicsContext enviromentGraphicsContext = baseCanvas.getGraphicsContext2D();
-
-        Canvas robotCanvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGH);
+        final Canvas enemiesCanvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGH);
+        GraphicsContext enemyGraphicsContext = enemiesCanvas.getGraphicsContext2D();
+        final Canvas robotCanvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGH);
         GraphicsContext robotGraphicsContext = robotCanvas.getGraphicsContext2D();
 
         gameCanvasPanel.getChildren().add(baseCanvas);
         gameCanvasPanel.getChildren().add(robotCanvas);
+        gameCanvasPanel.getChildren().add(enemiesCanvas);
         gamePanel.getChildren().add(gameCanvasPanel);
 
-        /**
-         * mouse detection
-         */
+        setUpMouseListeners(stage);
+        setUpKeyboardListeners(stage);
+        setUpResizeListeners(stage, baseCanvas, robotCanvas, enemiesCanvas);
+
+        gameEnviroment = new GameEnviroment(enviromentGraphicsContext, enemyGraphicsContext);
+        playerRobot = new PlayerRobot(robotGraphicsContext);
+
+        buildAndSetGameLoop(enviromentGraphicsContext, robotGraphicsContext, stage);
+    }
+
+    private void setUpMouseListeners(Stage stage) {
         stage.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                setUpMouseAsPressed(true);
             }
         });
+        stage.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                setUpMouseAsPressed(false);
+            }
+        });
+    }
 
+    private void setUpKeyboardListeners(Stage stage) {
         stage.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -75,11 +100,32 @@ public class GameMainInfrastructure {
                 setUpKeyAsPressed(false, event);
             }
         });
+    }
 
-        gameEnviroment = new GameEnviroment(enviromentGraphicsContext);
-        playerRobot = new PlayerRobot(robotGraphicsContext);
+    private void setUpResizeListeners(Stage stage, final Canvas baseCanvas, final Canvas robotCanvas, final Canvas enemyCanvas) {
+        stage.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                WINDOW_WIDTH = (double) newValue;
+                /*       baseCanvas.setWidth(WINDOW_WIDTH);
+                robotCanvas.setWidth(WINDOW_WIDTH);
+                enemyCanvas.setWidth(WINDOW_WIDTH);*/
+            }
+        });
 
-        buildAndSetGameLoop(enviromentGraphicsContext, robotGraphicsContext, stage);
+        stage.heightProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
+                WINDOW_HEIGH = (double) newSceneHeight;
+                /*   baseCanvas.setHeight(WINDOW_HEIGH);
+                robotCanvas.setHeight(WINDOW_HEIGH);
+                enemyCanvas.setWidth(WINDOW_HEIGH);*/
+            }
+        });
+    }
+
+    private void setUpMouseAsPressed(final boolean pressed) {
+        mousePressed = pressed;
     }
 
     private void setUpKeyAsPressed(final boolean pressed, final KeyEvent event) {
@@ -111,10 +157,12 @@ public class GameMainInfrastructure {
             public void handle(Event event) {
                 windowPositionX = stage.getX();
                 windowPositionY = stage.getY();
-                        
+
                 gameEnviroment.paintEnviroment();
                 movePlayerRobot();
+                shootPlayerRobot();
                 playerRobot.paintPlayerRobot();
+
             }
 
         });
@@ -125,11 +173,15 @@ public class GameMainInfrastructure {
                 .build());
     }
 
+    private void shootPlayerRobot() {
+        playerRobot.shootFromRobotTurret(mousePressed);
+    }
+
     private void movePlayerRobot() {
-        if (keyAPressed == true || keySPressed == true || keyWPressed == true || keyDPressed == true){
+        if (keyAPressed == true || keySPressed == true || keyWPressed == true || keyDPressed == true) {
             playerRobot.moveTracks();
-        } 
-        
+        }
+
         if (keyAPressed == true) {
             playerRobot.moveRobotLeft();
         }

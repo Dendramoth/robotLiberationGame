@@ -26,6 +26,15 @@ import javafx.scene.image.Image;
         
         image = new Image("/tower_passive.png", 64, 64, false, false);
         mapOfAllImages.put("towerPassive", image);
+        
+        image = new Image("/tower_shooting.png", 64, 64, false, false);
+        mapOfAllImages.put("towerShooting", image);
+        
+        image = new Image("/evilDroneIdle.png", 64, 64, false, false);
+        mapOfAllImages.put("evilDroneIdle", image);
+        
+        image = new Image("/EvilDroneIdle2.png", 64, 64, false, false);
+        mapOfAllImages.put("evilDroneIdle2", image);
     }
 
     public static HashMap<String, Image> getMapOfAllImages() {

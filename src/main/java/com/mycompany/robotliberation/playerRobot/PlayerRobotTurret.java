@@ -9,9 +9,6 @@ package com.mycompany.robotliberation.playerRobot;
  *
  * @author Dendra
  */
-
-
-
 import com.mycompany.robotliberation.GameMainInfrastructure;
 import com.mycompany.robotliberation.LoadAllImages;
 import java.awt.MouseInfo;
@@ -21,54 +18,84 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class PlayerRobotTurret {
-    private Image turretImage;
+
+    private Image turretIdleImage;
+    private Image turretShootingImage;
+    private Image turretCurrentImage;
     private double turretAngle = 0;
     private GraphicsContext robotGraphicsContext;
     private double possitionX = 0;
     private double possitionY = 0;
-    
-    public PlayerRobotTurret(GraphicsContext robotGraphicsContext){
+    private int shootingCounter = 0;
+
+    public PlayerRobotTurret(GraphicsContext robotGraphicsContext) {
         this.robotGraphicsContext = robotGraphicsContext;
-        turretImage = LoadAllImages.getMapOfAllImages().get("towerPassive");
+        turretIdleImage = LoadAllImages.getMapOfAllImages().get("towerPassive");
+        turretShootingImage = LoadAllImages.getMapOfAllImages().get("towerShooting");
+        turretCurrentImage = turretIdleImage;
     }
-    
-    public void paintTurret(double possitionX, double possitionY){
+
+    public void paintTurret(double possitionX, double possitionY) {
         this.possitionX = possitionX;
         this.possitionY = possitionY;
-        
+
         Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
         mouseLocation.getX();
         mouseLocation.getY();
-        
-        robotGraphicsContext.drawImage(turretImage, -turretImage.getWidth() / 2, -turretImage.getHeight() / 2);
+
+        robotGraphicsContext.drawImage(turretCurrentImage, -turretCurrentImage.getWidth() / 2, -turretCurrentImage.getHeight() / 2);
+        shootMinigun();
     }
-    
-    public void moveTurretToLeft(){
-        turretAngle = turretAngle - 5; 
+
+    public void moveTurretToLeft() {
+        turretAngle = turretAngle - 5;
     }
-    
-    public void moveTurretToRight(){
+
+    public void moveTurretToRight() {
         turretAngle = turretAngle + 5;
     }
 
     public double getTurretAngle() {
         return turretAngle;
     }
-    
+
+    public void shootTurret(boolean shoot) {
+        if (shoot) {
+            shootingCounter++;
+            if (shootingCounter > 5) {
+                if (turretCurrentImage == turretIdleImage) {
+                    turretCurrentImage = turretShootingImage;
+                    shootingCounter = 0;
+                } else {
+                    turretCurrentImage = turretIdleImage;
+                    shootingCounter = 3;
+                }
+            }
+        } else {
+            turretCurrentImage = turretIdleImage;
+        }
+    }
+
+    private void shootMinigun() {
+    /*    robotGraphicsContext.setStroke(Color.YELLOW);
+        robotGraphicsContext.setLineWidth(10);
+        robotGraphicsContext.strokeLine(0, 0, 0, -500);*/
+    }
+
     public void moveToMouseCursor() {
         Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
         mouseLocation.getX();
         mouseLocation.getY();
 
-        double xMovement = mouseLocation.getX() - possitionX - GameMainInfrastructure.windowPositionX - turretImage.getWidth() / 2;
-        double yMovement = mouseLocation.getY() - possitionY - GameMainInfrastructure.windowPositionY - turretImage.getHeight()/ 2;
-        
+        double xMovement = mouseLocation.getX() - possitionX - GameMainInfrastructure.windowPositionX - turretIdleImage.getWidth() / 2;
+        double yMovement = mouseLocation.getY() - possitionY - GameMainInfrastructure.windowPositionY - turretIdleImage.getHeight() / 2;
+
         double angleToMouse = calculateAngleForDrawingRotatedTurret(xMovement, yMovement);
         angleToMouse = (angleToMouse + 360) % 360;
-        
+
         turretAngle = angleToMouse;
     }
-    
+
     private double calculateAngleForDrawingRotatedTurret(double x, double y) {
         double angle = 0;
         if (y == 0 && x == 0) {
@@ -80,7 +107,5 @@ public class PlayerRobotTurret {
         }
         return angle;
     }
-    
-    
-    
+
 }
