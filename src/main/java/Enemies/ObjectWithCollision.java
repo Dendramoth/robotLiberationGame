@@ -5,12 +5,14 @@
  */
 package Enemies;
 
+import javafx.scene.shape.Shape;
+
 /**
  *
  * @author Dendra
  */
 public interface ObjectWithCollision {
-    public abstract void detectCollision();
+    public abstract boolean detectCollision(Shape shape);
     
     public abstract void doOnCollision();
     

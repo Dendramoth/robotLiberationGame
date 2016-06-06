@@ -51,6 +51,20 @@ public class AllEnemiesContainer {
         }
     }
     
+    public void detectCollisionsOfAllEnemiesWithPlayerRobot(){
+        Iterator<Enemy> iterator = allEnemiesList.iterator();
+        while (iterator.hasNext()) {
+            try{
+            EvilDroneMarkOne evilDroneMarkOne = (EvilDroneMarkOne)iterator.next();
+            if(evilDroneMarkOne.detectCollision(PlayerRobot.getPlayerRobotPolygon())){
+                PlayerRobot.removeHitPoints(1);
+                iterator.remove();
+            }
+            }finally{
+            }
+        }
+    }
+    
     public void paintAllEnemies(GraphicsContext enemyGraphicsContext){
         enemyGraphicsContext.clearRect(0, 0, GameMainInfrastructure.WINDOW_WIDTH, GameMainInfrastructure.WINDOW_HEIGH);
         Iterator<Enemy> iterator = allEnemiesList.iterator();

@@ -18,8 +18,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.event.Event;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -43,6 +45,9 @@ public class GameMainInfrastructure {
     private boolean keySPressed = false;
     private boolean keyWPressed = false;
     private boolean keyDPressed = false;
+    
+    private Label robotHpValueLabel;
+    private Label gameOverLabel = new Label("");
 
     public GameMainInfrastructure(Stage stage, VBox gamePanel) throws Exception {
         StackPane gameCanvasPanel = new StackPane();
@@ -55,18 +60,32 @@ public class GameMainInfrastructure {
         GraphicsContext enemyGraphicsContext = enemiesCanvas.getGraphicsContext2D();
         final Canvas robotCanvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGH);
         GraphicsContext robotGraphicsContext = robotCanvas.getGraphicsContext2D();
+        
+        gameEnviroment = new GameEnviroment(enviromentGraphicsContext, enemyGraphicsContext);
+        playerRobot = new PlayerRobot(robotGraphicsContext);
 
         gameCanvasPanel.getChildren().add(baseCanvas);
         gameCanvasPanel.getChildren().add(robotCanvas);
         gameCanvasPanel.getChildren().add(enemiesCanvas);
-        gamePanel.getChildren().add(gameCanvasPanel);
+        
+        HBox userProfilePanel = new HBox();
+        Label robotHpLabel = new Label("Robot HP:");
+        robotHpValueLabel = new Label(String.valueOf(playerRobot.getHitPoints()));
+        userProfilePanel.getChildren().add(robotHpLabel);
+        userProfilePanel.getChildren().add(robotHpValueLabel);
+        userProfilePanel.getChildren().add(gameOverLabel);
+        
+        VBox gameVerticalPanel = new VBox();
+        gameVerticalPanel.getChildren().add(gameCanvasPanel);
+        gameVerticalPanel.getChildren().add(userProfilePanel);
+       
+        gamePanel.getChildren().add(gameVerticalPanel);
 
         setUpMouseListeners(stage);
         setUpKeyboardListeners(stage);
         setUpResizeListeners(stage, baseCanvas, robotCanvas, enemiesCanvas);
 
-        gameEnviroment = new GameEnviroment(enviromentGraphicsContext, enemyGraphicsContext);
-        playerRobot = new PlayerRobot(robotGraphicsContext);
+        
 
         buildAndSetGameLoop(enviromentGraphicsContext, robotGraphicsContext, stage);
     }
@@ -158,10 +177,18 @@ public class GameMainInfrastructure {
                 windowPositionX = stage.getX();
                 windowPositionY = stage.getY();
 
+                gameEnviroment.generateEvilDrones();
+                gameEnviroment.moveAllEnemies();
+                gameEnviroment.paintAllEnemies();
                 gameEnviroment.paintEnviroment();
                 movePlayerRobot();
                 shootPlayerRobot();
                 playerRobot.paintPlayerRobot();
+                robotHpValueLabel.setText(String.valueOf(playerRobot.getHitPoints()));
+                if (playerRobot.getHitPoints() < 1){
+                    stopGameLoop();
+                    gameOverLabel.setText("GAME OVER!");
+                }
 
             }
 
@@ -202,6 +229,10 @@ public class GameMainInfrastructure {
 
     public void beginGameLoop() {
         gameLoop.play();
+    }
+    
+    public void stopGameLoop() {
+        gameLoop.stop();
     }
 
 }
