@@ -35,6 +35,21 @@ import javafx.scene.image.Image;
         
         image = new Image("/EvilDroneIdle2.png", 64, 64, false, false);
         mapOfAllImages.put("evilDroneIdle2", image);
+        
+        image = new Image("/EvilDroneDeath/drone_death1.png", 64, 64, false, false);
+        mapOfAllImages.put("drone_death1", image);
+        
+        image = new Image("/EvilDroneDeath/drone_death2.png", 64, 64, false, false);
+        mapOfAllImages.put("drone_death2", image);
+        
+        image = new Image("/EvilDroneDeath/drone_death3.png", 64, 64, false, false);
+        mapOfAllImages.put("drone_death3", image);
+        
+        image = new Image("/EvilDroneDeath/drone_death4.png", 64, 64, false, false);
+        mapOfAllImages.put("drone_death4", image);
+        
+        image = new Image("/EvilDroneDeath/drone_death5.png", 64, 64, false, false);
+        mapOfAllImages.put("drone_death5", image);
     }
 
     public static HashMap<String, Image> getMapOfAllImages() {

@@ -16,7 +16,9 @@ import javafx.scene.shape.Shape;
  *
  * @author Dendra
  */
-public class EvilDroneMarkOne extends Enemy implements ObjectWithCollision{
+public class EvilDroneMarkOne extends Enemy implements ObjectWithCollision {
+
+    private int explodingTimer = 0;
 
     public EvilDroneMarkOne(double x, double y, double speed) {
         super(x, y, speed);
@@ -40,19 +42,19 @@ public class EvilDroneMarkOne extends Enemy implements ObjectWithCollision{
 
     @Override
     public void moveEnemy(double playerPossitionX, double playerPossitionY) {
-        playerPossitionX = playerPossitionX -32;
-        playerPossitionY = playerPossitionY -32;
-        double speed = movementSpeed;
-        double deltaX = playerPossitionX - possitionX;
-        double deltaY = playerPossitionY - possitionY;
-        
-        double angle = calculateAngleForDrawingRotatedShip(deltaX, deltaY);
-        
-        possitionX = possitionX - Math.cos(Math.toRadians(angle + 90));
-        possitionY = possitionY - Math.sin(Math.toRadians(angle + 90));
-      //  System.out.println(angle);    
+        if (alive) {
+            playerPossitionX = playerPossitionX - 32;
+            playerPossitionY = playerPossitionY - 32;
+            double deltaX = playerPossitionX - possitionX;
+            double deltaY = playerPossitionY - possitionY;
+
+            double angle = calculateAngleForDrawingRotatedShip(deltaX, deltaY);
+
+            possitionX = possitionX - Math.cos(Math.toRadians(angle + 90));
+            possitionY = possitionY - Math.sin(Math.toRadians(angle + 90));
+        }
     }
-    
+
     private double calculateAngleForDrawingRotatedShip(double x, double y) {
         double angle;
         if (y == 0 && x == 0) {
@@ -68,13 +70,36 @@ public class EvilDroneMarkOne extends Enemy implements ObjectWithCollision{
 
     @Override
     public boolean detectCollision(Shape shape) {
-        Circle meteorPolygon = new Circle(possitionX+ enemyImage.getWidth() / 2, possitionY + enemyImage.getHeight()/ 2, (enemyImage.getHeight()/ 2)); // -5 is here because the meteorits have not totally round shape and we dont want the player to be "hit" when he is not supposed to
-        Shape intersect = Shape.intersect(shape, meteorPolygon);
-        if (intersect.getLayoutBounds().getHeight() <= 0 || intersect.getLayoutBounds().getWidth() <= 0) {
+        if (alive) {
+            Circle meteorPolygon = new Circle(possitionX + enemyImage.getWidth() / 2, possitionY + enemyImage.getHeight() / 2, (enemyImage.getHeight() / 2)); // -5 is here because the meteorits have not totally round shape and we dont want the player to be "hit" when he is not supposed to
+            Shape intersect = Shape.intersect(shape, meteorPolygon);
+            if (intersect.getLayoutBounds().getHeight() <= 0 || intersect.getLayoutBounds().getWidth() <= 0) {
+                return false;
+            }
+
+        } else {
             return false;
         }
         return true;
     }
 
-        
+    public boolean expolodingAnimation(GraphicsContext enemyGraphicsContext) {
+        System.out.println(explodingTimer);
+        if (explodingTimer < 4) {
+            enemyImage = LoadAllImages.getMapOfAllImages().get("drone_death1");
+        } else if (explodingTimer <= 5) {
+            enemyImage = LoadAllImages.getMapOfAllImages().get("drone_death2");
+        } else if (explodingTimer > 5 && explodingTimer <= 10) {
+            enemyImage = LoadAllImages.getMapOfAllImages().get("drone_death3");
+        } else if (explodingTimer > 10 && explodingTimer <= 15) {
+            enemyImage = LoadAllImages.getMapOfAllImages().get("drone_death4");
+        } else if (explodingTimer > 15 && explodingTimer <= 20) {
+            enemyImage = LoadAllImages.getMapOfAllImages().get("drone_death5");
+        } else {
+            return false;
+        }
+        explodingTimer++;
+        return true;
+    }
+
 }

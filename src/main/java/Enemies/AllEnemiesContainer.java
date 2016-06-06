@@ -17,18 +17,19 @@ import javafx.scene.canvas.GraphicsContext;
  * @author Dendra
  */
 public class AllEnemiesContainer {
+
     private ArrayList<Enemy> allEnemiesList = new ArrayList<Enemy>();
-    
-    public AllEnemiesContainer(){
-        
+
+    public AllEnemiesContainer() {
+
     }
-    
-    public void generateEvilDroneMark1(double possX, double possY){
+
+    public void generateEvilDroneMark1(double possX, double possY) {
         EvilDrone.EvilDroneMarkOne evilDroneMarkOne = new EvilDroneMarkOne(possX, possY, 5);
         allEnemiesList.add(evilDroneMarkOne);
     }
-    
-    public void moveAllEnemies(){
+
+    public void moveAllEnemies() {
         Iterator<Enemy> iterator = allEnemiesList.iterator();
         while (iterator.hasNext()) {
             Enemy enemy = iterator.next();
@@ -50,22 +51,27 @@ public class AllEnemiesContainer {
             }
         }
     }
-    
-    public void detectCollisionsOfAllEnemiesWithPlayerRobot(){
+
+    public void detectCollisionsOfAllEnemiesWithPlayerRobot(GraphicsContext enemyGraphicsContext) {
         Iterator<Enemy> iterator = allEnemiesList.iterator();
         while (iterator.hasNext()) {
-            try{
-            EvilDroneMarkOne evilDroneMarkOne = (EvilDroneMarkOne)iterator.next();
-            if(evilDroneMarkOne.detectCollision(PlayerRobot.getPlayerRobotPolygon())){
-                PlayerRobot.removeHitPoints(1);
-                iterator.remove();
-            }
-            }finally{
+            try {
+                EvilDroneMarkOne evilDroneMarkOne = (EvilDroneMarkOne) iterator.next();
+                if (evilDroneMarkOne.detectCollision(PlayerRobot.getPlayerRobotPolygon())) {
+                    PlayerRobot.removeHitPoints(1);
+                    evilDroneMarkOne.setAlive(false);
+                }
+                if (!evilDroneMarkOne.isAlive()) {
+                    if (!evilDroneMarkOne.expolodingAnimation(enemyGraphicsContext)) {
+                        iterator.remove();
+                    }
+                }
+            } finally {
             }
         }
     }
-    
-    public void paintAllEnemies(GraphicsContext enemyGraphicsContext){
+
+    public void paintAllEnemies(GraphicsContext enemyGraphicsContext) {
         enemyGraphicsContext.clearRect(0, 0, GameMainInfrastructure.WINDOW_WIDTH, GameMainInfrastructure.WINDOW_HEIGH);
         Iterator<Enemy> iterator = allEnemiesList.iterator();
         while (iterator.hasNext()) {

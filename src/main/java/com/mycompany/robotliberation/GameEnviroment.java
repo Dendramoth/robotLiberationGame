@@ -36,7 +36,7 @@ public class GameEnviroment {
     }
     
     private void detectCollisionsWithPlayerRobot() {
-        allEnemiesContainer.detectCollisionsOfAllEnemiesWithPlayerRobot();
+        allEnemiesContainer.detectCollisionsOfAllEnemiesWithPlayerRobot(monsterGraphicsContext);
     }
 
     public void paintAllEnemies() {

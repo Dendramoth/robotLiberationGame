@@ -17,6 +17,7 @@ public abstract class Enemy {
     protected double possitionY;
     protected double movementSpeed;
     protected Image enemyImage;
+    protected boolean alive = true;
     
     public Enemy(double x, double y, double speed){
         this.possitionX = x;
@@ -39,6 +40,12 @@ public abstract class Enemy {
     public double getMovementSpeed() {
         return movementSpeed;
     }
-    
-    
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
+    }
 }
