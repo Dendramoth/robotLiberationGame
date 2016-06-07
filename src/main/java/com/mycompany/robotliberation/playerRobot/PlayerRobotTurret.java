@@ -15,7 +15,6 @@ import java.awt.MouseInfo;
 import java.awt.Point;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 
 public class PlayerRobotTurret {
 
@@ -44,7 +43,7 @@ public class PlayerRobotTurret {
         mouseLocation.getY();
 
         robotGraphicsContext.drawImage(turretCurrentImage, -turretCurrentImage.getWidth() / 2, -turretCurrentImage.getHeight() / 2);
-        shootMinigun();
+        shootMinigunProjectile();
     }
 
     public void moveTurretToLeft() {
@@ -76,7 +75,7 @@ public class PlayerRobotTurret {
         }
     }
 
-    private void shootMinigun() {
+    private void shootMinigunProjectile() {
     /*    robotGraphicsContext.setStroke(Color.YELLOW);
         robotGraphicsContext.setLineWidth(10);
         robotGraphicsContext.strokeLine(0, 0, 0, -500);*/
@@ -87,8 +86,8 @@ public class PlayerRobotTurret {
         mouseLocation.getX();
         mouseLocation.getY();
 
-        double xMovement = mouseLocation.getX() - possitionX - GameMainInfrastructure.windowPositionX - turretIdleImage.getWidth() / 2;
-        double yMovement = mouseLocation.getY() - possitionY - GameMainInfrastructure.windowPositionY - turretIdleImage.getHeight() / 2;
+        double xMovement = mouseLocation.getX() - possitionX - GameMainInfrastructure.windowPositionX - turretCurrentImage.getWidth() / 2;
+        double yMovement = mouseLocation.getY() - possitionY - GameMainInfrastructure.windowPositionY - turretCurrentImage.getHeight() / 2;
 
         double angleToMouse = calculateAngleForDrawingRotatedTurret(xMovement, yMovement);
         angleToMouse = (angleToMouse + 360) % 360;

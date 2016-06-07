@@ -26,8 +26,8 @@ public class EvilDroneMarkOne extends Enemy implements ObjectWithCollision {
     }
 
     @Override
-    public void doOnCollision() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean doOnCollision(GraphicsContext enemyGraphicsContext) {
+        return expolodingAnimation(enemyGraphicsContext);
     }
 
     @Override
@@ -42,17 +42,15 @@ public class EvilDroneMarkOne extends Enemy implements ObjectWithCollision {
 
     @Override
     public void moveEnemy(double playerPossitionX, double playerPossitionY) {
-        if (alive) {
-            playerPossitionX = playerPossitionX - 32;
-            playerPossitionY = playerPossitionY - 32;
-            double deltaX = playerPossitionX - possitionX;
-            double deltaY = playerPossitionY - possitionY;
+        playerPossitionX = playerPossitionX - 32;
+        playerPossitionY = playerPossitionY - 32;
+        double deltaX = playerPossitionX - possitionX;
+        double deltaY = playerPossitionY - possitionY;
 
-            double angle = calculateAngleForDrawingRotatedShip(deltaX, deltaY);
+        double angle = calculateAngleForDrawingRotatedShip(deltaX, deltaY);
 
-            possitionX = possitionX - Math.cos(Math.toRadians(angle + 90));
-            possitionY = possitionY - Math.sin(Math.toRadians(angle + 90));
-        }
+        possitionX = possitionX - Math.cos(Math.toRadians(angle + 90));
+        possitionY = possitionY - Math.sin(Math.toRadians(angle + 90));
     }
 
     private double calculateAngleForDrawingRotatedShip(double x, double y) {
@@ -84,7 +82,6 @@ public class EvilDroneMarkOne extends Enemy implements ObjectWithCollision {
     }
 
     public boolean expolodingAnimation(GraphicsContext enemyGraphicsContext) {
-        System.out.println(explodingTimer);
         if (explodingTimer < 4) {
             enemyImage = LoadAllImages.getMapOfAllImages().get("drone_death1");
         } else if (explodingTimer <= 5) {
@@ -98,6 +95,7 @@ public class EvilDroneMarkOne extends Enemy implements ObjectWithCollision {
         } else {
             return false;
         }
+        paintEnemy(enemyGraphicsContext);
         explodingTimer++;
         return true;
     }

@@ -5,6 +5,7 @@
  */
 package com.mycompany.robotliberation;
 
+import Enemies.AllEnemiesContainer;
 import com.mycompany.robotliberation.playerRobot.PlayerRobot;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -22,22 +23,20 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 
 public class GameMainInfrastructure {
 
     public static double WINDOW_WIDTH = 640;
     public static double WINDOW_HEIGH = 860;
-
     public static int FRAMERATE = 60;
     public static double windowPositionX = 0.0;
     public static double windowPositionY = 0.0;
 
     private static Timeline gameLoop;
     private GameEnviroment gameEnviroment;
+    private AllEnemiesContainer allEnemiesContainer;
     private PlayerRobot playerRobot;
 
     private boolean mousePressed = false;
@@ -45,14 +44,12 @@ public class GameMainInfrastructure {
     private boolean keySPressed = false;
     private boolean keyWPressed = false;
     private boolean keyDPressed = false;
-    
+
     private Label robotHpValueLabel;
     private Label gameOverLabel = new Label("");
 
     public GameMainInfrastructure(Stage stage, VBox gamePanel) throws Exception {
         StackPane gameCanvasPanel = new StackPane();
-        //   WINDOW_WIDTH = stage.getWidth();
-        //   WINDOW_HEIGH = stage.getHeight();
 
         final Canvas baseCanvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGH);
         GraphicsContext enviromentGraphicsContext = baseCanvas.getGraphicsContext2D();
@@ -60,34 +57,33 @@ public class GameMainInfrastructure {
         GraphicsContext enemyGraphicsContext = enemiesCanvas.getGraphicsContext2D();
         final Canvas robotCanvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGH);
         GraphicsContext robotGraphicsContext = robotCanvas.getGraphicsContext2D();
-        
-        gameEnviroment = new GameEnviroment(enviromentGraphicsContext, enemyGraphicsContext);
+
         playerRobot = new PlayerRobot(robotGraphicsContext);
+        gameEnviroment = new GameEnviroment(enviromentGraphicsContext, playerRobot);
+        allEnemiesContainer = new AllEnemiesContainer(enemyGraphicsContext, playerRobot);
 
         gameCanvasPanel.getChildren().add(baseCanvas);
         gameCanvasPanel.getChildren().add(robotCanvas);
         gameCanvasPanel.getChildren().add(enemiesCanvas);
-        
+
         HBox userProfilePanel = new HBox();
         Label robotHpLabel = new Label("Robot HP:");
         robotHpValueLabel = new Label(String.valueOf(playerRobot.getHitPoints()));
         userProfilePanel.getChildren().add(robotHpLabel);
         userProfilePanel.getChildren().add(robotHpValueLabel);
         userProfilePanel.getChildren().add(gameOverLabel);
-        
+
         VBox gameVerticalPanel = new VBox();
         gameVerticalPanel.getChildren().add(gameCanvasPanel);
         gameVerticalPanel.getChildren().add(userProfilePanel);
-       
+
         gamePanel.getChildren().add(gameVerticalPanel);
 
         setUpMouseListeners(stage);
         setUpKeyboardListeners(stage);
         setUpResizeListeners(stage, baseCanvas, robotCanvas, enemiesCanvas);
 
-        
-
-        buildAndSetGameLoop(enviromentGraphicsContext, robotGraphicsContext, stage);
+        buildAndSetGameLoop(stage);
     }
 
     private void setUpMouseListeners(Stage stage) {
@@ -126,9 +122,6 @@ public class GameMainInfrastructure {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 WINDOW_WIDTH = (double) newValue;
-                /*       baseCanvas.setWidth(WINDOW_WIDTH);
-                robotCanvas.setWidth(WINDOW_WIDTH);
-                enemyCanvas.setWidth(WINDOW_WIDTH);*/
             }
         });
 
@@ -136,9 +129,6 @@ public class GameMainInfrastructure {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
                 WINDOW_HEIGH = (double) newSceneHeight;
-                /*   baseCanvas.setHeight(WINDOW_HEIGH);
-                robotCanvas.setHeight(WINDOW_HEIGH);
-                enemyCanvas.setWidth(WINDOW_HEIGH);*/
             }
         });
     }
@@ -163,7 +153,7 @@ public class GameMainInfrastructure {
         }
     }
 
-    private void buildAndSetGameLoop(final GraphicsContext baseGraphicsContext, final GraphicsContext robotGraphicsContext, final Stage stage) {
+    private void buildAndSetGameLoop(final Stage stage) {
         final Duration oneFrameDuration = Duration.millis(1000 / FRAMERATE);
         final KeyFrame oneFrame = new KeyFrame(oneFrameDuration,
                 new EventHandler() {
@@ -177,19 +167,23 @@ public class GameMainInfrastructure {
                 windowPositionX = stage.getX();
                 windowPositionY = stage.getY();
 
-                gameEnviroment.generateEvilDrones();
-                gameEnviroment.moveAllEnemies();
-                gameEnviroment.paintAllEnemies();
                 gameEnviroment.paintEnviroment();
+
+                allEnemiesContainer.generateEvilDrones();
+                allEnemiesContainer.moveAllEnemies();
+                allEnemiesContainer.detectCollisionsOfAllEnemiesWithPlayerRobot();
+                allEnemiesContainer.paintAllEnemies();
+                allEnemiesContainer.doAllDeathAnimations();
+
                 movePlayerRobot();
-                shootPlayerRobot();
+                playerRobot.shootFromRobotTurret(mousePressed);
                 playerRobot.paintPlayerRobot();
+
                 robotHpValueLabel.setText(String.valueOf(playerRobot.getHitPoints()));
-                if (playerRobot.getHitPoints() < 1){
+                if (playerRobot.getHitPoints() < 1) {
                     stopGameLoop();
                     gameOverLabel.setText("GAME OVER!");
                 }
-
             }
 
         });
@@ -198,10 +192,6 @@ public class GameMainInfrastructure {
                 .cycleCount(Animation.INDEFINITE)
                 .keyFrames(oneFrame)
                 .build());
-    }
-
-    private void shootPlayerRobot() {
-        playerRobot.shootFromRobotTurret(mousePressed);
     }
 
     private void movePlayerRobot() {
@@ -230,7 +220,7 @@ public class GameMainInfrastructure {
     public void beginGameLoop() {
         gameLoop.play();
     }
-    
+
     public void stopGameLoop() {
         gameLoop.stop();
     }

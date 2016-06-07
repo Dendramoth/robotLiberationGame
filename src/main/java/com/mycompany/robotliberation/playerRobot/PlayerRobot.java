@@ -7,10 +7,8 @@ package com.mycompany.robotliberation.playerRobot;
 
 import com.mycompany.robotliberation.GameMainInfrastructure;
 import com.mycompany.robotliberation.LoadAllImages;
-import com.mycompany.robotliberation.MainApp;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
 //super dendrova hra :)
@@ -21,11 +19,10 @@ import javafx.scene.shape.Polygon;
  */
 public class PlayerRobot {
     
-    private static int hitPoints = 10;
     private static double possitionX = 300;
     private static double possitionY = 500;
-    private static Polygon playerRobotPolygon;
     
+    private int hitPoints = 10;
     private double facingAngle = 0.0;
     private GraphicsContext robotGraphicsContext;
     private Image robotImage;
@@ -38,12 +35,9 @@ public class PlayerRobot {
         robotImage = LoadAllImages.getMapOfAllImages().get("basePassive");
         robotImageMoving = LoadAllImages.getMapOfAllImages().get("baseMoving");
         playerRobotTurret = new PlayerRobotTurret(robotGraphicsContext);
-        playerRobotPolygon = preparePolygonForColisionDetection();
     }
 
     public void paintPlayerRobot() {
-        playerRobotPolygon = preparePolygonForColisionDetection();
-        
         robotGraphicsContext.clearRect(0, 0, GameMainInfrastructure.WINDOW_WIDTH, GameMainInfrastructure.WINDOW_HEIGH);
 
         robotGraphicsContext.save();
@@ -52,13 +46,16 @@ public class PlayerRobot {
         robotGraphicsContext.drawImage(robotImage, -robotImage.getWidth() / 2, -robotImage.getHeight() / 2);
         robotGraphicsContext.restore();
 
+        paintRobotTurret();
+    }
+    
+    private void paintRobotTurret(){
         robotGraphicsContext.save();
         robotGraphicsContext.translate(possitionX, possitionY);
         robotGraphicsContext.rotate(playerRobotTurret.getTurretAngle());
         playerRobotTurret.paintTurret(possitionX, possitionY);
         playerRobotTurret.moveToMouseCursor();
         robotGraphicsContext.restore();
-
     }
 
     public void moveRobotForward() {
@@ -114,7 +111,19 @@ public class PlayerRobot {
         }
     }
 
-    private Polygon preparePolygonForColisionDetection() {
+    public static double getPossitionX() {
+        return possitionX;
+    }
+
+    public static double getPossitionY() {
+        return possitionY;
+    }
+
+    public Polygon getPlayerRobotPolygon() {
+        return createPolygonForColisionDetection();
+    }
+    
+    private Polygon createPolygonForColisionDetection() {
         Polygon polygon = new Polygon();
         polygon.getPoints().addAll(new Double[]{
             3.0 + possitionX - robotImage.getWidth() / 2, 28.0 + possitionY - 32,
@@ -141,27 +150,15 @@ public class PlayerRobot {
         return polygon;
     }
 
-    public static double getPossitionX() {
-        return possitionX;
-    }
-
-    public static double getPossitionY() {
-        return possitionY;
-    }
-
-    public static Polygon getPlayerRobotPolygon() {
-        return playerRobotPolygon;
-    }
-
-    public static int getHitPoints() {
+    public int getHitPoints() {
         return hitPoints;
     }
     
-    public static void removeHitPoints(int hpToRemove){
+    public void removeHitPoints(int hpToRemove){
         hitPoints = hitPoints - hpToRemove;
     }
     
-    public static void addHitPoints(int hpToAdd){
+    public void addHitPoints(int hpToAdd){
         hitPoints = hitPoints + hpToAdd;
     }
     

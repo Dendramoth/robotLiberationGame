@@ -5,6 +5,7 @@
  */
 package Enemies;
 
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.Shape;
 
 /**
@@ -14,7 +15,7 @@ import javafx.scene.shape.Shape;
 public interface ObjectWithCollision {
     public abstract boolean detectCollision(Shape shape);
     
-    public abstract void doOnCollision();
+    public abstract boolean doOnCollision(GraphicsContext enemyGraphicsContext);
     
     public abstract void doOnBeingHit();
 }

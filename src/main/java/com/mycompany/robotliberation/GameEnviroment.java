@@ -6,6 +6,7 @@
 package com.mycompany.robotliberation;
 
 import Enemies.AllEnemiesContainer;
+import com.mycompany.robotliberation.playerRobot.PlayerRobot;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -16,39 +17,15 @@ import javafx.scene.paint.Color;
 public class GameEnviroment {
 
     private GraphicsContext gameEnviromentGraphicsContext;
-    private GraphicsContext monsterGraphicsContext;
-    private AllEnemiesContainer allEnemiesContainer = new AllEnemiesContainer();
-    private int counterToGenerateDrone = 0;
+    
 
-    public GameEnviroment(GraphicsContext gameEnviromentGraphicsContext, GraphicsContext monsterGraphicsContext) {
+    public GameEnviroment(GraphicsContext gameEnviromentGraphicsContext, PlayerRobot playerRobot) {
         this.gameEnviromentGraphicsContext = gameEnviromentGraphicsContext;
-        this.monsterGraphicsContext = monsterGraphicsContext;
     }
 
     public void paintEnviroment() {
-        gameEnviromentGraphicsContext.setFill(Color.GREY);
+        gameEnviromentGraphicsContext.setFill(Color.WHITE);
         gameEnviromentGraphicsContext.fillRect(0, 0, GameMainInfrastructure.WINDOW_WIDTH, GameMainInfrastructure.WINDOW_HEIGH);
-    }
-
-    public void moveAllEnemies() {
-        allEnemiesContainer.moveAllEnemies();
-        detectCollisionsWithPlayerRobot();
-    }
-    
-    private void detectCollisionsWithPlayerRobot() {
-        allEnemiesContainer.detectCollisionsOfAllEnemiesWithPlayerRobot(monsterGraphicsContext);
-    }
-
-    public void paintAllEnemies() {
-        allEnemiesContainer.paintAllEnemies(monsterGraphicsContext);
-    }
-
-    public void generateEvilDrones() {
-        counterToGenerateDrone++;
-        if (counterToGenerateDrone > 180) {
-            counterToGenerateDrone = 0;
-            allEnemiesContainer.generateEvilDroneMark1(0, 0);
-        }
     }
 
 }
