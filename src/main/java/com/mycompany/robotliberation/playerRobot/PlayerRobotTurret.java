@@ -9,10 +9,12 @@ package com.mycompany.robotliberation.playerRobot;
  *
  * @author Dendra
  */
+import Enemies.EnemyWithCollision;
 import com.mycompany.robotliberation.GameMainInfrastructure;
 import com.mycompany.robotliberation.LoadAllImages;
 import java.awt.MouseInfo;
 import java.awt.Point;
+import java.util.ArrayList;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -26,6 +28,7 @@ public class PlayerRobotTurret {
     private double possitionX = 0;
     private double possitionY = 0;
     private int shootingCounter = 0;
+    private ArrayList<ShotsFromMinigun> allShotsFromMinigun = new ArrayList<ShotsFromMinigun>(); 
 
     public PlayerRobotTurret(GraphicsContext robotGraphicsContext) {
         this.robotGraphicsContext = robotGraphicsContext;
@@ -43,7 +46,6 @@ public class PlayerRobotTurret {
         mouseLocation.getY();
 
         robotGraphicsContext.drawImage(turretCurrentImage, -turretCurrentImage.getWidth() / 2, -turretCurrentImage.getHeight() / 2);
-        shootMinigunProjectile();
     }
 
     public void moveTurretToLeft() {
@@ -65,6 +67,7 @@ public class PlayerRobotTurret {
                 if (turretCurrentImage == turretIdleImage) {
                     turretCurrentImage = turretShootingImage;
                     shootingCounter = 0;
+                    shootMinigunProjectile();
                 } else {
                     turretCurrentImage = turretIdleImage;
                     shootingCounter = 3;
@@ -76,9 +79,7 @@ public class PlayerRobotTurret {
     }
 
     private void shootMinigunProjectile() {
-    /*    robotGraphicsContext.setStroke(Color.YELLOW);
-        robotGraphicsContext.setLineWidth(10);
-        robotGraphicsContext.strokeLine(0, 0, 0, -500);*/
+        allShotsFromMinigun.add(new ShotsFromMinigun(possitionX, possitionY, turretAngle));
     }
 
     public void moveToMouseCursor() {
@@ -107,4 +108,7 @@ public class PlayerRobotTurret {
         return angle;
     }
 
+    public ArrayList<ShotsFromMinigun> getAllShotsFromMinigun() {
+        return allShotsFromMinigun;
+    }
 }

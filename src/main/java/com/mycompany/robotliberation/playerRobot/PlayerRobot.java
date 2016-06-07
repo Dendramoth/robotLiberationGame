@@ -7,6 +7,7 @@ package com.mycompany.robotliberation.playerRobot;
 
 import com.mycompany.robotliberation.GameMainInfrastructure;
 import com.mycompany.robotliberation.LoadAllImages;
+import java.util.ArrayList;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Polygon;
@@ -62,7 +63,6 @@ public class PlayerRobot {
         possitionX = possitionX - Math.cos(Math.toRadians(facingAngle + 90)) * 2.5;
         possitionY = possitionY - Math.sin(Math.toRadians(facingAngle + 90)) * 2.5;
         bounderiesDetection();
-
     }
 
     public void moveRobotBackward() {
@@ -162,6 +162,8 @@ public class PlayerRobot {
         hitPoints = hitPoints + hpToAdd;
     }
     
-    
+    public ArrayList<ShotsFromMinigun> getAllShotsFromMinigun() {
+        return playerRobotTurret.getAllShotsFromMinigun();
+    }
 
 }

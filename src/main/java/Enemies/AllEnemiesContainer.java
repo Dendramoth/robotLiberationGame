@@ -8,6 +8,7 @@ package Enemies;
 import EvilDrone.EvilDroneMarkOne;
 import com.mycompany.robotliberation.GameMainInfrastructure;
 import com.mycompany.robotliberation.playerRobot.PlayerRobot;
+import com.mycompany.robotliberation.playerRobot.ShotsFromMinigun;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
@@ -24,6 +25,8 @@ public class AllEnemiesContainer {
     private ArrayList<EnemyWithCollision> allDyingEneniesList = new ArrayList<EnemyWithCollision>();
     private int counterToGenerateDrone = 0;
     private GraphicsContext enemyGraphicsContext;
+
+    private int timeTogenerateNextDrone = 150;
 
     public AllEnemiesContainer(GraphicsContext enemyGraphicsContext, PlayerRobot playerRobot) {
         this.playerRobot = playerRobot;
@@ -58,6 +61,25 @@ public class AllEnemiesContainer {
         }
     }
 
+    public void detectCollisionsOfAllEnemiesWithShots() {
+        if (playerRobot.getAllShotsFromMinigun() != null && playerRobot.getAllShotsFromMinigun().size() > 0) {
+            ShotsFromMinigun shotFromMinigun = playerRobot.getAllShotsFromMinigun().get(0);
+            shotFromMinigun.getLineForDetection();
+
+            Iterator<EnemyWithCollision> iterator = allEnemiesList.iterator();
+            while (iterator.hasNext()) {
+                EnemyWithCollision enemyWithCollision = iterator.next();
+                if (enemyWithCollision.detectCollision(shotFromMinigun.getLineForDetection())) {
+                    enemyWithCollision.setAlive(false);
+                    allDyingEneniesList.add(enemyWithCollision);
+                    iterator.remove();
+                }
+            }
+
+            playerRobot.getAllShotsFromMinigun().clear();
+        }
+    }
+
     public void detectCollisionsOfAllEnemiesWithPlayerRobot() {
         Iterator<EnemyWithCollision> iterator = allEnemiesList.iterator();
         while (iterator.hasNext()) {
@@ -88,15 +110,39 @@ public class AllEnemiesContainer {
             Enemy enemy = iterator.next();
             enemy.paintEnemy(enemyGraphicsContext);
         }
+        /*     if (playerRobot.getAllShotsFromMinigun() != null && playerRobot.getAllShotsFromMinigun().size() > 0) {
+            for (ShotsFromMinigun shotsFromMinigun : playerRobot.getAllShotsFromMinigun())
+            shotsFromMinigun.getLineForDetection(enemyGraphicsContext);
+        }*/
     }
 
     public void generateEvilDrones() {
         Random random = new Random();
 
         counterToGenerateDrone++;
-        if (counterToGenerateDrone > 120) {
+        if (counterToGenerateDrone > timeTogenerateNextDrone) {
+            if (timeTogenerateNextDrone > 5) {
+                timeTogenerateNextDrone = timeTogenerateNextDrone - 10;
+            }else{
+                timeTogenerateNextDrone = 5;
+            }
             counterToGenerateDrone = 0;
-            generateEvilDroneMark1(random.nextDouble() * 600, 0);
+
+            switch (random.nextInt(4)) {
+                case 0:
+                    generateEvilDroneMark1(random.nextDouble() * 600, 0);
+                    break;
+                case 1:
+                    generateEvilDroneMark1(random.nextDouble() * 600, 840);
+                    break;
+                case 2:
+                    generateEvilDroneMark1(0 , random.nextDouble() * 800);
+                    break;
+                case 3:
+                    generateEvilDroneMark1(600, random.nextDouble() * 800);
+                    break;
+            }
+
         }
     }
 }

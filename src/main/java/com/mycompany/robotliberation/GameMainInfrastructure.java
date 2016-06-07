@@ -172,6 +172,7 @@ public class GameMainInfrastructure {
                 allEnemiesContainer.generateEvilDrones();
                 allEnemiesContainer.moveAllEnemies();
                 allEnemiesContainer.detectCollisionsOfAllEnemiesWithPlayerRobot();
+                allEnemiesContainer.detectCollisionsOfAllEnemiesWithShots();
                 allEnemiesContainer.paintAllEnemies();
                 allEnemiesContainer.doAllDeathAnimations();
 
