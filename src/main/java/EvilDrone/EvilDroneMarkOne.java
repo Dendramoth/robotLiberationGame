@@ -7,6 +7,7 @@ package EvilDrone;
 
 import Enemies.Enemy;
 import Enemies.ObjectWithCollision;
+import Enemies.EnemyWithCollision;
 import com.mycompany.robotliberation.LoadAllImages;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.Circle;
@@ -16,7 +17,7 @@ import javafx.scene.shape.Shape;
  *
  * @author Dendra
  */
-public class EvilDroneMarkOne extends Enemy implements ObjectWithCollision {
+public class EvilDroneMarkOne extends EnemyWithCollision  {
 
     private int explodingTimer = 0;
 

@@ -20,8 +20,8 @@ import javafx.scene.canvas.GraphicsContext;
 public class AllEnemiesContainer {
 
     private PlayerRobot playerRobot;
-    private ArrayList<Enemy> allEnemiesList = new ArrayList<Enemy>();
-    private ArrayList<Enemy> allDyingEneniesList = new ArrayList<Enemy>();
+    private ArrayList<EnemyWithCollision> allEnemiesList = new ArrayList<EnemyWithCollision>();
+    private ArrayList<EnemyWithCollision> allDyingEneniesList = new ArrayList<EnemyWithCollision>();
     private int counterToGenerateDrone = 0;
     private GraphicsContext enemyGraphicsContext;
 
@@ -36,7 +36,7 @@ public class AllEnemiesContainer {
     }
 
     public void moveAllEnemies() {
-        Iterator<Enemy> iterator = allEnemiesList.iterator();
+        Iterator<EnemyWithCollision> iterator = allEnemiesList.iterator();
         while (iterator.hasNext()) {
             Enemy enemy = iterator.next();
             enemy.moveEnemy(PlayerRobot.getPossitionX(), PlayerRobot.getPossitionY());
@@ -59,37 +59,31 @@ public class AllEnemiesContainer {
     }
 
     public void detectCollisionsOfAllEnemiesWithPlayerRobot() {
-        Iterator<Enemy> iterator = allEnemiesList.iterator();
+        Iterator<EnemyWithCollision> iterator = allEnemiesList.iterator();
         while (iterator.hasNext()) {
-            try {
-                EvilDroneMarkOne evilDroneMarkOne = (EvilDroneMarkOne) iterator.next();
-                if (evilDroneMarkOne.detectCollision(playerRobot.getPlayerRobotPolygon())) {
-                    playerRobot.removeHitPoints(1);
-                    evilDroneMarkOne.setAlive(false);
-                    allDyingEneniesList.add(evilDroneMarkOne);
-                    iterator.remove();
-                }
-            } finally {
+            EnemyWithCollision enemyWithCollision = iterator.next();
+            if (enemyWithCollision.detectCollision(playerRobot.getPlayerRobotPolygon())) {
+                playerRobot.removeHitPoints(1);
+                enemyWithCollision.setAlive(false);
+                allDyingEneniesList.add(enemyWithCollision);
+                iterator.remove();
             }
         }
     }
 
     public void doAllDeathAnimations() {
-        Iterator<Enemy> iterator = allDyingEneniesList.iterator();
+        Iterator<EnemyWithCollision> iterator = allDyingEneniesList.iterator();
         while (iterator.hasNext()) {
-            try {
-                EvilDroneMarkOne evilDroneMarkOne = (EvilDroneMarkOne) iterator.next();
-                if (!evilDroneMarkOne.doOnCollision(enemyGraphicsContext)) {
-                    iterator.remove();
-                }
-            } finally {
+            EnemyWithCollision enemyWithCollision = iterator.next();
+            if (!enemyWithCollision.doOnCollision(enemyGraphicsContext)) {
+                iterator.remove();
             }
         }
     }
 
     public void paintAllEnemies() {
         enemyGraphicsContext.clearRect(0, 0, GameMainInfrastructure.WINDOW_WIDTH, GameMainInfrastructure.WINDOW_HEIGH);
-        Iterator<Enemy> iterator = allEnemiesList.iterator();
+        Iterator<EnemyWithCollision> iterator = allEnemiesList.iterator();
         while (iterator.hasNext()) {
             Enemy enemy = iterator.next();
             enemy.paintEnemy(enemyGraphicsContext);
