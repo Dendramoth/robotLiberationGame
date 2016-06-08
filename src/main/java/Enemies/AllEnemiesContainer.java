@@ -110,10 +110,6 @@ public class AllEnemiesContainer {
             Enemy enemy = iterator.next();
             enemy.paintEnemy(enemyGraphicsContext);
         }
-        /*     if (playerRobot.getAllShotsFromMinigun() != null && playerRobot.getAllShotsFromMinigun().size() > 0) {
-            for (ShotsFromMinigun shotsFromMinigun : playerRobot.getAllShotsFromMinigun())
-            shotsFromMinigun.getLineForDetection(enemyGraphicsContext);
-        }*/
     }
 
     public void generateEvilDrones() {
