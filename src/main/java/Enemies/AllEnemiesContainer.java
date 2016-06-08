@@ -70,9 +70,12 @@ public class AllEnemiesContainer {
             while (iterator.hasNext()) {
                 EnemyWithCollision enemyWithCollision = iterator.next();
                 if (enemyWithCollision.detectCollision(shotFromMinigun.getLineForDetection())) {
-                    enemyWithCollision.setAlive(false);
-                    allDyingEneniesList.add(enemyWithCollision);
-                    iterator.remove();
+                    enemyWithCollision.doOnBeingHit();
+                    if (enemyWithCollision.getHitPoints() < 1) {
+                        enemyWithCollision.setAlive(false);
+                        allDyingEneniesList.add(enemyWithCollision);
+                        iterator.remove();
+                    }
                 }
             }
 
@@ -111,17 +114,25 @@ public class AllEnemiesContainer {
             enemy.paintEnemy(enemyGraphicsContext);
         }
     }
+    
+    public void paintAllExplosionsEnemies() {
+        Iterator<EnemyWithCollision> iterator = allEnemiesList.iterator();
+        while (iterator.hasNext()) {
+            Enemy enemy = iterator.next();
+            enemy.paintAllExplosionsEnemy(enemyGraphicsContext);
+        }
+    }
 
     public void generateEvilDrones() {
         Random random = new Random();
 
         counterToGenerateDrone++;
         if (counterToGenerateDrone > timeTogenerateNextDrone) {
-            if (timeTogenerateNextDrone > 5) {
+            /*      if (timeTogenerateNextDrone > 5) {
                 timeTogenerateNextDrone = timeTogenerateNextDrone - 10;
-            }else{
+            } else {
                 timeTogenerateNextDrone = 5;
-            }
+            }*/
             counterToGenerateDrone = 0;
 
             switch (random.nextInt(4)) {
@@ -132,7 +143,7 @@ public class AllEnemiesContainer {
                     generateEvilDroneMark1(random.nextDouble() * 600, 840);
                     break;
                 case 2:
-                    generateEvilDroneMark1(0 , random.nextDouble() * 800);
+                    generateEvilDroneMark1(0, random.nextDouble() * 800);
                     break;
                 case 3:
                     generateEvilDroneMark1(600, random.nextDouble() * 800);

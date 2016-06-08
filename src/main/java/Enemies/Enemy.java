@@ -5,6 +5,7 @@
  */
 package Enemies;
 
+import java.util.ArrayList;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -18,6 +19,8 @@ public abstract class Enemy {
     protected double movementSpeed;
     protected Image enemyImage;
     protected boolean alive = true;
+    protected int hitPoints;
+    protected ArrayList<Explosion> allExplosionsOnEnemy = new ArrayList<Explosion>();
     
     public Enemy(double x, double y, double speed){
         this.possitionX = x;
@@ -28,6 +31,8 @@ public abstract class Enemy {
     public abstract void moveEnemy(double playerPossitionX, double playerPossitionY);
     
     public abstract void paintEnemy(GraphicsContext enemyGraphicsContext);
+    
+    public abstract void paintAllExplosionsEnemy(GraphicsContext enemyGraphicsContext);
 
     public double getPossitionX() {
         return possitionX;
@@ -48,4 +53,19 @@ public abstract class Enemy {
     public void setAlive(boolean alive) {
         this.alive = alive;
     }
+
+    public int getHitPoints() {
+        return hitPoints;
+    }
+
+    public ArrayList<Explosion> getAllExplosionsOnEnemy() {
+        return allExplosionsOnEnemy;
+    }
+
+    public void setAllExplosionsOnEnemy(ArrayList<Explosion> allExplosionsOnEnemy) {
+        this.allExplosionsOnEnemy = allExplosionsOnEnemy;
+    }
+    
+    
+    
 }

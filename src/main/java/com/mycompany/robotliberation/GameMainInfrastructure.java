@@ -175,6 +175,7 @@ public class GameMainInfrastructure {
                 allEnemiesContainer.detectCollisionsOfAllEnemiesWithShots();
                 allEnemiesContainer.paintAllEnemies();
                 allEnemiesContainer.doAllDeathAnimations();
+                allEnemiesContainer.paintAllExplosionsEnemies();
 
                 movePlayerRobot();
                 playerRobot.shootFromRobotTurret(mousePressed);

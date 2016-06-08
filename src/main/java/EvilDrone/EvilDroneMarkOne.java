@@ -8,7 +8,10 @@ package EvilDrone;
 import Enemies.Enemy;
 import Enemies.ObjectWithCollision;
 import Enemies.EnemyWithCollision;
+import Enemies.Explosion;
 import com.mycompany.robotliberation.LoadAllImages;
+import com.mycompany.robotliberation.playerRobot.PlayerRobot;
+import java.util.Iterator;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
@@ -23,7 +26,8 @@ public class EvilDroneMarkOne extends EnemyWithCollision  {
 
     public EvilDroneMarkOne(double x, double y, double speed) {
         super(x, y, speed);
-        enemyImage = LoadAllImages.getMapOfAllImages().get("evilDroneIdle");
+        enemyImage = LoadAllImages.getMapOfAllImages().get("evilDroneIdle1");
+        hitPoints = 10;
     }
 
     @Override
@@ -33,7 +37,11 @@ public class EvilDroneMarkOne extends EnemyWithCollision  {
 
     @Override
     public void doOnBeingHit() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        hitPoints--;
+        if (hitPoints < 7){
+            enemyImage = LoadAllImages.getMapOfAllImages().get("evilDroneIdle1Damaged");
+        }
+        allExplosionsOnEnemy.add(new Explosion());
     }
 
     @Override
@@ -100,5 +108,19 @@ public class EvilDroneMarkOne extends EnemyWithCollision  {
         explodingTimer++;
         return true;
     }
+
+    @Override
+    public void paintAllExplosionsEnemy(GraphicsContext enemyGraphicsContext) {
+        Iterator<Explosion> iterator = allExplosionsOnEnemy.iterator();
+        while (iterator.hasNext()) {
+            Explosion explosion = iterator.next();
+            explosion.paint(possitionX, possitionY, enemyGraphicsContext);
+            if (explosion.getNumberOfFramesBeingDisplayed() < 1){
+                iterator.remove();
+            }
+        }
+    }
+    
+    
 
 }

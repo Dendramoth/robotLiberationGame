@@ -30,11 +30,17 @@ import javafx.scene.image.Image;
         image = new Image("/tower_shooting.png", 64, 64, false, false);
         mapOfAllImages.put("towerShooting", image);
         
-        image = new Image("/evilDroneIdle.png", 64, 64, false, false);
-        mapOfAllImages.put("evilDroneIdle", image);
+        image = new Image("/EvilDrone/drone_idle1.png", 64, 64, false, false);
+        mapOfAllImages.put("evilDroneIdle1", image);
         
-        image = new Image("/EvilDroneIdle2.png", 64, 64, false, false);
+        image = new Image("/EvilDrone/drone_idle2.png", 64, 64, false, false);
         mapOfAllImages.put("evilDroneIdle2", image);
+        
+        image = new Image("/EvilDrone/drone_idle1_damaged.png", 64, 64, false, false);
+        mapOfAllImages.put("evilDroneIdle1Damaged", image);
+        
+        image = new Image("/EvilDrone/drone_idle2_damaged.png", 64, 64, false, false);
+        mapOfAllImages.put("evilDroneIdle2Damaged", image);
         
         image = new Image("/EvilDroneDeath/drone_death1.png", 64, 64, false, false);
         mapOfAllImages.put("drone_death1", image);
@@ -50,6 +56,15 @@ import javafx.scene.image.Image;
         
         image = new Image("/EvilDroneDeath/drone_death5.png", 64, 64, false, false);
         mapOfAllImages.put("drone_death5", image);
+        
+        image = new Image("/MinigunsHits/drone_hit1.png", 32, 32, false, false);
+        mapOfAllImages.put("droneHit1", image);
+        
+        image = new Image("/MinigunsHits/drone_hit2.png", 32, 32, false, false);
+        mapOfAllImages.put("droneHit2", image);
+        
+        image = new Image("/MinigunsHits/drone_hit3.png", 32, 32, false, false);
+        mapOfAllImages.put("droneHit3", image);
     }
 
     public static HashMap<String, Image> getMapOfAllImages() {

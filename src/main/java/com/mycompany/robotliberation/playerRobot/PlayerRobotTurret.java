@@ -28,7 +28,7 @@ public class PlayerRobotTurret {
     private double possitionX = 0;
     private double possitionY = 0;
     private int shootingCounter = 0;
-    private ArrayList<ShotsFromMinigun> allShotsFromMinigun = new ArrayList<ShotsFromMinigun>(); 
+    private ArrayList<ShotsFromMinigun> allShotsFromMinigun = new ArrayList<ShotsFromMinigun>();
 
     public PlayerRobotTurret(GraphicsContext robotGraphicsContext) {
         this.robotGraphicsContext = robotGraphicsContext;
@@ -63,11 +63,13 @@ public class PlayerRobotTurret {
     public void shootTurret(boolean shoot) {
         if (shoot) {
             shootingCounter++;
+            if (shootingCounter == 6) {
+                shootMinigunProjectile();
+            }
             if (shootingCounter > 5) {
                 if (turretCurrentImage == turretIdleImage) {
                     turretCurrentImage = turretShootingImage;
                     shootingCounter = 0;
-                    shootMinigunProjectile();
                 } else {
                     turretCurrentImage = turretIdleImage;
                     shootingCounter = 3;
@@ -98,6 +100,8 @@ public class PlayerRobotTurret {
 
     private double calculateAngleForDrawingRotatedTurret(double x, double y) {
         double angle = 0;
+        x = x + 25; // i dont know why :( its just heruestics constant to center mouse into middle of tank
+
         if (y == 0 && x == 0) {
             angle = 0;
         } else if (y > 0) {
