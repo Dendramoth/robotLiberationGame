@@ -65,6 +65,9 @@ import javafx.scene.image.Image;
         
         image = new Image("/MinigunsHits/drone_hit3.png", 32, 32, false, false);
         mapOfAllImages.put("droneHit3", image);
+        
+        image = new Image("/Cursor/cursor_target.png", 32, 32, false, false);
+        mapOfAllImages.put("cursorTarget", image);
     }
 
     public static HashMap<String, Image> getMapOfAllImages() {
