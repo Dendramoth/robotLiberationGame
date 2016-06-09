@@ -11,7 +11,7 @@ package com.mycompany.robotliberation.playerRobot;
  */
 import Enemies.EnemyWithCollision;
 import com.mycompany.robotliberation.GameMainInfrastructure;
-import com.mycompany.robotliberation.LoadAllImages;
+import com.mycompany.robotliberation.LoadAllResources;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -32,8 +32,8 @@ public class PlayerRobotTurret {
 
     public PlayerRobotTurret(GraphicsContext robotGraphicsContext) {
         this.robotGraphicsContext = robotGraphicsContext;
-        turretIdleImage = LoadAllImages.getMapOfAllImages().get("towerPassive");
-        turretShootingImage = LoadAllImages.getMapOfAllImages().get("towerShooting");
+        turretIdleImage = LoadAllResources.getMapOfAllImages().get("towerPassive");
+        turretShootingImage = LoadAllResources.getMapOfAllImages().get("towerShooting");
         turretCurrentImage = turretIdleImage;
     }
 

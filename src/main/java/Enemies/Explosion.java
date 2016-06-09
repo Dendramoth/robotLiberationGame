@@ -5,7 +5,7 @@
  */
 package Enemies;
 
-import com.mycompany.robotliberation.LoadAllImages;
+import com.mycompany.robotliberation.LoadAllResources;
 import java.util.Random;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -28,13 +28,13 @@ public class Explosion {
 
         switch (random.nextInt(3)) {
             case 0:
-                this.explosionImage = LoadAllImages.getMapOfAllImages().get("droneHit1");
+                this.explosionImage = LoadAllResources.getMapOfAllImages().get("droneHit1");
                 break;
             case 1:
-                this.explosionImage = LoadAllImages.getMapOfAllImages().get("droneHit2");
+                this.explosionImage = LoadAllResources.getMapOfAllImages().get("droneHit2");
                 break;
             case 2:
-                this.explosionImage = LoadAllImages.getMapOfAllImages().get("droneHit3");
+                this.explosionImage = LoadAllResources.getMapOfAllImages().get("droneHit3");
                 break;
         }
         this.explosionImage = explosionImage;

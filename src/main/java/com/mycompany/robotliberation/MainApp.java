@@ -7,10 +7,11 @@ import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import static javafx.application.Application.launch;
 
 public class MainApp extends Application {
     
-    public LoadAllImages loadAllImages = new LoadAllImages();
+    public LoadAllResources loadAllImages = new LoadAllResources();
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -21,9 +22,9 @@ public class MainApp extends Application {
 
         Scene scene = new Scene(mainPanel);
         scene.getStylesheets().add("/styles/Styles.css");
-        scene.setCursor(new ImageCursor(LoadAllImages.getMapOfAllImages().get("cursorTarget"),
-                                LoadAllImages.getMapOfAllImages().get("cursorTarget").getWidth() / 2,
-                                LoadAllImages.getMapOfAllImages().get("cursorTarget").getHeight() /2));
+        scene.setCursor(new ImageCursor(LoadAllResources.getMapOfAllImages().get("cursorTarget"),
+                                LoadAllResources.getMapOfAllImages().get("cursorTarget").getWidth() / 2,
+                                LoadAllResources.getMapOfAllImages().get("cursorTarget").getHeight() /2));
 
         stage.setTitle("Robot Liberation Day");
         stage.setScene(scene);

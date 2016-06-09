@@ -66,6 +66,9 @@ public abstract class Enemy {
         this.allExplosionsOnEnemy = allExplosionsOnEnemy;
     }
     
-    
+    public void changeEnemyPositionBasedOnRobotMovement(double changeX, double changeY){
+        possitionX = possitionX + changeX;
+        possitionY = possitionY + changeY;
+    }
     
 }

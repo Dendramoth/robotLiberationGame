@@ -28,8 +28,8 @@ import javafx.scene.layout.VBox;
 
 public class GameMainInfrastructure {
 
-    public static double WINDOW_WIDTH = 640;
-    public static double WINDOW_HEIGH = 860;
+    public static double WINDOW_WIDTH = 1024;
+    public static double WINDOW_HEIGH = 720;
     public static int FRAMERATE = 60;
     public static double windowPositionX = 0.0;
     public static double windowPositionY = 0.0;
@@ -167,6 +167,7 @@ public class GameMainInfrastructure {
                 windowPositionX = stage.getX();
                 windowPositionY = stage.getY();
 
+                gameEnviroment.moveEnviromentBasedOnRobotMovement(playerRobot.getRobotPositionChangeX(), playerRobot.getRobotPositionChangeY());
                 gameEnviroment.paintEnviroment();
 
                 allEnemiesContainer.generateEvilDrones();
@@ -197,6 +198,8 @@ public class GameMainInfrastructure {
     }
 
     private void movePlayerRobot() {
+        playerRobot.setRobotPositionChangeX(0);
+        playerRobot.setRobotPositionChangeY(0);
         if (keyAPressed == true || keySPressed == true || keyWPressed == true || keyDPressed == true) {
             playerRobot.moveTracks();
         }

@@ -42,22 +42,8 @@ public class AllEnemiesContainer {
         Iterator<EnemyWithCollision> iterator = allEnemiesList.iterator();
         while (iterator.hasNext()) {
             Enemy enemy = iterator.next();
-            enemy.moveEnemy(PlayerRobot.getPossitionX(), PlayerRobot.getPossitionY());
-            if (enemy.getPossitionX() > 2000) {
-                iterator.remove();
-                break;
-            }
-            if (enemy.getPossitionX() < 0) {
-                iterator.remove();
-                break;
-            }
-            if (enemy.getPossitionY() > 2000) {
-                iterator.remove();
-                break;
-            }
-            if (enemy.getPossitionY() < 0) {
-                iterator.remove();
-            }
+            enemy.changeEnemyPositionBasedOnRobotMovement(playerRobot.getRobotPositionChangeX(), playerRobot.getRobotPositionChangeY());
+            enemy.moveEnemy(PlayerRobot.getRobotStaticPossionX(), PlayerRobot.getRobotStaticPossionY());
         }
     }
 
