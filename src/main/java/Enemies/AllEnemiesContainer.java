@@ -86,6 +86,7 @@ public class AllEnemiesContainer {
         Iterator<EnemyWithCollision> iterator = allDyingEneniesList.iterator();
         while (iterator.hasNext()) {
             EnemyWithCollision enemyWithCollision = iterator.next();
+            enemyWithCollision.changeEnemyPositionBasedOnRobotMovement(playerRobot.getRobotPositionChangeX(), playerRobot.getRobotPositionChangeY());
             if (!enemyWithCollision.doOnCollision(enemyGraphicsContext)) {
                 iterator.remove();
             }
