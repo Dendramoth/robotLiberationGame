@@ -90,11 +90,11 @@ import javafx.scene.media.Media;
     }
 
     private void loadAllSounds(){
-        Media media = new Media("/Sounds/idleRobot.png");
+   /*     Media media = new Media("/Sounds/idleRobot.mp3");
         mapOfAllSounds.put("idleRobotSound", media);
         
-        media = new Media("/Sounds/movingRobot.png");
-        mapOfAllSounds.put("idleRobotSound", media);
+        media = new Media("/Sounds/movingRobot.mp3");
+        mapOfAllSounds.put("idleRobotSound", media);*/
     }
     
     public static HashMap<String, Image> getMapOfAllImages() {
