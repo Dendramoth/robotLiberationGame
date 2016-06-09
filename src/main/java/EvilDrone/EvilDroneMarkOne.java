@@ -20,13 +20,16 @@ import javafx.scene.shape.Shape;
  *
  * @author Dendra
  */
-public class EvilDroneMarkOne extends EnemyWithCollision  {
+public class EvilDroneMarkOne extends EnemyWithCollision {
 
+    private int blinkCounter = 0;
     private int explodingTimer = 0;
 
     public EvilDroneMarkOne(double x, double y, double speed) {
         super(x, y, speed);
+
         enemyImage = LoadAllResources.getMapOfAllImages().get("evilDroneIdle1");
+
         hitPoints = 10;
     }
 
@@ -38,14 +41,40 @@ public class EvilDroneMarkOne extends EnemyWithCollision  {
     @Override
     public void doOnBeingHit() {
         hitPoints--;
-        if (hitPoints < 7){
+        if (hitPoints < 7) {
+
             enemyImage = LoadAllResources.getMapOfAllImages().get("evilDroneIdle1Damaged");
+
         }
         allExplosionsOnEnemy.add(new Explosion());
     }
 
     @Override
     public void paintEnemy(GraphicsContext enemyGraphicsContext) {
+        blinkCounter++;
+        if (hitPoints >= 7) {
+            if (blinkCounter <= 15) {
+                enemyImage = LoadAllResources.getMapOfAllImages().get("evilDroneIdle1");
+            }
+            if (blinkCounter > 15) {
+                enemyImage = LoadAllResources.getMapOfAllImages().get("evilDroneIdle2");
+            }
+            if (blinkCounter == 30) {
+                blinkCounter = 0;
+            }
+        }
+        if (hitPoints < 7) {
+            if (blinkCounter <= 15) {
+                enemyImage = LoadAllResources.getMapOfAllImages().get("evilDroneIdle1Damaged");
+            }
+            if (blinkCounter > 15) {
+                enemyImage = LoadAllResources.getMapOfAllImages().get("evilDroneIdle2Damaged");
+            }
+            if (blinkCounter == 30) {
+                blinkCounter = 0;
+            }
+        }
+
         enemyGraphicsContext.drawImage(enemyImage, possitionX, possitionY);
     }
 
@@ -78,7 +107,7 @@ public class EvilDroneMarkOne extends EnemyWithCollision  {
     @Override
     public boolean detectCollision(Shape shape) {
         if (alive) {
-            Circle meteorPolygon = new Circle(possitionX + enemyImage.getWidth() / 2, possitionY + enemyImage.getHeight() / 2, (enemyImage.getHeight() / 2)); 
+            Circle meteorPolygon = new Circle(possitionX + enemyImage.getWidth() / 2, possitionY + enemyImage.getHeight() / 2, (enemyImage.getHeight() / 2));
             Shape intersect = Shape.intersect(shape, meteorPolygon);
             if (intersect.getLayoutBounds().getHeight() <= 0 || intersect.getLayoutBounds().getWidth() <= 0) {
                 return false;
@@ -103,7 +132,8 @@ public class EvilDroneMarkOne extends EnemyWithCollision  {
         } else {
             return false;
         }
-        paintEnemy(enemyGraphicsContext);
+
+        paintDyingEnemyAnimation(enemyGraphicsContext);
         explodingTimer++;
         return true;
     }
@@ -114,12 +144,15 @@ public class EvilDroneMarkOne extends EnemyWithCollision  {
         while (iterator.hasNext()) {
             Explosion explosion = iterator.next();
             explosion.paint(possitionX, possitionY, enemyGraphicsContext);
-            if (explosion.getNumberOfFramesBeingDisplayed() < 1){
+            if (explosion.getNumberOfFramesBeingDisplayed() < 1) {
                 iterator.remove();
             }
         }
     }
-    
-    
+
+    @Override
+    protected void paintDyingEnemyAnimation(GraphicsContext enemyGraphicsContext) {
+        enemyGraphicsContext.drawImage(enemyImage, possitionX, possitionY);
+    }
 
 }
