@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javafx.scene.image.Image;
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 
 /**
@@ -17,7 +18,7 @@ import javafx.scene.media.Media;
  */
  public class LoadAllResources {
     static HashMap<String, Image> mapOfAllImages = new HashMap<String, Image>();
-    static HashMap<String, Media> mapOfAllSounds = new HashMap<String, Media>();
+    static HashMap<String, AudioClip> mapOfAllSounds = new HashMap<String, AudioClip>();
 
     public LoadAllResources() {
         Image image = new Image("/base_passive.png", 64, 64, false, false);
@@ -90,18 +91,18 @@ import javafx.scene.media.Media;
     }
 
     private void loadAllSounds(){
-   /*     Media media = new Media("/Sounds/idleRobot.mp3");
-        mapOfAllSounds.put("idleRobotSound", media);
+        AudioClip audioClip = new AudioClip(this.getClass().getResource("/Sounds/idleRobot.mp3").toExternalForm());
+        mapOfAllSounds.put("idleRobotSound", audioClip);
         
-        media = new Media("/Sounds/movingRobot.mp3");
-        mapOfAllSounds.put("idleRobotSound", media);*/
+        audioClip = new AudioClip(this.getClass().getResource("/Sounds/movingRobot.mp3").toExternalForm());
+        mapOfAllSounds.put("movingRobotSound", audioClip);
     }
     
     public static HashMap<String, Image> getMapOfAllImages() {
         return mapOfAllImages;
     }
 
-    public static HashMap<String, Media> getMapOfAllSounds() {
+    public static HashMap<String, AudioClip> getMapOfAllSounds() {
         return mapOfAllSounds;
     }
     

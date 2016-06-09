@@ -10,6 +10,7 @@ import com.mycompany.robotliberation.LoadAllResources;
 import java.util.ArrayList;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Polygon;
 
@@ -20,16 +21,16 @@ import javafx.scene.shape.Polygon;
  * @author Dendra
  */
 public class PlayerRobot {
-    
+
     private static final double robotStaticPossionX = 500;
     private static final double robotStaticPossionY = 400;
-    
+
     private static double possitionX = 500;
     private static double possitionY = 400;
-    
+
     private double robotPositionChangeX = 0;
     private double robotPositionChangeY = 0;
-    
+
     private int hitPoints = 10;
     private double facingAngle = 0.0;
     private GraphicsContext robotGraphicsContext;
@@ -38,23 +39,39 @@ public class PlayerRobot {
     private PlayerRobotTurret playerRobotTurret;
     private int moveTracks = 0;
 
+    private AudioClip idleRobotSound = LoadAllResources.getMapOfAllSounds().get("idleRobotSound");
+    private AudioClip movingRobotSound = LoadAllResources.getMapOfAllSounds().get("movingRobotSound");
+
     public PlayerRobot(GraphicsContext robotGraphicsContext) {
         this.robotGraphicsContext = robotGraphicsContext;
         robotImage = LoadAllResources.getMapOfAllImages().get("basePassive");
         robotImageMoving = LoadAllResources.getMapOfAllImages().get("baseMoving");
         playerRobotTurret = new PlayerRobotTurret(robotGraphicsContext);
     }
-    
-    private void playRobotIdleSound(){
-   //     MediaPlayer mediaPlayer = new MediaPlayer(LoadAllResources.getMapOfAllSounds().get("basePassive"););
-    //    mediaPlayer.play();
+
+    public void playRobotIdleSound() {
+        if (!idleRobotSound.isPlaying()) {
+            idleRobotSound.play();
+            if (movingRobotSound.isPlaying()) {
+                movingRobotSound.stop();
+            }
+        }
+    }
+
+    public void playRobotMovingSound() {
+        if (!movingRobotSound.isPlaying()) {
+            movingRobotSound.play();
+            if (idleRobotSound.isPlaying()) {
+                idleRobotSound.stop();
+            }
+        }
     }
 
     public void paintPlayerRobot() {
         robotGraphicsContext.clearRect(0, 0, GameMainInfrastructure.WINDOW_WIDTH, GameMainInfrastructure.WINDOW_HEIGH);
 
         robotGraphicsContext.save();
-    //    robotGraphicsContext.translate(possitionX, possitionY);
+        //    robotGraphicsContext.translate(possitionX, possitionY);
         robotGraphicsContext.translate(robotStaticPossionX, robotStaticPossionY);
         robotGraphicsContext.rotate(facingAngle);
         robotGraphicsContext.drawImage(robotImage, -robotImage.getWidth() / 2, -robotImage.getHeight() / 2);
@@ -62,8 +79,8 @@ public class PlayerRobot {
 
         paintRobotTurret();
     }
-    
-    private void paintRobotTurret(){
+
+    private void paintRobotTurret() {
         robotGraphicsContext.save();
         robotGraphicsContext.translate(robotStaticPossionX, robotStaticPossionY);
         robotGraphicsContext.rotate(playerRobotTurret.getTurretAngle());
@@ -75,29 +92,29 @@ public class PlayerRobot {
     public void moveRobotForward() {
         robotPositionChangeX = Math.cos(Math.toRadians(facingAngle + 90)) * 2.5;
         robotPositionChangeY = Math.sin(Math.toRadians(facingAngle + 90)) * 2.5;
-        
+
         possitionX = possitionX - robotPositionChangeX;
         possitionY = possitionY - robotPositionChangeY;
-   //     bounderiesDetection();
+        //     bounderiesDetection();
     }
 
     public void moveRobotBackward() {
         robotPositionChangeX = Math.cos(Math.toRadians(facingAngle - 90)) * 2.5;
         robotPositionChangeY = Math.sin(Math.toRadians(facingAngle - 90)) * 2.5;
-        
+
         possitionX = possitionX - robotPositionChangeX;
         possitionY = possitionY - robotPositionChangeY;
-  //      bounderiesDetection();
+        //      bounderiesDetection();
     }
 
     public void moveRobotLeft() {
         facingAngle = facingAngle - 2;
-    //    bounderiesDetection();
+        //    bounderiesDetection();
     }
 
     public void moveRobotRight() {
         facingAngle = facingAngle + 2;
-   //     bounderiesDetection();
+        //     bounderiesDetection();
     }
 
     public void shootFromRobotTurret(boolean shoot) {
@@ -141,7 +158,7 @@ public class PlayerRobot {
     public Polygon getPlayerRobotPolygon() {
         return createPolygonForColisionDetection();
     }
-    
+
     private Polygon createPolygonForColisionDetection() {
         Polygon polygon = new Polygon();
         polygon.getPoints().addAll(new Double[]{
@@ -172,15 +189,15 @@ public class PlayerRobot {
     public int getHitPoints() {
         return hitPoints;
     }
-    
-    public void removeHitPoints(int hpToRemove){
+
+    public void removeHitPoints(int hpToRemove) {
         hitPoints = hitPoints - hpToRemove;
     }
-    
-    public void addHitPoints(int hpToAdd){
+
+    public void addHitPoints(int hpToAdd) {
         hitPoints = hitPoints + hpToAdd;
     }
-    
+
     public ArrayList<ShotsFromMinigun> getAllShotsFromMinigun() {
         return playerRobotTurret.getAllShotsFromMinigun();
     }
@@ -208,10 +225,5 @@ public class PlayerRobot {
     public void setRobotPositionChangeY(double robotPositionChangeY) {
         this.robotPositionChangeY = robotPositionChangeY;
     }
-    
-    
-    
-    
-    
 
 }

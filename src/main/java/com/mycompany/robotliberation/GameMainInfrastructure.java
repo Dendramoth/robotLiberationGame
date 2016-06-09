@@ -201,7 +201,10 @@ public class GameMainInfrastructure {
         playerRobot.setRobotPositionChangeX(0);
         playerRobot.setRobotPositionChangeY(0);
         if (keyAPressed == true || keySPressed == true || keyWPressed == true || keyDPressed == true) {
+            playerRobot.playRobotMovingSound();
             playerRobot.moveTracks();
+        }else{
+            playerRobot.playRobotIdleSound();
         }
 
         if (keyAPressed == true) {
