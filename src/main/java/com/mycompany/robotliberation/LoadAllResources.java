@@ -88,8 +88,13 @@ import javafx.scene.media.Media;
         mapOfAllImages.put("terrain5", image);
         
         loadStaticTurretPictures();
-        
+        loadRocketImage();
         loadAllSounds();
+    }
+    
+    private void loadRocketImage(){
+        Image image = new Image("/Rocket/rocket.png", 64, 64, false, false);
+        mapOfAllImages.put("rocket", image);
     }
     
     private void loadStaticTurretPictures(){
