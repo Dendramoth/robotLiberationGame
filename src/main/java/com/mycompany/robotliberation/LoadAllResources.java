@@ -72,7 +72,15 @@ import javafx.scene.media.Media;
         image = new Image("/Cursor/cursor_target.png", 32, 32, false, false);
         mapOfAllImages.put("cursorTarget", image);
         
-        image = new Image("/terrain/teren1.png", 256, 256, false, false);
+        
+        loadTerrainImages();
+        loadStaticTurretPictures();
+        loadRocketImage();
+        loadAllSounds();
+    }
+    
+    private void loadTerrainImages(){
+        Image image = new Image("/terrain/teren1.png", 256, 256, false, false);
         mapOfAllImages.put("terrainCrater", image);
         
         image = new Image("/terrain/teren2.png", 256, 256, false, false);
@@ -87,9 +95,20 @@ import javafx.scene.media.Media;
         image = new Image("/terrain/teren5.png", 256, 256, false, false);
         mapOfAllImages.put("terrain5", image);
         
-        loadStaticTurretPictures();
-        loadRocketImage();
-        loadAllSounds();
+        image = new Image("/terrain/teren_pisek_1.png", 256, 256, false, false);
+        mapOfAllImages.put("terrain6", image);
+        
+        image = new Image("/terrain/teren_pisek_2.png", 256, 256, false, false);
+        mapOfAllImages.put("terrain7", image);
+        
+        image = new Image("/terrain/teren_pisek_3.png", 256, 256, false, false);
+        mapOfAllImages.put("terrain8", image);
+        
+        image = new Image("/terrain/teren_pisek_4.png", 256, 256, false, false);
+        mapOfAllImages.put("terrain9", image);
+        
+        image = new Image("/terrain/teren_pisek_5.png", 256, 256, false, false);
+        mapOfAllImages.put("terrain10", image);
     }
     
     private void loadRocketImage(){
