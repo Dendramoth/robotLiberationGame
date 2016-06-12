@@ -150,10 +150,10 @@ import javafx.scene.media.Media;
         image = new Image("/StaticTurret/turret_intro_2.png", 64, 64, false, false);
         mapOfAllImages.put("turretIntro2", image);
         
-        image = new Image("/StaticTurret/turret_intro_3.5.png", 64, 64, false, false);
+        image = new Image("/StaticTurret/turret_intro_3.png", 64, 64, false, false);
         mapOfAllImages.put("turretIntro3", image);
         
-        image = new Image("/StaticTurret/turret_intro_3.png", 64, 64, false, false);
+        image = new Image("/StaticTurret/turret_intro_3.5.png", 64, 64, false, false);
         mapOfAllImages.put("turretIntro4", image);
         
         image = new Image("/StaticTurret/turret_intro_4.png", 64, 64, false, false);

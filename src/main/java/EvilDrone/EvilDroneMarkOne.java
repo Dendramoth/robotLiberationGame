@@ -30,7 +30,8 @@ public class EvilDroneMarkOne extends EnemyWithCollision {
 
         enemyImage = LoadAllResources.getMapOfAllImages().get("evilDroneIdle1");
 
-        hitPoints = 10;
+        hitPoints = 30;
+        damagedStateTreshold = 25;
     }
 
     @Override
@@ -41,8 +42,9 @@ public class EvilDroneMarkOne extends EnemyWithCollision {
     @Override
     public void doOnBeingHit() {
         hitPoints--;
-        if (hitPoints < 7) {
-            enemyImage = LoadAllResources.getMapOfAllImages().get("evilDroneIdle1Damaged");
+        if (hitPoints < damagedStateTreshold) {
+      //      enemyImage = LoadAllResources.getMapOfAllImages().get("evilDroneIdle1Damaged");
+            movementSpeed = 0.5;
         }
         allExplosionsOnEnemy.add(new Explosion());
     }
@@ -50,7 +52,7 @@ public class EvilDroneMarkOne extends EnemyWithCollision {
     @Override
     public void paintEnemy(GraphicsContext enemyGraphicsContext) {
         blinkCounter++;
-        if (hitPoints >= 7) {
+        if (hitPoints >= damagedStateTreshold) {
             if (blinkCounter <= 15) {
                 enemyImage = LoadAllResources.getMapOfAllImages().get("evilDroneIdle1");
             }
@@ -61,7 +63,7 @@ public class EvilDroneMarkOne extends EnemyWithCollision {
                 blinkCounter = 0;
             }
         }
-        if (hitPoints < 7) {
+        if (hitPoints < damagedStateTreshold) {
             if (blinkCounter <= 15) {
                 enemyImage = LoadAllResources.getMapOfAllImages().get("evilDroneIdle1Damaged");
             }
@@ -85,8 +87,8 @@ public class EvilDroneMarkOne extends EnemyWithCollision {
 
         double angle = calculateAngleBetweenPlayerAndDrone(deltaX, deltaY);
 
-        possitionX = possitionX - Math.cos(Math.toRadians(angle + 90));
-        possitionY = possitionY - Math.sin(Math.toRadians(angle + 90));
+        possitionX = possitionX - Math.cos(Math.toRadians(angle + 90)) * movementSpeed;
+        possitionY = possitionY - Math.sin(Math.toRadians(angle + 90)) * movementSpeed;
     }
 
     private double calculateAngleBetweenPlayerAndDrone(double x, double y) {

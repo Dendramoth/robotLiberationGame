@@ -17,6 +17,7 @@ public abstract class Enemy {
     protected double possitionX;
     protected double possitionY;
     protected double movementSpeed;
+    protected double damagedStateTreshold;
     protected Image enemyImage;
     protected boolean alive = true;
     protected int hitPoints;

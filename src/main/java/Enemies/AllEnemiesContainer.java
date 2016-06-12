@@ -31,7 +31,6 @@ public class AllEnemiesContainer {
     private GraphicsContext enemyGraphicsContext;
     private ArrayList<Rocket> allRocketList = new ArrayList<Rocket>();
     AllProjectilesContainer allProjectilesContainer;
-    
 
     private int timeTogenerateNextDrone = 150;
 
@@ -42,7 +41,7 @@ public class AllEnemiesContainer {
     }
 
     public void generateEvilDroneMark1(double possX, double possY) {
-        EvilDroneMarkOne evilDroneMarkOne = new EvilDroneMarkOne(possX, possY, 5);
+        EvilDroneMarkOne evilDroneMarkOne = new EvilDroneMarkOne(possX, possY, 2);
         allLivingEnemiesList.add(evilDroneMarkOne);
     }
 
@@ -106,7 +105,7 @@ public class AllEnemiesContainer {
             }
         }
     }
-    
+
     public void paintAllDeadEnemies() {
         Iterator<EnemyWithCollision> iterator = allDeadEneniesList.iterator();
         while (iterator.hasNext()) {
@@ -134,10 +133,8 @@ public class AllEnemiesContainer {
     }
 
     public void generateEnemies() {
-        //   generateEvilDrone();
-        if (allLivingEnemiesList.isEmpty()) {
-            generateStaticTurret();
-        }
+        generateEvilDrone();
+        generateStaticTurret();
     }
 
     private void generateEvilDrone() {
@@ -169,7 +166,7 @@ public class AllEnemiesContainer {
         Random random = new Random();
 
         counterToGenerateStaticTurret++;
-        if (counterToGenerateStaticTurret > 10) {
+        if (counterToGenerateStaticTurret > 200) {
             counterToGenerateStaticTurret = 0;
 
             switch (random.nextInt(4)) {
