@@ -63,8 +63,8 @@ public class GameMainInfrastructure {
         allEnemiesContainer = new AllEnemiesContainer(enemyGraphicsContext, playerRobot);
 
         gameCanvasPanel.getChildren().add(baseCanvas);
-        gameCanvasPanel.getChildren().add(robotCanvas);
         gameCanvasPanel.getChildren().add(enemiesCanvas);
+        gameCanvasPanel.getChildren().add(robotCanvas);
 
         HBox userProfilePanel = new HBox();
         Label robotHpLabel = new Label("Robot HP:");
@@ -176,6 +176,7 @@ public class GameMainInfrastructure {
                 allEnemiesContainer.detectCollisionsOfAllEnemiesWithShots();
                 allEnemiesContainer.paintAllEnemies();
                 allEnemiesContainer.doAllDeathAnimations();
+                allEnemiesContainer.paintAllDeadEnemies();
                 allEnemiesContainer.paintAllExplosionsEnemies();
 
                 movePlayerRobot();

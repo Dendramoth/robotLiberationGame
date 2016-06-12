@@ -22,8 +22,9 @@ import javafx.scene.canvas.GraphicsContext;
 public class AllEnemiesContainer {
 
     private PlayerRobot playerRobot;
-    private ArrayList<EnemyWithCollision> allEnemiesList = new ArrayList<EnemyWithCollision>();
+    private ArrayList<EnemyWithCollision> allLivingEnemiesList = new ArrayList<EnemyWithCollision>();
     private ArrayList<EnemyWithCollision> allDyingEneniesList = new ArrayList<EnemyWithCollision>();
+    private ArrayList<EnemyWithCollision> allDeadEneniesList = new ArrayList<EnemyWithCollision>();
     private int counterToGenerateDrone = 0;
     private int counterToGenerateStaticTurret = 0;
     private GraphicsContext enemyGraphicsContext;
@@ -38,16 +39,16 @@ public class AllEnemiesContainer {
 
     public void generateEvilDroneMark1(double possX, double possY) {
         EvilDroneMarkOne evilDroneMarkOne = new EvilDroneMarkOne(possX, possY, 5);
-        allEnemiesList.add(evilDroneMarkOne);
+        allLivingEnemiesList.add(evilDroneMarkOne);
     }
 
     public void generateStaticTurret(double possX, double possY) {
         StaticTurret staticTurret = new StaticTurret(possX, possY, 0);
-        allEnemiesList.add(staticTurret);
+        allLivingEnemiesList.add(staticTurret);
     }
 
     public void moveAllEnemies() {
-        Iterator<EnemyWithCollision> iterator = allEnemiesList.iterator();
+        Iterator<EnemyWithCollision> iterator = allLivingEnemiesList.iterator();
         while (iterator.hasNext()) {
             Enemy enemy = iterator.next();
             enemy.changeEnemyPositionBasedOnRobotMovement(playerRobot.getRobotPositionChangeX(), playerRobot.getRobotPositionChangeY());
@@ -60,7 +61,7 @@ public class AllEnemiesContainer {
             ShotsFromMinigun shotFromMinigun = playerRobot.getAllShotsFromMinigun().get(0);
             shotFromMinigun.getLineForDetection();
 
-            Iterator<EnemyWithCollision> iterator = allEnemiesList.iterator();
+            Iterator<EnemyWithCollision> iterator = allLivingEnemiesList.iterator();
             while (iterator.hasNext()) {
                 EnemyWithCollision enemyWithCollision = iterator.next();
                 if (enemyWithCollision.detectCollision(shotFromMinigun.getLineForDetection())) {
@@ -78,7 +79,7 @@ public class AllEnemiesContainer {
     }
 
     public void detectCollisionsOfAllEnemiesWithPlayerRobot() {
-        Iterator<EnemyWithCollision> iterator = allEnemiesList.iterator();
+        Iterator<EnemyWithCollision> iterator = allLivingEnemiesList.iterator();
         while (iterator.hasNext()) {
             EnemyWithCollision enemyWithCollision = iterator.next();
             if (enemyWithCollision.detectCollision(playerRobot.getPlayerRobotPolygon())) {
@@ -96,14 +97,24 @@ public class AllEnemiesContainer {
             EnemyWithCollision enemyWithCollision = iterator.next();
             enemyWithCollision.changeEnemyPositionBasedOnRobotMovement(playerRobot.getRobotPositionChangeX(), playerRobot.getRobotPositionChangeY());
             if (!enemyWithCollision.doOnCollision(enemyGraphicsContext)) {
+                allDeadEneniesList.add(enemyWithCollision);
                 iterator.remove();
             }
+        }
+    }
+    
+    public void paintAllDeadEnemies() {
+        Iterator<EnemyWithCollision> iterator = allDeadEneniesList.iterator();
+        while (iterator.hasNext()) {
+            EnemyWithCollision enemyWithCollision = iterator.next();
+            enemyWithCollision.changeEnemyPositionBasedOnRobotMovement(playerRobot.getRobotPositionChangeX(), playerRobot.getRobotPositionChangeY());
+            enemyWithCollision.paintDeadEnemy(enemyGraphicsContext);
         }
     }
 
     public void paintAllEnemies() {
         enemyGraphicsContext.clearRect(0, 0, GameMainInfrastructure.WINDOW_WIDTH, GameMainInfrastructure.WINDOW_HEIGH);
-        Iterator<EnemyWithCollision> iterator = allEnemiesList.iterator();
+        Iterator<EnemyWithCollision> iterator = allLivingEnemiesList.iterator();
         while (iterator.hasNext()) {
             Enemy enemy = iterator.next();
             enemy.paintEnemy(enemyGraphicsContext);
@@ -111,7 +122,7 @@ public class AllEnemiesContainer {
     }
 
     public void paintAllExplosionsEnemies() {
-        Iterator<EnemyWithCollision> iterator = allEnemiesList.iterator();
+        Iterator<EnemyWithCollision> iterator = allLivingEnemiesList.iterator();
         while (iterator.hasNext()) {
             Enemy enemy = iterator.next();
             enemy.paintAllExplosionsEnemy(enemyGraphicsContext);
@@ -120,7 +131,7 @@ public class AllEnemiesContainer {
 
     public void generateEnemies() {
         //   generateEvilDrone();
-        if (allEnemiesList.isEmpty()) {
+        if (allLivingEnemiesList.isEmpty()) {
             generateStaticTurret();
         }
     }
@@ -154,7 +165,7 @@ public class AllEnemiesContainer {
         Random random = new Random();
 
         counterToGenerateStaticTurret++;
-        if (counterToGenerateStaticTurret > 500) {
+        if (counterToGenerateStaticTurret > 10) {
             counterToGenerateStaticTurret = 0;
 
             switch (random.nextInt(4)) {

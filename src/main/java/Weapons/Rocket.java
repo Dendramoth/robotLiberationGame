@@ -66,4 +66,8 @@ public class Rocket {
         return line;
     }
     
+    public void rocketExplosion() {
+        
+    }
+    
 }

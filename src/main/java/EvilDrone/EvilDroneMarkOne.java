@@ -149,4 +149,11 @@ public class EvilDroneMarkOne extends EnemyWithCollision {
         return true;
     }
 
+    @Override
+    public void paintDeadEnemy(GraphicsContext enemyGraphicsContext) {
+        
+    }
+    
+    
+
 }

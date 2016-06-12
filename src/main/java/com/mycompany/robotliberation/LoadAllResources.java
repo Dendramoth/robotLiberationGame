@@ -95,6 +95,21 @@ import javafx.scene.media.Media;
     private void loadRocketImage(){
         Image image = new Image("/Rocket/rocket.png", 64, 64, false, false);
         mapOfAllImages.put("rocket", image);
+        
+        image = new Image("/Rocket/rocket_explosion1.png", 64, 64, false, false);
+        mapOfAllImages.put("rocketExplosion1", image);
+        
+        image = new Image("/Rocket/rocket_explosion2.png", 64, 64, false, false);
+        mapOfAllImages.put("rocketExplosion2", image);
+        
+        image = new Image("/Rocket/rocket_explosion3.png", 64, 64, false, false);
+        mapOfAllImages.put("rocketExplosion3", image);
+        
+        image = new Image("/Rocket/rocket_explosion4.png", 64, 64, false, false);
+        mapOfAllImages.put("rocketExplosion4", image);
+        
+        image = new Image("/Rocket/rocket_explosion5.png", 64, 64, false, false);
+        mapOfAllImages.put("rocketExplosion5", image);
     }
     
     private void loadStaticTurretPictures(){
@@ -122,23 +137,26 @@ import javafx.scene.media.Media;
         image = new Image("/StaticTurret/turret_tower_damaged.png", 64, 64, false, false);
         mapOfAllImages.put("turretDamaged", image);
         
-        image = new Image("/StaticTurret/turret_death1.png", 64, 64, false, false);
+        image = new Image("/StaticTurret/turret_death1.png", 128, 128, false, false);
         mapOfAllImages.put("turretDeath1", image);
         
-        image = new Image("/StaticTurret/turret_death2.png", 64, 64, false, false);
+        image = new Image("/StaticTurret/turret_death2.png", 128, 128, false, false);
         mapOfAllImages.put("turretDeath2", image);
         
-        image = new Image("/StaticTurret/turret_death3.png", 64, 64, false, false);
+        image = new Image("/StaticTurret/turret_death3.png", 128, 128, false, false);
         mapOfAllImages.put("turretDeath3", image);
         
-        image = new Image("/StaticTurret/turret_death4.png", 64, 64, false, false);
+        image = new Image("/StaticTurret/turret_death4.png", 128, 128, false, false);
         mapOfAllImages.put("turretDeath4", image);
         
-        image = new Image("/StaticTurret/turret_death5.png", 64, 64, false, false);
+        image = new Image("/StaticTurret/turret_death5.png", 128, 128, false, false);
         mapOfAllImages.put("turretDeath5", image);
         
-        image = new Image("/StaticTurret/turret_death6.png", 64, 64, false, false);
+        image = new Image("/StaticTurret/turret_death6.png", 128, 128, false, false);
         mapOfAllImages.put("turretDeath6", image);
+        
+        image = new Image("/StaticTurret/turret_base_dead.png", 64, 64, false, false);
+        mapOfAllImages.put("turretBaseDead", image);
         
     }
 
