@@ -12,6 +12,8 @@ import com.mycompany.robotliberation.playerRobot.PlayerRobot;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 
 /**
@@ -28,6 +30,7 @@ public class StaticTurret extends EnemyWithCollision {
     private double playerPossY = 0;
     private ArrayList<Rocket> allRocketList = new ArrayList<Rocket>();
     private int rocketCounter = 0;
+    private int explodingTimer = 0;
 
     public StaticTurret(double x, double y, double speed) {
         super(x, y, 0); //zero speed turret is static
@@ -56,15 +59,15 @@ public class StaticTurret extends EnemyWithCollision {
 
             if (Math.abs(currentAngleToPlayer) - Math.abs(turretAngle) > 0) {
                 turretAngle = turretAngle - 0.5;
-    //            System.out.println("-0.5");
+                //            System.out.println("-0.5");
             } else {
                 turretAngle = turretAngle + 0.5;
-      //          System.out.println("+0.5");
+                //          System.out.println("+0.5");
             }
 
             //         System.out.println("------------------------");
         }
-        
+
         moveAllRockets();
     }
 
@@ -108,7 +111,11 @@ public class StaticTurret extends EnemyWithCollision {
     }
 
     private void paintRotatedGunOnTurret(GraphicsContext enemyGraphicsContext) {
-        enemyImage = LoadAllResources.getMapOfAllImages().get("turretTower");
+        if (hitPoints > 35) {
+            enemyImage = LoadAllResources.getMapOfAllImages().get("turretTower");
+        } else {
+            enemyImage = LoadAllResources.getMapOfAllImages().get("turretDamaged");
+        }
         enemyGraphicsContext.save();
         enemyGraphicsContext.translate(possitionX + enemyImage.getWidth() / 2, possitionY + enemyImage.getHeight() / 2);
         enemyGraphicsContext.rotate(turretAngle);
@@ -141,27 +148,27 @@ public class StaticTurret extends EnemyWithCollision {
         while (iterator.hasNext()) {
             Rocket rocket = iterator.next();
             rocket.moveRocket();
-            if (rocket.hasRocketReachedDestination()){
+            if (rocket.hasRocketReachedDestination()) {
                 iterator.remove();
             }
         }
     }
-    
-    private void moveAllRocketsBasedOnPlayerMovement(double changeX, double changeY){
+
+    private void moveAllRocketsBasedOnPlayerMovement(double changeX, double changeY) {
         Iterator<Rocket> iterator = allRocketList.iterator();
         while (iterator.hasNext()) {
             Rocket rocket = iterator.next();
             rocket.moveRocketBasedOnPlayerMovement(changeX, changeY);
         }
     }
-    
+
     @Override
-    public void changeEnemyPositionBasedOnRobotMovement(double changeX, double changeY){
+    public void changeEnemyPositionBasedOnRobotMovement(double changeX, double changeY) {
         possitionX = possitionX + changeX;
         possitionY = possitionY + changeY;
         moveAllRocketsBasedOnPlayerMovement(changeX, changeY);
     }
-    
+
     public void paintAllRockets() {
         Iterator<Rocket> iterator = allRocketList.iterator();
         while (iterator.hasNext()) {
@@ -169,29 +176,65 @@ public class StaticTurret extends EnemyWithCollision {
             rocket.paintRocket();
         }
     }
-    
+
     @Override
     public void paintAllExplosionsEnemy(GraphicsContext enemyGraphicsContext) {
-
+        Iterator<Explosion> iterator = allExplosionsOnEnemy.iterator();
+        while (iterator.hasNext()) {
+            Explosion explosion = iterator.next();
+            explosion.paint(possitionX, possitionY, enemyGraphicsContext);
+            if (explosion.getNumberOfFramesBeingDisplayed() < 1) {
+                iterator.remove();
+            }
+        }
     }
 
     @Override
-    protected void paintDyingEnemyAnimation(GraphicsContext enemyGraphicsContext) {
+    protected boolean paintDyingEnemyAnimation(GraphicsContext enemyGraphicsContext) {
+        if (explodingTimer < 4) {
+            enemyImage = LoadAllResources.getMapOfAllImages().get("turretDeath1");
+        } else if (explodingTimer <= 12) {
+            enemyImage = LoadAllResources.getMapOfAllImages().get("turretDeath2");
+        } else if (explodingTimer > 12 && explodingTimer <= 24) {
+            enemyImage = LoadAllResources.getMapOfAllImages().get("turretDeath3");
+        } else if (explodingTimer > 24 && explodingTimer <= 36) {
+            enemyImage = LoadAllResources.getMapOfAllImages().get("turretDeath4");
+        } else if (explodingTimer > 36 && explodingTimer <= 48) {
+            enemyImage = LoadAllResources.getMapOfAllImages().get("turretDeath5");
+        } else if (explodingTimer > 48 && explodingTimer <= 60) {
+            enemyImage = LoadAllResources.getMapOfAllImages().get("turretDeath6");
+        } else {
+            return false;
+        }
 
+        enemyGraphicsContext.drawImage(enemyImage, possitionX, possitionY);
+        explodingTimer++;
+        return true;
     }
 
     @Override
     public boolean detectCollision(Shape shape) {
-        return false;
+        if (alive) {
+            Circle meteorPolygon = new Circle(possitionX + enemyImage.getWidth() / 2, possitionY + enemyImage.getHeight() / 2, (enemyImage.getHeight() / 2));
+            Shape intersect = Shape.intersect(shape, meteorPolygon);
+            if (intersect.getLayoutBounds().getHeight() <= 0 || intersect.getLayoutBounds().getWidth() <= 0) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean doOnCollision(GraphicsContext enemyGraphicsContext) {
-        return false;
+        return paintDyingEnemyAnimation(enemyGraphicsContext);
     }
 
     @Override
     public void doOnBeingHit() {
+        hitPoints--;
+        allExplosionsOnEnemy.add(new Explosion());
     }
 
     public ArrayList<Rocket> getAllRocketList() {

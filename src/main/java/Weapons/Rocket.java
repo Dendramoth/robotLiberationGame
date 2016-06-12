@@ -19,8 +19,6 @@ public class Rocket {
     private double possitionX = 0;
     private double possitionY = 0;
     private double angleOfFiredShot = 0;
-    private double finalX = 0;
-    private double finalY = 0;
     private Image rocketImage = LoadAllResources.getMapOfAllImages().get("rocket");
     private GraphicsContext graphicsContext;
     private int counterOfRocketLive = 0;
@@ -28,22 +26,10 @@ public class Rocket {
     public Rocket(double startPositionOfShotX, double startPositionOfShotY, double angleOfFiredShot, double playerX, double playerY, GraphicsContext graphicsContext) {
         possitionX = startPositionOfShotX;
         possitionY = startPositionOfShotY;
-        calculateEndingPossitionOfRocket(playerX, playerY, possitionX, possitionY);
         this.angleOfFiredShot = angleOfFiredShot + 180;
-        System.out.println(angleOfFiredShot);
         this.graphicsContext = graphicsContext;
     }
     
-    private void calculateEndingPossitionOfRocket(double playerX, double playerY, double rocketX, double rocketY){
-        playerX = playerX - 32;
-        playerY = playerY - 32;
-        double deltaX = playerX - rocketX;
-        double deltaY = playerY - rocketY;
-
-        finalX = playerX - Math.cos(Math.toRadians(angleOfFiredShot + 90)) * 100;
-        finalY = playerY - Math.sin(Math.toRadians(angleOfFiredShot + 90)) * 100;
-    }
-
     public void paintRocket() {
         graphicsContext.save();
         graphicsContext.translate(possitionX + rocketImage.getWidth() / 2, possitionY + rocketImage.getHeight() / 2);
@@ -53,9 +39,6 @@ public class Rocket {
     }
     
     public void moveRocket(){
-        double deltaX = finalX - possitionX;
-        double deltaY = finalY - possitionY;
-
         possitionX = possitionX - Math.cos(Math.toRadians(angleOfFiredShot + 90)) * 5;
         possitionY = possitionY - Math.sin(Math.toRadians(angleOfFiredShot + 90)) * 5;
     }

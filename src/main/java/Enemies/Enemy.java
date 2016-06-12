@@ -34,7 +34,7 @@ public abstract class Enemy {
     
     public abstract void paintAllExplosionsEnemy(GraphicsContext enemyGraphicsContext);
     
-    protected abstract void paintDyingEnemyAnimation(GraphicsContext enemyGraphicsContext);
+    protected abstract boolean paintDyingEnemyAnimation(GraphicsContext enemyGraphicsContext);
 
     public double getPossitionX() {
         return possitionX;

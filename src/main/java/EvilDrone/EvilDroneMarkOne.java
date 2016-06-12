@@ -35,16 +35,14 @@ public class EvilDroneMarkOne extends EnemyWithCollision {
 
     @Override
     public boolean doOnCollision(GraphicsContext enemyGraphicsContext) {
-        return expolodingAnimation(enemyGraphicsContext);
+        return paintDyingEnemyAnimation(enemyGraphicsContext);
     }
 
     @Override
     public void doOnBeingHit() {
         hitPoints--;
         if (hitPoints < 7) {
-
             enemyImage = LoadAllResources.getMapOfAllImages().get("evilDroneIdle1Damaged");
-
         }
         allExplosionsOnEnemy.add(new Explosion());
     }
@@ -118,7 +116,20 @@ public class EvilDroneMarkOne extends EnemyWithCollision {
         return true;
     }
 
-    public boolean expolodingAnimation(GraphicsContext enemyGraphicsContext) {
+    @Override
+    public void paintAllExplosionsEnemy(GraphicsContext enemyGraphicsContext) {
+        Iterator<Explosion> iterator = allExplosionsOnEnemy.iterator();
+        while (iterator.hasNext()) {
+            Explosion explosion = iterator.next();
+            explosion.paint(possitionX, possitionY, enemyGraphicsContext);
+            if (explosion.getNumberOfFramesBeingDisplayed() < 1) {
+                iterator.remove();
+            }
+        }
+    }
+
+    @Override
+    protected boolean paintDyingEnemyAnimation(GraphicsContext enemyGraphicsContext) {
         if (explodingTimer < 4) {
             enemyImage = LoadAllResources.getMapOfAllImages().get("drone_death1");
         } else if (explodingTimer <= 5) {
@@ -133,26 +144,9 @@ public class EvilDroneMarkOne extends EnemyWithCollision {
             return false;
         }
 
-        paintDyingEnemyAnimation(enemyGraphicsContext);
+        enemyGraphicsContext.drawImage(enemyImage, possitionX, possitionY);
         explodingTimer++;
         return true;
-    }
-
-    @Override
-    public void paintAllExplosionsEnemy(GraphicsContext enemyGraphicsContext) {
-        Iterator<Explosion> iterator = allExplosionsOnEnemy.iterator();
-        while (iterator.hasNext()) {
-            Explosion explosion = iterator.next();
-            explosion.paint(possitionX, possitionY, enemyGraphicsContext);
-            if (explosion.getNumberOfFramesBeingDisplayed() < 1) {
-                iterator.remove();
-            }
-        }
-    }
-
-    @Override
-    protected void paintDyingEnemyAnimation(GraphicsContext enemyGraphicsContext) {
-        enemyGraphicsContext.drawImage(enemyImage, possitionX, possitionY);
     }
 
 }

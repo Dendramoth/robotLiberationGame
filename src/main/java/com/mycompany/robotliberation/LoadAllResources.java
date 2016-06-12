@@ -118,6 +118,28 @@ import javafx.scene.media.Media;
         
         image = new Image("/StaticTurret/turret_intro_4.png", 64, 64, false, false);
         mapOfAllImages.put("turretIntro4", image);
+        
+        image = new Image("/StaticTurret/turret_tower_damaged.png", 64, 64, false, false);
+        mapOfAllImages.put("turretDamaged", image);
+        
+        image = new Image("/StaticTurret/turret_death1.png", 64, 64, false, false);
+        mapOfAllImages.put("turretDeath1", image);
+        
+        image = new Image("/StaticTurret/turret_death2.png", 64, 64, false, false);
+        mapOfAllImages.put("turretDeath2", image);
+        
+        image = new Image("/StaticTurret/turret_death3.png", 64, 64, false, false);
+        mapOfAllImages.put("turretDeath3", image);
+        
+        image = new Image("/StaticTurret/turret_death4.png", 64, 64, false, false);
+        mapOfAllImages.put("turretDeath4", image);
+        
+        image = new Image("/StaticTurret/turret_death5.png", 64, 64, false, false);
+        mapOfAllImages.put("turretDeath5", image);
+        
+        image = new Image("/StaticTurret/turret_death6.png", 64, 64, false, false);
+        mapOfAllImages.put("turretDeath6", image);
+        
     }
 
     private void loadAllSounds(){

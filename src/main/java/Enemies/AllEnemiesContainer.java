@@ -6,6 +6,7 @@
 package Enemies;
 
 import EvilDrone.EvilDroneMarkOne;
+import Weapons.Rocket;
 import com.mycompany.robotliberation.GameMainInfrastructure;
 import com.mycompany.robotliberation.playerRobot.PlayerRobot;
 import com.mycompany.robotliberation.playerRobot.ShotsFromMinigun;
@@ -26,6 +27,7 @@ public class AllEnemiesContainer {
     private int counterToGenerateDrone = 0;
     private int counterToGenerateStaticTurret = 0;
     private GraphicsContext enemyGraphicsContext;
+    private ArrayList<Rocket> allRocketList = new ArrayList<Rocket>();
 
     private int timeTogenerateNextDrone = 150;
 
