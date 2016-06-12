@@ -6,6 +6,7 @@
 package Enemies;
 
 import Weapons.Rocket;
+import com.mycompany.robotliberation.AllProjectilesContainer;
 import com.mycompany.robotliberation.GameMainInfrastructure;
 import com.mycompany.robotliberation.LoadAllResources;
 import com.mycompany.robotliberation.playerRobot.PlayerRobot;
@@ -28,14 +29,16 @@ public class StaticTurret extends EnemyWithCollision {
     private double turretAngle = 0;
     private double playerPossX = 0;
     private double playerPossY = 0;
-    private ArrayList<Rocket> allRocketList = new ArrayList<Rocket>();
+    
     private int rocketCounter = 0;
     private int explodingTimer = 0;
     private double turretAngleSpeed = 1;
+    private AllProjectilesContainer allProjectilesContainer;
 
-    public StaticTurret(double x, double y, double speed) {
+    public StaticTurret(double x, double y, double speed, AllProjectilesContainer allProjectilesContainer) {
         super(x, y, 0); //zero speed turret is static
         enemyImage = LoadAllResources.getMapOfAllImages().get("idleTurret");
+        this.allProjectilesContainer = allProjectilesContainer;
         hitPoints = 50;
     }
 
@@ -62,8 +65,6 @@ public class StaticTurret extends EnemyWithCollision {
             active = true;
             playInitialIntro = true;
         }
-
-        moveAllRockets();
     }
 
     private double getAngleForRotationOfTurretToPlayer(double playerPossitionX, double playerPossitionY) {
@@ -101,8 +102,6 @@ public class StaticTurret extends EnemyWithCollision {
             enemyImage = LoadAllResources.getMapOfAllImages().get("idleTurret");
             enemyGraphicsContext.drawImage(enemyImage, possitionX, possitionY);
         }
-
-        paintAllRockets();
     }
 
     private void paintRotatedGunOnTurret(GraphicsContext enemyGraphicsContext) {
@@ -136,43 +135,17 @@ public class StaticTurret extends EnemyWithCollision {
     }
 
     private void fireRocket(GraphicsContext graphicsContext) {
-        Rocket rocket = new Rocket(possitionX, possitionY, turretAngle, graphicsContext);
-        allRocketList.add(rocket);
-    }
-
-    public void moveAllRockets() {
-        Iterator<Rocket> iterator = allRocketList.iterator();
-        while (iterator.hasNext()) {
-            Rocket rocket = iterator.next();
-            rocket.moveProjectile();
-            if (rocket.hasProjectileReachedDestination()) {
-                iterator.remove();
-            }
-        }
-    }
-
-    private void moveAllRocketsBasedOnPlayerMovement(double changeX, double changeY) {
-        Iterator<Rocket> iterator = allRocketList.iterator();
-        while (iterator.hasNext()) {
-            Rocket rocket = iterator.next();
-            rocket.moveProjectileBasedOnPlayerMovement(changeX, changeY);
-        }
+        allProjectilesContainer.addNewRocket(possitionX, possitionY, turretAngle, graphicsContext);
     }
 
     @Override
     public void changeEnemyPositionBasedOnRobotMovement(double changeX, double changeY) {
         possitionX = possitionX + changeX;
         possitionY = possitionY + changeY;
-        moveAllRocketsBasedOnPlayerMovement(changeX, changeY);
+        //moveAllRocketsBasedOnPlayerMovement(changeX, changeY);
     }
 
-    public void paintAllRockets() {
-        Iterator<Rocket> iterator = allRocketList.iterator();
-        while (iterator.hasNext()) {
-            Rocket rocket = iterator.next();
-            rocket.paintProjectile();
-        }
-    }
+
 
     @Override
     public void paintAllExplosionsEnemy(GraphicsContext enemyGraphicsContext) {
@@ -248,10 +221,6 @@ public class StaticTurret extends EnemyWithCollision {
         if (hitPoints < 35) {
             turretAngleSpeed = 0.3;
         }
-    }
-
-    public ArrayList<Rocket> getAllRocketList() {
-        return allRocketList;
     }
 
 }

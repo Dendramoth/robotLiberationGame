@@ -7,6 +7,7 @@ package Enemies;
 
 import EvilDrone.EvilDroneMarkOne;
 import Weapons.Rocket;
+import com.mycompany.robotliberation.AllProjectilesContainer;
 import com.mycompany.robotliberation.GameMainInfrastructure;
 import com.mycompany.robotliberation.playerRobot.PlayerRobot;
 import com.mycompany.robotliberation.playerRobot.ShotsFromMinigun;
@@ -29,12 +30,15 @@ public class AllEnemiesContainer {
     private int counterToGenerateStaticTurret = 0;
     private GraphicsContext enemyGraphicsContext;
     private ArrayList<Rocket> allRocketList = new ArrayList<Rocket>();
+    AllProjectilesContainer allProjectilesContainer;
+    
 
     private int timeTogenerateNextDrone = 150;
 
-    public AllEnemiesContainer(GraphicsContext enemyGraphicsContext, PlayerRobot playerRobot) {
+    public AllEnemiesContainer(GraphicsContext enemyGraphicsContext, PlayerRobot playerRobot, AllProjectilesContainer allProjectilesContainer) {
         this.playerRobot = playerRobot;
         this.enemyGraphicsContext = enemyGraphicsContext;
+        this.allProjectilesContainer = allProjectilesContainer;
     }
 
     public void generateEvilDroneMark1(double possX, double possY) {
@@ -43,7 +47,7 @@ public class AllEnemiesContainer {
     }
 
     public void generateStaticTurret(double possX, double possY) {
-        StaticTurret staticTurret = new StaticTurret(possX, possY, 0);
+        StaticTurret staticTurret = new StaticTurret(possX, possY, 0, allProjectilesContainer);
         allLivingEnemiesList.add(staticTurret);
     }
 

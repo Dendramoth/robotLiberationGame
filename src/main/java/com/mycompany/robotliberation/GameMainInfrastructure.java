@@ -38,6 +38,7 @@ public class GameMainInfrastructure {
     private GameEnviroment gameEnviroment;
     private AllEnemiesContainer allEnemiesContainer;
     private PlayerRobot playerRobot;
+    private AllProjectilesContainer allProjectilesContainer = new AllProjectilesContainer();
 
     private boolean mousePressed = false;
     private boolean keyAPressed = false;
@@ -60,7 +61,7 @@ public class GameMainInfrastructure {
 
         playerRobot = new PlayerRobot(robotGraphicsContext);
         gameEnviroment = new GameEnviroment(enviromentGraphicsContext, playerRobot);
-        allEnemiesContainer = new AllEnemiesContainer(enemyGraphicsContext, playerRobot);
+        allEnemiesContainer = new AllEnemiesContainer(enemyGraphicsContext, playerRobot, allProjectilesContainer);
 
         gameCanvasPanel.getChildren().add(baseCanvas);
         gameCanvasPanel.getChildren().add(enemiesCanvas);
@@ -178,6 +179,12 @@ public class GameMainInfrastructure {
                 allEnemiesContainer.doAllDeathAnimations();
                 allEnemiesContainer.paintAllDeadEnemies();
                 allEnemiesContainer.paintAllExplosionsEnemies();
+                
+                allProjectilesContainer.moveAllRockets();
+                allProjectilesContainer.moveAllRocketsBasedOnPlayerMovement(playerRobot.getRobotPositionChangeX(), playerRobot.getRobotPositionChangeY());
+                allProjectilesContainer.moveAllExplodingRocketsBasedOnPlayerMovement(playerRobot.getRobotPositionChangeX(), playerRobot.getRobotPositionChangeY());
+                allProjectilesContainer.paintAllRockets();
+                allProjectilesContainer.explodeAllExplodingRockets();
 
                 movePlayerRobot();
                 playerRobot.shootFromRobotTurret(mousePressed);

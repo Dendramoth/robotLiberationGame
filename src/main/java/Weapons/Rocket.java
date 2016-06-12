@@ -19,6 +19,8 @@ public class Rocket extends ProjectileWeapon {
 
     private int switchingRocketImageCounter = 0;
     private boolean rocket1Active = true;
+    private int rocketExplosionCounter = 0;
+    private int rocketDistanceCounter = 0;
 
     public Rocket(double startPositionOfShotX, double startPositionOfShotY, double angleOfFiredShot, GraphicsContext graphicsContext) {
         super(startPositionOfShotX, startPositionOfShotY, angleOfFiredShot, graphicsContext);
@@ -49,6 +51,36 @@ public class Rocket extends ProjectileWeapon {
         graphicsContext.rotate(angleOfFiredShot - 180);
         graphicsContext.drawImage(projectileImage, -projectileImage.getWidth() / 2, -projectileImage.getHeight() / 2);
         graphicsContext.restore();
+    }
+
+    @Override
+    public boolean projectileExplosion() {
+        rocketExplosionCounter++;
+        if (rocketExplosionCounter <= 5) {
+            projectileImage = LoadAllResources.getMapOfAllImages().get("rocketExplosion1");
+        } else if (rocketExplosionCounter > 5 && rocketExplosionCounter <= 10) {
+            projectileImage = LoadAllResources.getMapOfAllImages().get("rocketExplosion2");
+        } else if (rocketExplosionCounter > 15 && rocketExplosionCounter <= 20) {
+            projectileImage = LoadAllResources.getMapOfAllImages().get("rocketExplosion3");
+        } else if (rocketExplosionCounter > 25 && rocketExplosionCounter <= 30) {
+            projectileImage = LoadAllResources.getMapOfAllImages().get("rocketExplosion4");
+        } else if (rocketExplosionCounter > 35 && rocketExplosionCounter <= 40) {
+            projectileImage = LoadAllResources.getMapOfAllImages().get("rocketExplosion5");
+        } else if (rocketExplosionCounter > 40) {
+            return false;
+        }
+        graphicsContext.drawImage(projectileImage, possitionX, possitionY);
+
+        return true;
+    }
+
+    @Override
+    public boolean hasProjectileReachedDestination() {
+        rocketDistanceCounter++;
+        if (rocketDistanceCounter > 75) {
+            return true;
+        }
+        return false;
     }
 
 }

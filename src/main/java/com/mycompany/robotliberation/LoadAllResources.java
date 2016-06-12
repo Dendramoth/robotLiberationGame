@@ -118,6 +118,9 @@ import javafx.scene.media.Media;
         image = new Image("/Rocket/turret_rocket_2.png", 64, 64, false, false);
         mapOfAllImages.put("rocket2", image);
         
+        image = new Image("/Rocket/rocket_explosion1.png", 64, 64, false, false);
+        mapOfAllImages.put("rocketExplosion1", image);
+        
         image = new Image("/Rocket/rocket_explosion2.png", 64, 64, false, false);
         mapOfAllImages.put("rocketExplosion2", image);
         

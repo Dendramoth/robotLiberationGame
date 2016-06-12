@@ -20,7 +20,6 @@ public abstract class ProjectileWeapon {
     protected double angleOfFiredShot = 0;
     protected Image projectileImage;
     protected GraphicsContext graphicsContext;
-    protected int counterOfRocketLive = 0;
 
     public ProjectileWeapon(double startPositionOfShotX, double startPositionOfShotY, double angleOfFiredShot, GraphicsContext graphicsContext) {
         possitionX = startPositionOfShotX;
@@ -47,17 +46,9 @@ public abstract class ProjectileWeapon {
         possitionY = possitionY + deltaY;
     }
     
-    public boolean hasProjectileReachedDestination(){
-        counterOfRocketLive++;
-        if (counterOfRocketLive < 100 ){
-            return false;
-        }
-        return true;
-    }
-
+    public abstract boolean hasProjectileReachedDestination();
+    
     public abstract Shape getShapeForDetection();
     
-    public void rocketExplosion() {
-        
-    }
+    public abstract boolean projectileExplosion();
 }
