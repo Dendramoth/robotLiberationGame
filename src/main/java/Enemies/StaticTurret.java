@@ -43,22 +43,24 @@ public class StaticTurret extends EnemyWithCollision {
     public void moveEnemy(double playerPossitionX, double playerPossitionY) {
         playerPossX = playerPossitionX;
         playerPossY = playerPossitionY;
-
         double deltaX = playerPossitionX - possitionX;
         double deltaY = playerPossitionY - possitionY;
         double distanceFromPlayer = Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
+        
+        if (active && !playInitialIntro) {
+            if (active == true) {
+                double currentAngleToPlayer = getAngleForRotationOfTurretToPlayer(playerPossitionX, playerPossitionY);
+                turretAngle = (turretAngle % 360);
+                if (Math.abs(currentAngleToPlayer) - Math.abs(turretAngle) > 0) {
+                    turretAngle = turretAngle - turretAngleSpeed;
+                } else {
+                    turretAngle = turretAngle + turretAngleSpeed;
+                }
+            }
+        }
         if (distanceFromPlayer < 500 && active == false) {
             active = true;
             playInitialIntro = true;
-        }
-        if (active == true) {
-            double currentAngleToPlayer = getAngleForRotationOfTurretToPlayer(playerPossitionX, playerPossitionY);
-            turretAngle = (turretAngle % 360);
-            if (Math.abs(currentAngleToPlayer) - Math.abs(turretAngle) > 0) {
-                turretAngle = turretAngle - turretAngleSpeed;
-            } else {
-                turretAngle = turretAngle + turretAngleSpeed;
-            }
         }
 
         moveAllRockets();
@@ -91,7 +93,7 @@ public class StaticTurret extends EnemyWithCollision {
                 rocketCounter = 0;
                 fireRocket(enemyGraphicsContext);
             }
-            
+
             enemyImage = LoadAllResources.getMapOfAllImages().get("turretBase");
             enemyGraphicsContext.drawImage(enemyImage, possitionX, possitionY);
             paintRotatedGunOnTurret(enemyGraphicsContext);
@@ -126,13 +128,15 @@ public class StaticTurret extends EnemyWithCollision {
             enemyImage = LoadAllResources.getMapOfAllImages().get("turretIntro3");
         } else if (initialIntroFrame > 32 && initialIntroFrame <= 40) {
             enemyImage = LoadAllResources.getMapOfAllImages().get("turretIntro4");
-        } else if (initialIntroFrame > 40) {
+        } else if (initialIntroFrame > 40 && initialIntroFrame <= 48) {
+            enemyImage = LoadAllResources.getMapOfAllImages().get("turretIntro5");
+        } else if (initialIntroFrame > 48) {
             playInitialIntro = false;
         }
     }
 
     private void fireRocket(GraphicsContext graphicsContext) {
-        Rocket rocket = new Rocket(possitionX, possitionY, turretAngle, playerPossX, playerPossY, graphicsContext);
+        Rocket rocket = new Rocket(possitionX, possitionY, turretAngle, graphicsContext);
         allRocketList.add(rocket);
     }
 
@@ -140,8 +144,8 @@ public class StaticTurret extends EnemyWithCollision {
         Iterator<Rocket> iterator = allRocketList.iterator();
         while (iterator.hasNext()) {
             Rocket rocket = iterator.next();
-            rocket.moveRocket();
-            if (rocket.hasRocketReachedDestination()) {
+            rocket.moveProjectile();
+            if (rocket.hasProjectileReachedDestination()) {
                 iterator.remove();
             }
         }
@@ -151,7 +155,7 @@ public class StaticTurret extends EnemyWithCollision {
         Iterator<Rocket> iterator = allRocketList.iterator();
         while (iterator.hasNext()) {
             Rocket rocket = iterator.next();
-            rocket.moveRocketBasedOnPlayerMovement(changeX, changeY);
+            rocket.moveProjectileBasedOnPlayerMovement(changeX, changeY);
         }
     }
 
@@ -166,7 +170,7 @@ public class StaticTurret extends EnemyWithCollision {
         Iterator<Rocket> iterator = allRocketList.iterator();
         while (iterator.hasNext()) {
             Rocket rocket = iterator.next();
-            rocket.paintRocket();
+            rocket.paintProjectile();
         }
     }
 
@@ -185,7 +189,7 @@ public class StaticTurret extends EnemyWithCollision {
     @Override
     protected boolean paintDyingEnemyAnimation(GraphicsContext enemyGraphicsContext) {
         enemyGraphicsContext.drawImage(LoadAllResources.getMapOfAllImages().get("turretBaseDead"), possitionX, possitionY);
-        
+
         if (explodingTimer < 4) {
             enemyImage = LoadAllResources.getMapOfAllImages().get("turretDeath1");
         } else if (explodingTimer <= 10) {
@@ -203,12 +207,12 @@ public class StaticTurret extends EnemyWithCollision {
         }
 
         enemyGraphicsContext.save();
-        enemyGraphicsContext.translate(possitionX + enemyImage.getWidth() / 2-32, possitionY + enemyImage.getHeight() / 2 -32);
+        enemyGraphicsContext.translate(possitionX + enemyImage.getWidth() / 2 - 32, possitionY + enemyImage.getHeight() / 2 - 32);
         enemyGraphicsContext.rotate(turretAngle);
-        enemyGraphicsContext.drawImage(enemyImage, - enemyImage.getWidth() / 2 , -enemyImage.getHeight()/ 2);
+        enemyGraphicsContext.drawImage(enemyImage, -enemyImage.getWidth() / 2, -enemyImage.getHeight() / 2);
         enemyGraphicsContext.restore();
-        
-  //      enemyGraphicsContext.drawImage(enemyImage, possitionX - 32, possitionY - 32);
+
+        //      enemyGraphicsContext.drawImage(enemyImage, possitionX - 32, possitionY - 32);
         explodingTimer++;
         return true;
     }
@@ -217,8 +221,6 @@ public class StaticTurret extends EnemyWithCollision {
     public void paintDeadEnemy(GraphicsContext enemyGraphicsContext) {
         enemyGraphicsContext.drawImage(LoadAllResources.getMapOfAllImages().get("turretBaseDead"), possitionX, possitionY);
     }
-    
-    
 
     @Override
     public boolean detectCollision(Shape shape) {
@@ -243,7 +245,7 @@ public class StaticTurret extends EnemyWithCollision {
     public void doOnBeingHit() {
         hitPoints--;
         allExplosionsOnEnemy.add(new Explosion());
-        if (hitPoints < 35){
+        if (hitPoints < 35) {
             turretAngleSpeed = 0.3;
         }
     }

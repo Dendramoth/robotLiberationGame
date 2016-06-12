@@ -93,11 +93,11 @@ import javafx.scene.media.Media;
     }
     
     private void loadRocketImage(){
-        Image image = new Image("/Rocket/rocket.png", 64, 64, false, false);
-        mapOfAllImages.put("rocket", image);
+        Image image = new Image("/Rocket/turret_rocket_1.png", 64, 64, false, false);
+        mapOfAllImages.put("rocket1", image);
         
-        image = new Image("/Rocket/rocket_explosion1.png", 64, 64, false, false);
-        mapOfAllImages.put("rocketExplosion1", image);
+        image = new Image("/Rocket/turret_rocket_2.png", 64, 64, false, false);
+        mapOfAllImages.put("rocket2", image);
         
         image = new Image("/Rocket/rocket_explosion2.png", 64, 64, false, false);
         mapOfAllImages.put("rocketExplosion2", image);
@@ -128,11 +128,14 @@ import javafx.scene.media.Media;
         image = new Image("/StaticTurret/turret_intro_2.png", 64, 64, false, false);
         mapOfAllImages.put("turretIntro2", image);
         
-        image = new Image("/StaticTurret/turret_intro_3.png", 64, 64, false, false);
+        image = new Image("/StaticTurret/turret_intro_3.5.png", 64, 64, false, false);
         mapOfAllImages.put("turretIntro3", image);
         
-        image = new Image("/StaticTurret/turret_intro_4.png", 64, 64, false, false);
+        image = new Image("/StaticTurret/turret_intro_3.png", 64, 64, false, false);
         mapOfAllImages.put("turretIntro4", image);
+        
+        image = new Image("/StaticTurret/turret_intro_4.png", 64, 64, false, false);
+        mapOfAllImages.put("turretIntro5", image);
         
         image = new Image("/StaticTurret/turret_tower_damaged.png", 64, 64, false, false);
         mapOfAllImages.put("turretDamaged", image);
