@@ -87,7 +87,32 @@ import javafx.scene.media.Media;
         image = new Image("/terrain/teren5.png", 256, 256, false, false);
         mapOfAllImages.put("terrain5", image);
         
+        loadStaticTurretPictures();
+        
         loadAllSounds();
+    }
+    
+    private void loadStaticTurretPictures(){
+        Image image = new Image("/StaticTurret/turret_base.png", 64, 64, false, false);
+        mapOfAllImages.put("turretBase", image);
+        
+        image = new Image("/StaticTurret/turret_idle.png", 64, 64, false, false);
+        mapOfAllImages.put("idleTurret", image);
+        
+        image = new Image("/StaticTurret/turret_tower.png", 64, 64, false, false);
+        mapOfAllImages.put("turretTower", image);
+        
+        image = new Image("/StaticTurret/turret_intro_1.png", 64, 64, false, false);
+        mapOfAllImages.put("turretIntro1", image);
+        
+        image = new Image("/StaticTurret/turret_intro_2.png", 64, 64, false, false);
+        mapOfAllImages.put("turretIntro2", image);
+        
+        image = new Image("/StaticTurret/turret_intro_3.png", 64, 64, false, false);
+        mapOfAllImages.put("turretIntro3", image);
+        
+        image = new Image("/StaticTurret/turret_intro_4.png", 64, 64, false, false);
+        mapOfAllImages.put("turretIntro4", image);
     }
 
     private void loadAllSounds(){

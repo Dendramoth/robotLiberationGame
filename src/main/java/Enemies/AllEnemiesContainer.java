@@ -24,6 +24,7 @@ public class AllEnemiesContainer {
     private ArrayList<EnemyWithCollision> allEnemiesList = new ArrayList<EnemyWithCollision>();
     private ArrayList<EnemyWithCollision> allDyingEneniesList = new ArrayList<EnemyWithCollision>();
     private int counterToGenerateDrone = 0;
+    private int counterToGenerateStaticTurret = 0;
     private GraphicsContext enemyGraphicsContext;
 
     private int timeTogenerateNextDrone = 150;
@@ -34,8 +35,13 @@ public class AllEnemiesContainer {
     }
 
     public void generateEvilDroneMark1(double possX, double possY) {
-        EvilDrone.EvilDroneMarkOne evilDroneMarkOne = new EvilDroneMarkOne(possX, possY, 5);
+        EvilDroneMarkOne evilDroneMarkOne = new EvilDroneMarkOne(possX, possY, 5);
         allEnemiesList.add(evilDroneMarkOne);
+    }
+
+    public void generateStaticTurret(double possX, double possY) {
+        StaticTurret staticTurret = new StaticTurret(possX, possY, 0);
+        allEnemiesList.add(staticTurret);
     }
 
     public void moveAllEnemies() {
@@ -101,7 +107,7 @@ public class AllEnemiesContainer {
             enemy.paintEnemy(enemyGraphicsContext);
         }
     }
-    
+
     public void paintAllExplosionsEnemies() {
         Iterator<EnemyWithCollision> iterator = allEnemiesList.iterator();
         while (iterator.hasNext()) {
@@ -110,16 +116,18 @@ public class AllEnemiesContainer {
         }
     }
 
-    public void generateEvilDrones() {
+    public void generateEnemies() {
+        //   generateEvilDrone();
+        if (allEnemiesList.isEmpty()) {
+            generateStaticTurret();
+        }
+    }
+
+    private void generateEvilDrone() {
         Random random = new Random();
 
         counterToGenerateDrone++;
         if (counterToGenerateDrone > timeTogenerateNextDrone) {
-            /*      if (timeTogenerateNextDrone > 5) {
-                timeTogenerateNextDrone = timeTogenerateNextDrone - 10;
-            } else {
-                timeTogenerateNextDrone = 5;
-            }*/
             counterToGenerateDrone = 0;
 
             switch (random.nextInt(4)) {
@@ -134,6 +142,31 @@ public class AllEnemiesContainer {
                     break;
                 case 3:
                     generateEvilDroneMark1(600, random.nextDouble() * 800);
+                    break;
+            }
+
+        }
+    }
+
+    private void generateStaticTurret() {
+        Random random = new Random();
+
+        counterToGenerateStaticTurret++;
+        if (counterToGenerateStaticTurret > 500) {
+            counterToGenerateStaticTurret = 0;
+
+            switch (random.nextInt(4)) {
+                case 0:
+                    generateStaticTurret(random.nextDouble() * 600, 0);
+                    break;
+                case 1:
+                    generateStaticTurret(random.nextDouble() * 600, 840);
+                    break;
+                case 2:
+                    generateStaticTurret(0, random.nextDouble() * 800);
+                    break;
+                case 3:
+                    generateStaticTurret(600, random.nextDouble() * 800);
                     break;
             }
 

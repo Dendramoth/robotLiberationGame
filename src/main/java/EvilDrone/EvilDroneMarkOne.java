@@ -85,13 +85,13 @@ public class EvilDroneMarkOne extends EnemyWithCollision {
         double deltaX = playerPossitionX - possitionX;
         double deltaY = playerPossitionY - possitionY;
 
-        double angle = calculateAngleForDrawingRotatedShip(deltaX, deltaY);
+        double angle = calculateAngleBetweenPlayerAndDrone(deltaX, deltaY);
 
         possitionX = possitionX - Math.cos(Math.toRadians(angle + 90));
         possitionY = possitionY - Math.sin(Math.toRadians(angle + 90));
     }
 
-    private double calculateAngleForDrawingRotatedShip(double x, double y) {
+    private double calculateAngleBetweenPlayerAndDrone(double x, double y) {
         double angle;
         if (y == 0 && x == 0) {
             angle = 0;

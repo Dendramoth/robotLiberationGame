@@ -60,6 +60,7 @@ public class PlayerRobot {
 
     public void playRobotMovingSound() {
         if (!movingRobotSound.isPlaying()) {
+            movingRobotSound.setVolume(0.4);
             movingRobotSound.play();
             if (idleRobotSound.isPlaying()) {
                 idleRobotSound.stop();
@@ -71,7 +72,6 @@ public class PlayerRobot {
         robotGraphicsContext.clearRect(0, 0, GameMainInfrastructure.WINDOW_WIDTH, GameMainInfrastructure.WINDOW_HEIGH);
 
         robotGraphicsContext.save();
-        //    robotGraphicsContext.translate(possitionX, possitionY);
         robotGraphicsContext.translate(robotStaticPossionX, robotStaticPossionY);
         robotGraphicsContext.rotate(facingAngle);
         robotGraphicsContext.drawImage(robotImage, -robotImage.getWidth() / 2, -robotImage.getHeight() / 2);

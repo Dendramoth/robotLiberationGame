@@ -170,7 +170,7 @@ public class GameMainInfrastructure {
                 gameEnviroment.moveEnviromentBasedOnRobotMovement(playerRobot.getRobotPositionChangeX(), playerRobot.getRobotPositionChangeY());
                 gameEnviroment.paintEnviroment();
 
-                allEnemiesContainer.generateEvilDrones();
+                allEnemiesContainer.generateEnemies();
                 allEnemiesContainer.moveAllEnemies();
                 allEnemiesContainer.detectCollisionsOfAllEnemiesWithPlayerRobot();
                 allEnemiesContainer.detectCollisionsOfAllEnemiesWithShots();
