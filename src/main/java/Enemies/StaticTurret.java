@@ -46,12 +46,26 @@ public class StaticTurret extends EnemyWithCollision {
     public void moveEnemy(double playerPossitionX, double playerPossitionY) {
         playerPossX = playerPossitionX;
         playerPossY = playerPossitionY;
-        double deltaX = playerPossitionX - possitionX;
-        double deltaY = playerPossitionY - possitionY;
-        double distanceFromPlayer = Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
+        double dX = (playerPossitionX - possitionX - 32);
+        double dY = -(playerPossitionY - possitionY - 32);
+        double distanceFromPlayer = Math.sqrt((dX * dX) + (dY * dY));
         
+        //drobna oprava, uz se ti turret spravne toci, ikdyz ho objizdis ze spoda
+        //a pouziti Math.atan2: neni treba zvlastni vypocty pro ruzny kvadranty a nulovy hodnoty
+        // - Wh1skeyjack
         if (active && !playInitialIntro) {
-            if (active == true) {
+            double playerAngle = (Math.toDegrees(Math.atan2(dX, dY))+360)%360;
+            turretAngle = (turretAngle+360)%360;
+            double dAngle = turretAngle - playerAngle;
+            if (((dAngle>0)&&(dAngle<180))||(dAngle<-180)) {
+                turretAngle = turretAngle + turretAngleSpeed;
+            } else {
+                turretAngle = turretAngle - turretAngleSpeed;
+            }
+        }
+        
+        // tohle a getAngleForRotationOfTurretToPlayer muzes asi smazat - Wh1skeyjack
+            /*if (active == true) {
                 double currentAngleToPlayer = getAngleForRotationOfTurretToPlayer(playerPossitionX, playerPossitionY);
                 turretAngle = (turretAngle % 360);
                 if (Math.abs(currentAngleToPlayer) - Math.abs(turretAngle) > 0) {
@@ -60,7 +74,7 @@ public class StaticTurret extends EnemyWithCollision {
                     turretAngle = turretAngle + turretAngleSpeed;
                 }
             }
-        }
+        }*/
         if (distanceFromPlayer < 500 && active == false) {
             active = true;
             playInitialIntro = true;
