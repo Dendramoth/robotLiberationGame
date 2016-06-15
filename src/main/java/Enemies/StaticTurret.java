@@ -29,7 +29,7 @@ public class StaticTurret extends EnemyWithCollision {
     private double turretAngle = 0;
     private double playerPossX = 0;
     private double playerPossY = 0;
-    
+
     private int rocketCounter = 0;
     private int explodingTimer = 0;
     private double turretAngleSpeed = 1;
@@ -46,55 +46,29 @@ public class StaticTurret extends EnemyWithCollision {
     public void moveEnemy(double playerPossitionX, double playerPossitionY) {
         playerPossX = playerPossitionX;
         playerPossY = playerPossitionY;
-        double dX = (playerPossitionX - possitionX - 32);
-        double dY = -(playerPossitionY - possitionY - 32);
-        double distanceFromPlayer = Math.sqrt((dX * dX) + (dY * dY));
-        
-        //drobna oprava, uz se ti turret spravne toci, ikdyz ho objizdis ze spoda
-        //a pouziti Math.atan2: neni treba zvlastni vypocty pro ruzny kvadranty a nulovy hodnoty
-        // - Wh1skeyjack
+        double deltaX = (playerPossitionX - possitionX - enemyImage.getWidth() / 2);
+        double deltaY = -(playerPossitionY - possitionY - enemyImage.getWidth() / 2);
+
+        /**
+         * rotate Turret to player by turretAngleSpeed
+         */
         if (active && !playInitialIntro) {
-            double playerAngle = (Math.toDegrees(Math.atan2(dX, dY))+360)%360;
-            turretAngle = (turretAngle+360)%360;
-            double dAngle = turretAngle - playerAngle;
-            if (((dAngle>0)&&(dAngle<180))||(dAngle<-180)) {
+            double angleToPlayer = (Math.toDegrees(Math.atan2(deltaX, deltaY)) + 360) % 360;
+            turretAngle = (turretAngle + 360) % 360;
+            if (((turretAngle - angleToPlayer > 0) && (turretAngle - angleToPlayer < 180)) || (turretAngle - angleToPlayer < -180)) {
                 turretAngle = turretAngle + turretAngleSpeed;
             } else {
                 turretAngle = turretAngle - turretAngleSpeed;
             }
         }
-        
-        // tohle a getAngleForRotationOfTurretToPlayer muzes asi smazat - Wh1skeyjack
-            /*if (active == true) {
-                double currentAngleToPlayer = getAngleForRotationOfTurretToPlayer(playerPossitionX, playerPossitionY);
-                turretAngle = (turretAngle % 360);
-                if (Math.abs(currentAngleToPlayer) - Math.abs(turretAngle) > 0) {
-                    turretAngle = turretAngle - turretAngleSpeed;
-                } else {
-                    turretAngle = turretAngle + turretAngleSpeed;
-                }
+
+        if (!active) {
+            double distanceFromPlayer = Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
+            if (distanceFromPlayer < 500 && active == false) {
+                active = true;
+                playInitialIntro = true;
             }
-        }*/
-        if (distanceFromPlayer < 500 && active == false) {
-            active = true;
-            playInitialIntro = true;
         }
-    }
-
-    private double getAngleForRotationOfTurretToPlayer(double playerPossitionX, double playerPossitionY) {
-        double angle;
-        double x = (playerPossitionX - possitionX - 32); // 32 = half of the player robot image
-        double y = -(playerPossitionY - possitionY - 32); // 32 = half of the player robot image
-
-        if (y == 0 && x == 0) {
-            angle = 0;
-        } else if (y > 0) {
-            angle = Math.toDegrees(Math.acos(x / (Math.sqrt(y * y + x * x)))) + 90;
-        } else {
-            angle = -Math.toDegrees(Math.acos(x / (Math.sqrt(y * y + x * x)))) + 90;
-        }
-        angle = (angle + 360) % 360;
-        return angle;
     }
 
     @Override
@@ -158,8 +132,6 @@ public class StaticTurret extends EnemyWithCollision {
         possitionY = possitionY + changeY;
         //moveAllRocketsBasedOnPlayerMovement(changeX, changeY);
     }
-
-
 
     @Override
     public void paintAllExplosionsEnemy(GraphicsContext enemyGraphicsContext) {

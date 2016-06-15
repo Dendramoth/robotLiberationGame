@@ -25,6 +25,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
 
 public class GameMainInfrastructure {
 
@@ -51,7 +52,8 @@ public class GameMainInfrastructure {
 
     public GameMainInfrastructure(Stage stage, VBox gamePanel) throws Exception {
         StackPane gameCanvasPanel = new StackPane();
-
+        changeCanvasWidthAndHeighToFullSize(); 
+                
         final Canvas baseCanvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGH);
         GraphicsContext enviromentGraphicsContext = baseCanvas.getGraphicsContext2D();
         final Canvas enemiesCanvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGH);
@@ -85,6 +87,11 @@ public class GameMainInfrastructure {
         setUpResizeListeners(stage, baseCanvas, robotCanvas, enemiesCanvas);
 
         buildAndSetGameLoop(stage);
+    }
+
+    private void changeCanvasWidthAndHeighToFullSize() {
+        WINDOW_WIDTH = Screen.getPrimary().getVisualBounds().getMaxX();
+        WINDOW_HEIGH = Screen.getPrimary().getVisualBounds().getMaxY() - 100;
     }
 
     private void setUpMouseListeners(Stage stage) {
@@ -159,45 +166,45 @@ public class GameMainInfrastructure {
         final KeyFrame oneFrame = new KeyFrame(oneFrameDuration,
                 new EventHandler() {
 
-            /**
-             * Everything inside this handle is what will be repeated in every
-             * game loop. Move objects here, detect colisions etc.
-             */
-            @Override
-            public void handle(Event event) {
-                windowPositionX = stage.getX();
-                windowPositionY = stage.getY();
+                    /**
+                     * Everything inside this handle is what will be repeated in
+                     * every game loop. Move objects here, detect colisions etc.
+                     */
+                    @Override
+                    public void handle(Event event) {
+                        windowPositionX = stage.getX();
+                        windowPositionY = stage.getY();
 
-                gameEnviroment.moveEnviromentBasedOnRobotMovement(playerRobot.getRobotPositionChangeX(), playerRobot.getRobotPositionChangeY());
-                gameEnviroment.paintEnviroment();
+                        gameEnviroment.moveEnviromentBasedOnRobotMovement(playerRobot.getRobotPositionChangeX(), playerRobot.getRobotPositionChangeY());
+                        gameEnviroment.paintEnviroment();
 
-                allEnemiesContainer.generateEnemies();
-                allEnemiesContainer.moveAllEnemies();
-                allEnemiesContainer.detectCollisionsOfAllEnemiesWithPlayerRobot();
-                allEnemiesContainer.detectCollisionsOfAllEnemiesWithShots();
-                allEnemiesContainer.paintAllEnemies();
-                allEnemiesContainer.doAllDeathAnimations();
-                allEnemiesContainer.paintAllDeadEnemies();
-                allEnemiesContainer.paintAllExplosionsEnemies();
-                
-                allProjectilesContainer.moveAllRockets();
-                allProjectilesContainer.moveAllRocketsBasedOnPlayerMovement(playerRobot.getRobotPositionChangeX(), playerRobot.getRobotPositionChangeY());
-                allProjectilesContainer.moveAllExplodingRocketsBasedOnPlayerMovement(playerRobot.getRobotPositionChangeX(), playerRobot.getRobotPositionChangeY());
-                allProjectilesContainer.paintAllRockets();
-                allProjectilesContainer.explodeAllExplodingRockets();
+                        allEnemiesContainer.generateEnemies();
+                        allEnemiesContainer.moveAllEnemies();
+                        allEnemiesContainer.detectCollisionsOfAllEnemiesWithPlayerRobot();
+                        allEnemiesContainer.detectCollisionsOfAllEnemiesWithShots();
+                        allEnemiesContainer.paintAllEnemies();
+                        allEnemiesContainer.doAllDeathAnimations();
+                        allEnemiesContainer.paintAllDeadEnemies();
+                        allEnemiesContainer.paintAllExplosionsEnemies();
 
-                movePlayerRobot();
-                playerRobot.shootFromRobotTurret(mousePressed);
-                playerRobot.paintPlayerRobot();
+                        allProjectilesContainer.moveAllRockets();
+                        allProjectilesContainer.moveAllRocketsBasedOnPlayerMovement(playerRobot.getRobotPositionChangeX(), playerRobot.getRobotPositionChangeY());
+                        allProjectilesContainer.moveAllExplodingRocketsBasedOnPlayerMovement(playerRobot.getRobotPositionChangeX(), playerRobot.getRobotPositionChangeY());
+                        allProjectilesContainer.paintAllRockets();
+                        allProjectilesContainer.explodeAllExplodingRockets();
 
-                robotHpValueLabel.setText(String.valueOf(playerRobot.getHitPoints()));
-                if (playerRobot.getHitPoints() < 1) {
-                    stopGameLoop();
-                    gameOverLabel.setText("GAME OVER!");
-                }
-            }
+                        movePlayerRobot();
+                        playerRobot.shootFromRobotTurret(mousePressed);
+                        playerRobot.paintPlayerRobot();
 
-        });
+                        robotHpValueLabel.setText(String.valueOf(playerRobot.getHitPoints()));
+                        if (playerRobot.getHitPoints() < 1) {
+                            stopGameLoop();
+                            gameOverLabel.setText("GAME OVER!");
+                        }
+                    }
+
+                });
 
         setGameLoop(TimelineBuilder.create()
                 .cycleCount(Animation.INDEFINITE)
@@ -211,7 +218,7 @@ public class GameMainInfrastructure {
         if (keyAPressed == true || keySPressed == true || keyWPressed == true || keyDPressed == true) {
             playerRobot.playRobotMovingSound();
             playerRobot.moveTracks();
-        }else{
+        } else {
             playerRobot.playRobotIdleSound();
         }
 
