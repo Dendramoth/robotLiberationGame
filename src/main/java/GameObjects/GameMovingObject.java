@@ -3,16 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Enemies;
+package GameObjects;
 
 /**
  *
  * @author Dendra
  */
-public abstract class EnemyWithCollision extends Enemy implements ObjectWithCollision{
+public interface GameMovingObject {
     
-    public EnemyWithCollision(double x, double y, double speed) {
-        super(x, y, speed);
-    }
+    public abstract void moveGameObject();
     
 }

@@ -5,6 +5,9 @@
  */
 package Enemies;
 
+import GameObjects.GameMovingObject;
+import GameObjects.GameObject;
+import GameObjects.GameObjectWithCollision;
 import java.util.ArrayList;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -13,20 +16,21 @@ import javafx.scene.image.Image;
  *
  * @author Dendra
  */
-public abstract class Enemy {
-    protected double possitionX;
-    protected double possitionY;
+public abstract class Enemy extends GameObject implements GameObjectWithCollision, GameMovingObject{
     protected double movementSpeed;
     protected double damagedStateTreshold;
     protected Image enemyImage;
     protected boolean alive = true;
     protected int hitPoints;
     protected ArrayList<Explosion> allExplosionsOnEnemy = new ArrayList<Explosion>();
+    protected GraphicsContext graphicsContext;
     
-    public Enemy(double x, double y, double speed){
-        this.possitionX = x;
-        this.possitionY = y;
-        this.movementSpeed = speed;
+    public Enemy(double movementSpeed, double damagedStateTreshold, int hitPoints, GraphicsContext graphicsContext, double possitionOnCanvasX, double possitionOnCanvasY) {
+        super(possitionOnCanvasX, possitionOnCanvasY);
+        this.movementSpeed = movementSpeed;
+        this.damagedStateTreshold = damagedStateTreshold;
+        this.hitPoints = hitPoints;
+        this.graphicsContext = graphicsContext;
     }
     
     public abstract void moveEnemy(double playerPossitionX, double playerPossitionY);
@@ -38,18 +42,6 @@ public abstract class Enemy {
     protected abstract boolean paintDyingEnemyAnimation(GraphicsContext enemyGraphicsContext);
     
     public abstract void paintDeadEnemy(GraphicsContext enemyGraphicsContext);
-
-    public double getPossitionX() {
-        return possitionX;
-    }
-
-    public double getPossitionY() {
-        return possitionY;
-    }
-
-    public double getMovementSpeed() {
-        return movementSpeed;
-    }
 
     public boolean isAlive() {
         return alive;
@@ -72,8 +64,8 @@ public abstract class Enemy {
     }
     
     public void changeEnemyPositionBasedOnRobotMovement(double changeX, double changeY){
-        possitionX = possitionX + changeX;
-        possitionY = possitionY + changeY;
+        possitionOnCanvasX = possitionOnCanvasX + changeX;
+        possitionOnCanvasY = possitionOnCanvasY + changeY;
     }
     
     

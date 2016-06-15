@@ -5,6 +5,8 @@
  */
 package com.mycompany.robotliberation.playerRobot;
 
+import GameObjects.GameObject;
+import GameObjects.GameObjectWithCollision;
 import com.mycompany.robotliberation.GameMainInfrastructure;
 import com.mycompany.robotliberation.LoadAllResources;
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import javafx.scene.image.Image;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Shape;
 
 //super dendrova hra :)
 //doufam ze na ni bude elfa otrocit
@@ -20,13 +23,10 @@ import javafx.scene.shape.Polygon;
  *
  * @author Dendra
  */
-public class PlayerRobot {
+public class PlayerRobot extends GameObject implements GameObjectWithCollision {
 
-    private static final double robotStaticPossionX = 500;
-    private static final double robotStaticPossionY = 400;
-
-    private static double possitionX = 500;
-    private static double possitionY = 400;
+    private static double worldPossitionX = 500;
+    private static double worldpossitionY = 400;
 
     private double robotPositionChangeX = 0;
     private double robotPositionChangeY = 0;
@@ -42,8 +42,11 @@ public class PlayerRobot {
     private AudioClip idleRobotSound = LoadAllResources.getMapOfAllSounds().get("idleRobotSound");
     private AudioClip movingRobotSound = LoadAllResources.getMapOfAllSounds().get("movingRobotSound");
 
-    public PlayerRobot(GraphicsContext robotGraphicsContext) {
+    public PlayerRobot(GraphicsContext robotGraphicsContext, double possitionOnCanvasX, double possitionOnCanvasY) {
+        super(possitionOnCanvasX, possitionOnCanvasY);
         this.robotGraphicsContext = robotGraphicsContext;
+        this.possitionOnCanvasX = possitionOnCanvasX;
+        this.possitionOnCanvasY = possitionOnCanvasY;
         robotImage = LoadAllResources.getMapOfAllImages().get("basePassive");
         robotImageMoving = LoadAllResources.getMapOfAllImages().get("baseMoving");
         playerRobotTurret = new PlayerRobotTurret(robotGraphicsContext);
@@ -68,23 +71,11 @@ public class PlayerRobot {
         }
     }
 
-    public void paintPlayerRobot() {
-        robotGraphicsContext.clearRect(0, 0, GameMainInfrastructure.WINDOW_WIDTH, GameMainInfrastructure.WINDOW_HEIGH);
-
-        robotGraphicsContext.save();
-        robotGraphicsContext.translate(robotStaticPossionX, robotStaticPossionY);
-        robotGraphicsContext.rotate(facingAngle);
-        robotGraphicsContext.drawImage(robotImage, -robotImage.getWidth() / 2, -robotImage.getHeight() / 2);
-        robotGraphicsContext.restore();
-
-        paintRobotTurret();
-    }
-
     private void paintRobotTurret() {
         robotGraphicsContext.save();
-        robotGraphicsContext.translate(robotStaticPossionX, robotStaticPossionY);
+        robotGraphicsContext.translate(possitionOnCanvasX, possitionOnCanvasY);
         robotGraphicsContext.rotate(playerRobotTurret.getTurretAngle());
-        playerRobotTurret.paintTurret(robotStaticPossionX, robotStaticPossionY);
+        playerRobotTurret.paintTurret(possitionOnCanvasX, possitionOnCanvasY);
         playerRobotTurret.moveToMouseCursor();
         robotGraphicsContext.restore();
     }
@@ -93,47 +84,28 @@ public class PlayerRobot {
         robotPositionChangeX = Math.cos(Math.toRadians(facingAngle + 90)) * 2.5;
         robotPositionChangeY = Math.sin(Math.toRadians(facingAngle + 90)) * 2.5;
 
-        possitionX = possitionX - robotPositionChangeX;
-        possitionY = possitionY - robotPositionChangeY;
-        //     bounderiesDetection();
+        worldPossitionX = worldPossitionX - robotPositionChangeX;
+        worldpossitionY = worldpossitionY - robotPositionChangeY;
     }
 
     public void moveRobotBackward() {
         robotPositionChangeX = Math.cos(Math.toRadians(facingAngle - 90)) * 2.5;
         robotPositionChangeY = Math.sin(Math.toRadians(facingAngle - 90)) * 2.5;
 
-        possitionX = possitionX - robotPositionChangeX;
-        possitionY = possitionY - robotPositionChangeY;
-        //      bounderiesDetection();
+        worldPossitionX = worldPossitionX - robotPositionChangeX;
+        worldpossitionY = worldpossitionY - robotPositionChangeY;
     }
 
     public void moveRobotLeft() {
         facingAngle = facingAngle - 2;
-        //    bounderiesDetection();
     }
 
     public void moveRobotRight() {
         facingAngle = facingAngle + 2;
-        //     bounderiesDetection();
     }
 
     public void shootFromRobotTurret(boolean shoot) {
         playerRobotTurret.shootTurret(shoot);
-    }
-
-    private void bounderiesDetection() {
-        if (possitionX < 0 + robotImage.getWidth() / 2) {
-            possitionX = 0 + robotImage.getWidth() / 2;
-        }
-        if (possitionX > GameMainInfrastructure.WINDOW_WIDTH - robotImage.getWidth()) {
-            possitionX = GameMainInfrastructure.WINDOW_WIDTH - robotImage.getWidth();
-        }
-        if (possitionY < 0 + robotImage.getHeight() / 2) {
-            possitionY = 0 + robotImage.getHeight() / 2;
-        }
-        if (possitionY > GameMainInfrastructure.WINDOW_HEIGH - robotImage.getHeight()) {
-            possitionY = GameMainInfrastructure.WINDOW_HEIGH - robotImage.getHeight();
-        }
     }
 
     public void moveTracks() {
@@ -148,11 +120,11 @@ public class PlayerRobot {
     }
 
     public static double getPossitionX() {
-        return possitionX;
+        return worldPossitionX;
     }
 
     public static double getPossitionY() {
-        return possitionY;
+        return worldpossitionY;
     }
 
     public Polygon getPlayerRobotPolygon() {
@@ -162,25 +134,25 @@ public class PlayerRobot {
     private Polygon createPolygonForColisionDetection() {
         Polygon polygon = new Polygon();
         polygon.getPoints().addAll(new Double[]{
-            3.0 + robotStaticPossionX - robotImage.getWidth() / 2, 28.0 + robotStaticPossionY - 32,
-            5.0 + robotStaticPossionX - robotImage.getWidth() / 2, 55.0 + robotStaticPossionY - 32,
-            7.0 + robotStaticPossionX - robotImage.getWidth() / 2, 50.0 + robotStaticPossionY - 32,
-            20.0 + robotStaticPossionX - robotImage.getWidth() / 2, 64.0 + robotStaticPossionY - 32,
-            42.0 + robotStaticPossionX - robotImage.getWidth() / 2, 64.0 + robotStaticPossionY - 32,
-            55.0 + robotStaticPossionX - robotImage.getWidth() / 2, 50.0 + robotStaticPossionY - 32,
-            59.0 + robotStaticPossionX - robotImage.getWidth() / 2, 55.0 + robotStaticPossionY - 32,
-            61.0 + robotStaticPossionX - robotImage.getWidth() / 2, 28.0 + robotStaticPossionY - 32,
-            57.0 + robotStaticPossionX - robotImage.getWidth() / 2, 28.0 + robotStaticPossionY - 32,
-            57.0 + robotStaticPossionX - robotImage.getWidth() / 2, 40.0 + robotStaticPossionY - 32,
-            40.0 + robotStaticPossionX - robotImage.getWidth() / 2, 44.0 + robotStaticPossionY - 32,
-            40.0 + robotStaticPossionX - robotImage.getWidth() / 2, 10.0 + robotStaticPossionY - 32,
-            36.0 + robotStaticPossionX - robotImage.getWidth() / 2, 0.0 + robotStaticPossionY - 32,
-            28.0 + robotStaticPossionX - robotImage.getWidth() / 2, 0.0 + robotStaticPossionY - 32,
-            24.0 + robotStaticPossionX - robotImage.getWidth() / 2, 10.0 + robotStaticPossionY - 32,
-            24.0 + robotStaticPossionX - robotImage.getWidth() / 2, 44.0 + robotStaticPossionY - 32,
-            7.0 + robotStaticPossionX - robotImage.getWidth() / 2, 40.0 + robotStaticPossionY - 32,
-            5.0 + robotStaticPossionX - robotImage.getWidth() / 2, 28.0 + robotStaticPossionY - 32,
-            3.0 + robotStaticPossionX - robotImage.getWidth() / 2, 28.0 + robotStaticPossionY - 32});
+            3.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 28.0 + possitionOnCanvasY - 32,
+            5.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 55.0 + possitionOnCanvasY - 32,
+            7.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 50.0 + possitionOnCanvasY - 32,
+            20.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 64.0 + possitionOnCanvasY - 32,
+            42.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 64.0 + possitionOnCanvasY - 32,
+            55.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 50.0 + possitionOnCanvasY - 32,
+            59.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 55.0 + possitionOnCanvasY - 32,
+            61.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 28.0 + possitionOnCanvasY - 32,
+            57.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 28.0 + possitionOnCanvasY - 32,
+            57.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 40.0 + possitionOnCanvasY - 32,
+            40.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 44.0 + possitionOnCanvasY - 32,
+            40.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 10.0 + possitionOnCanvasY - 32,
+            36.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 0.0 + possitionOnCanvasY - 32,
+            28.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 0.0 + possitionOnCanvasY - 32,
+            24.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 10.0 + possitionOnCanvasY - 32,
+            24.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 44.0 + possitionOnCanvasY - 32,
+            7.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 40.0 + possitionOnCanvasY - 32,
+            5.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 28.0 + possitionOnCanvasY - 32,
+            3.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 28.0 + possitionOnCanvasY - 32});
 
         polygon.setRotate(facingAngle);
         return polygon;
@@ -202,14 +174,6 @@ public class PlayerRobot {
         return playerRobotTurret.getAllShotsFromMinigun();
     }
 
-    public static double getRobotStaticPossionX() {
-        return robotStaticPossionX;
-    }
-
-    public static double getRobotStaticPossionY() {
-        return robotStaticPossionY;
-    }
-
     public double getRobotPositionChangeX() {
         return robotPositionChangeX;
     }
@@ -224,6 +188,38 @@ public class PlayerRobot {
 
     public void setRobotPositionChangeY(double robotPositionChangeY) {
         this.robotPositionChangeY = robotPositionChangeY;
+    }
+
+    @Override
+    public void paintGameObject() {
+        robotGraphicsContext.clearRect(0, 0, GameMainInfrastructure.WINDOW_WIDTH, GameMainInfrastructure.WINDOW_HEIGH);
+
+        robotGraphicsContext.save();
+        robotGraphicsContext.translate(possitionOnCanvasX, possitionOnCanvasY);
+        robotGraphicsContext.rotate(facingAngle);
+        robotGraphicsContext.drawImage(robotImage, -robotImage.getWidth() / 2, -robotImage.getHeight() / 2);
+        robotGraphicsContext.restore();
+
+        paintRobotTurret();
+    }
+
+    @Override
+    public boolean detectCollision(Shape shape) {
+        Polygon meteorPolygon = createPolygonForColisionDetection();
+        Shape intersect = Shape.intersect(shape, meteorPolygon);
+        if (intersect.getLayoutBounds().getHeight() <= 0 || intersect.getLayoutBounds().getWidth() <= 0) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean doOnCollision(GraphicsContext enemyGraphicsContext) {
+        return true;
+    }
+
+    @Override
+    public void doOnBeingHit() {
     }
 
 }

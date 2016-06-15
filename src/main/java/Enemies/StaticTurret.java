@@ -21,7 +21,7 @@ import javafx.scene.shape.Shape;
  *
  * @author Dendra
  */
-public class StaticTurret extends EnemyWithCollision {
+public class StaticTurret extends Enemy {
 
     private boolean active = false;
     private boolean playInitialIntro = false;
@@ -35,8 +35,8 @@ public class StaticTurret extends EnemyWithCollision {
     private double turretAngleSpeed = 1;
     private AllProjectilesContainer allProjectilesContainer;
 
-    public StaticTurret(double x, double y, double speed, AllProjectilesContainer allProjectilesContainer) {
-        super(x, y, 0); //zero speed turret is static
+    public StaticTurret(AllProjectilesContainer allProjectilesContainer, double movementSpeed, double damagedStateTreshold, int hitPoints, GraphicsContext graphicsContext, double possitionOnCanvasX, double possitionOnCanvasY) {
+        super(movementSpeed, damagedStateTreshold, hitPoints, graphicsContext, possitionOnCanvasX, possitionOnCanvasY);
         enemyImage = LoadAllResources.getMapOfAllImages().get("idleTurret");
         this.allProjectilesContainer = allProjectilesContainer;
         hitPoints = 50;
@@ -46,8 +46,8 @@ public class StaticTurret extends EnemyWithCollision {
     public void moveEnemy(double playerPossitionX, double playerPossitionY) {
         playerPossX = playerPossitionX;
         playerPossY = playerPossitionY;
-        double deltaX = (playerPossitionX - possitionX - enemyImage.getWidth() / 2);
-        double deltaY = -(playerPossitionY - possitionY - enemyImage.getWidth() / 2);
+        double deltaX = (playerPossitionX - possitionOnCanvasX - enemyImage.getWidth() / 2);
+        double deltaY = -(playerPossitionY - possitionOnCanvasY - enemyImage.getWidth() / 2);
 
         /**
          * rotate Turret to player by turretAngleSpeed
@@ -75,7 +75,7 @@ public class StaticTurret extends EnemyWithCollision {
     public void paintEnemy(GraphicsContext enemyGraphicsContext) {
         if (playInitialIntro) {
             paintInitialIntro(enemyGraphicsContext);
-            enemyGraphicsContext.drawImage(enemyImage, possitionX, possitionY);
+            enemyGraphicsContext.drawImage(enemyImage, possitionOnCanvasX, possitionOnCanvasY);
         } else if (active) {
             rocketCounter++;
             if (rocketCounter > 100) {
@@ -84,11 +84,11 @@ public class StaticTurret extends EnemyWithCollision {
             }
 
             enemyImage = LoadAllResources.getMapOfAllImages().get("turretBase");
-            enemyGraphicsContext.drawImage(enemyImage, possitionX, possitionY);
+            enemyGraphicsContext.drawImage(enemyImage, possitionOnCanvasX, possitionOnCanvasY);
             paintRotatedGunOnTurret(enemyGraphicsContext);
         } else {
             enemyImage = LoadAllResources.getMapOfAllImages().get("idleTurret");
-            enemyGraphicsContext.drawImage(enemyImage, possitionX, possitionY);
+            enemyGraphicsContext.drawImage(enemyImage, possitionOnCanvasX, possitionOnCanvasY);
         }
     }
 
@@ -99,7 +99,7 @@ public class StaticTurret extends EnemyWithCollision {
             enemyImage = LoadAllResources.getMapOfAllImages().get("turretDamaged");
         }
         enemyGraphicsContext.save();
-        enemyGraphicsContext.translate(possitionX + enemyImage.getWidth() / 2, possitionY + enemyImage.getHeight() / 2);
+        enemyGraphicsContext.translate(possitionOnCanvasX + enemyImage.getWidth() / 2, possitionOnCanvasY + enemyImage.getHeight() / 2);
         enemyGraphicsContext.rotate(turretAngle);
         enemyGraphicsContext.drawImage(enemyImage, -enemyImage.getWidth() / 2, -enemyImage.getHeight() / 2);
         enemyGraphicsContext.restore();
@@ -123,13 +123,13 @@ public class StaticTurret extends EnemyWithCollision {
     }
 
     private void fireRocket(GraphicsContext graphicsContext) {
-        allProjectilesContainer.addNewRocket(possitionX, possitionY, turretAngle, graphicsContext);
+        allProjectilesContainer.addNewRocket(possitionOnCanvasX, possitionOnCanvasY, turretAngle, graphicsContext);
     }
 
     @Override
     public void changeEnemyPositionBasedOnRobotMovement(double changeX, double changeY) {
-        possitionX = possitionX + changeX;
-        possitionY = possitionY + changeY;
+        possitionOnCanvasX = possitionOnCanvasX + changeX;
+        possitionOnCanvasY = possitionOnCanvasY + changeY;
         //moveAllRocketsBasedOnPlayerMovement(changeX, changeY);
     }
 
@@ -138,7 +138,7 @@ public class StaticTurret extends EnemyWithCollision {
         Iterator<Explosion> iterator = allExplosionsOnEnemy.iterator();
         while (iterator.hasNext()) {
             Explosion explosion = iterator.next();
-            explosion.paint(possitionX, possitionY, enemyGraphicsContext);
+            explosion.paint(possitionOnCanvasX, possitionOnCanvasY, enemyGraphicsContext);
             if (explosion.getNumberOfFramesBeingDisplayed() < 1) {
                 iterator.remove();
             }
@@ -147,7 +147,7 @@ public class StaticTurret extends EnemyWithCollision {
 
     @Override
     protected boolean paintDyingEnemyAnimation(GraphicsContext enemyGraphicsContext) {
-        enemyGraphicsContext.drawImage(LoadAllResources.getMapOfAllImages().get("turretBaseDead"), possitionX, possitionY);
+        enemyGraphicsContext.drawImage(LoadAllResources.getMapOfAllImages().get("turretBaseDead"), possitionOnCanvasX, possitionOnCanvasY);
 
         if (explodingTimer < 4) {
             enemyImage = LoadAllResources.getMapOfAllImages().get("turretDeath1");
@@ -166,7 +166,7 @@ public class StaticTurret extends EnemyWithCollision {
         }
 
         enemyGraphicsContext.save();
-        enemyGraphicsContext.translate(possitionX + enemyImage.getWidth() / 2 - 32, possitionY + enemyImage.getHeight() / 2 - 32);
+        enemyGraphicsContext.translate(possitionOnCanvasX + enemyImage.getWidth() / 2 - 32, possitionOnCanvasY + enemyImage.getHeight() / 2 - 32);
         enemyGraphicsContext.rotate(turretAngle);
         enemyGraphicsContext.drawImage(enemyImage, -enemyImage.getWidth() / 2, -enemyImage.getHeight() / 2);
         enemyGraphicsContext.restore();
@@ -178,13 +178,13 @@ public class StaticTurret extends EnemyWithCollision {
 
     @Override
     public void paintDeadEnemy(GraphicsContext enemyGraphicsContext) {
-        enemyGraphicsContext.drawImage(LoadAllResources.getMapOfAllImages().get("turretBaseDead"), possitionX, possitionY);
+        enemyGraphicsContext.drawImage(LoadAllResources.getMapOfAllImages().get("turretBaseDead"), possitionOnCanvasX, possitionOnCanvasY);
     }
 
     @Override
     public boolean detectCollision(Shape shape) {
         if (alive) {
-            Circle meteorPolygon = new Circle(possitionX + enemyImage.getWidth() / 2, possitionY + enemyImage.getHeight() / 2, (enemyImage.getHeight() / 2));
+            Circle meteorPolygon = new Circle(possitionOnCanvasX + enemyImage.getWidth() / 2, possitionOnCanvasY + enemyImage.getHeight() / 2, (enemyImage.getHeight() / 2));
             Shape intersect = Shape.intersect(shape, meteorPolygon);
             if (intersect.getLayoutBounds().getHeight() <= 0 || intersect.getLayoutBounds().getWidth() <= 0) {
                 return false;
@@ -207,6 +207,14 @@ public class StaticTurret extends EnemyWithCollision {
         if (hitPoints < 35) {
             turretAngleSpeed = 0.3;
         }
+    }
+
+    @Override
+    public void paintGameObject() {
+    }
+
+    @Override
+    public void moveGameObject() {
     }
 
 }

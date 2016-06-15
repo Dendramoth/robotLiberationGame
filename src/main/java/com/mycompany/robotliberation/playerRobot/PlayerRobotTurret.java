@@ -9,7 +9,6 @@ package com.mycompany.robotliberation.playerRobot;
  *
  * @author Dendra
  */
-import Enemies.EnemyWithCollision;
 import com.mycompany.robotliberation.GameMainInfrastructure;
 import com.mycompany.robotliberation.LoadAllResources;
 import java.awt.MouseInfo;

@@ -3,11 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package EvilDrone;
+package Enemies;
 
 import Enemies.Enemy;
 import Enemies.ObjectWithCollision;
-import Enemies.EnemyWithCollision;
 import Enemies.Explosion;
 import com.mycompany.robotliberation.LoadAllResources;
 import com.mycompany.robotliberation.playerRobot.PlayerRobot;
@@ -20,16 +19,14 @@ import javafx.scene.shape.Shape;
  *
  * @author Dendra
  */
-public class EvilDroneMarkOne extends EnemyWithCollision {
-
+public class EvilDroneMarkOne extends Enemy {
     private int blinkCounter = 0;
     private int explodingTimer = 0;
 
-    public EvilDroneMarkOne(double x, double y, double speed) {
-        super(x, y, speed);
-
+    public EvilDroneMarkOne(double movementSpeed, double damagedStateTreshold, int hitPoints, GraphicsContext graphicsContext, double possitionOnCanvasX, double possitionOnCanvasY) {
+        super(movementSpeed, damagedStateTreshold, hitPoints, graphicsContext, possitionOnCanvasX, possitionOnCanvasY);
+        
         enemyImage = LoadAllResources.getMapOfAllImages().get("evilDroneIdle1");
-
         hitPoints = 30;
         damagedStateTreshold = 25;
     }
@@ -43,7 +40,6 @@ public class EvilDroneMarkOne extends EnemyWithCollision {
     public void doOnBeingHit() {
         hitPoints--;
         if (hitPoints < damagedStateTreshold) {
-      //      enemyImage = LoadAllResources.getMapOfAllImages().get("evilDroneIdle1Damaged");
             movementSpeed = 0.5;
         }
         allExplosionsOnEnemy.add(new Explosion());
@@ -75,20 +71,19 @@ public class EvilDroneMarkOne extends EnemyWithCollision {
             }
         }
 
-        enemyGraphicsContext.drawImage(enemyImage, possitionX, possitionY);
+        enemyGraphicsContext.drawImage(enemyImage, possitionOnCanvasX, possitionOnCanvasY);
     }
-
+    
     @Override
     public void moveEnemy(double playerPossitionX, double playerPossitionY) {
         playerPossitionX = playerPossitionX - 32;
         playerPossitionY = playerPossitionY - 32;
-        double deltaX = playerPossitionX - possitionX;
-        double deltaY = playerPossitionY - possitionY;
-
+        double deltaX = playerPossitionX - possitionOnCanvasX;
+        double deltaY = playerPossitionY - possitionOnCanvasY;
         double angle = calculateAngleBetweenPlayerAndDrone(deltaX, deltaY);
 
-        possitionX = possitionX - Math.cos(Math.toRadians(angle + 90)) * movementSpeed;
-        possitionY = possitionY - Math.sin(Math.toRadians(angle + 90)) * movementSpeed;
+        possitionOnCanvasX = possitionOnCanvasX - Math.cos(Math.toRadians(angle + 90)) * movementSpeed;
+        possitionOnCanvasY = possitionOnCanvasY - Math.sin(Math.toRadians(angle + 90)) * movementSpeed;
     }
 
     private double calculateAngleBetweenPlayerAndDrone(double x, double y) {
@@ -107,7 +102,7 @@ public class EvilDroneMarkOne extends EnemyWithCollision {
     @Override
     public boolean detectCollision(Shape shape) {
         if (alive) {
-            Circle meteorPolygon = new Circle(possitionX + enemyImage.getWidth() / 2, possitionY + enemyImage.getHeight() / 2, (enemyImage.getHeight() / 2));
+            Circle meteorPolygon = new Circle(possitionOnCanvasX + enemyImage.getWidth() / 2, possitionOnCanvasY + enemyImage.getHeight() / 2, (enemyImage.getHeight() / 2));
             Shape intersect = Shape.intersect(shape, meteorPolygon);
             if (intersect.getLayoutBounds().getHeight() <= 0 || intersect.getLayoutBounds().getWidth() <= 0) {
                 return false;
@@ -123,7 +118,7 @@ public class EvilDroneMarkOne extends EnemyWithCollision {
         Iterator<Explosion> iterator = allExplosionsOnEnemy.iterator();
         while (iterator.hasNext()) {
             Explosion explosion = iterator.next();
-            explosion.paint(possitionX, possitionY, enemyGraphicsContext);
+            explosion.paint(possitionOnCanvasX, possitionOnCanvasY, enemyGraphicsContext);
             if (explosion.getNumberOfFramesBeingDisplayed() < 1) {
                 iterator.remove();
             }
@@ -146,7 +141,7 @@ public class EvilDroneMarkOne extends EnemyWithCollision {
             return false;
         }
 
-        enemyGraphicsContext.drawImage(enemyImage, possitionX, possitionY);
+        enemyGraphicsContext.drawImage(enemyImage, possitionOnCanvasX, possitionOnCanvasY);
         explodingTimer++;
         return true;
     }
@@ -154,6 +149,14 @@ public class EvilDroneMarkOne extends EnemyWithCollision {
     @Override
     public void paintDeadEnemy(GraphicsContext enemyGraphicsContext) {
         
+    }
+
+    @Override
+    public void paintGameObject() {
+    }
+
+    @Override
+    public void moveGameObject() {
     }
     
     
