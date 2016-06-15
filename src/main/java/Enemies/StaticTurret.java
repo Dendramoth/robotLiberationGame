@@ -39,7 +39,6 @@ public class StaticTurret extends Enemy {
         super(movementSpeed, damagedStateTreshold, hitPoints, graphicsContext, possitionOnCanvasX, possitionOnCanvasY);
         enemyImage = LoadAllResources.getMapOfAllImages().get("idleTurret");
         this.allProjectilesContainer = allProjectilesContainer;
-        hitPoints = 50;
     }
 
     @Override

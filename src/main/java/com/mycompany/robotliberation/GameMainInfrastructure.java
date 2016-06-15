@@ -40,6 +40,7 @@ public class GameMainInfrastructure {
     private AllEnemiesContainer allEnemiesContainer;
     private PlayerRobot playerRobot;
     private AllProjectilesContainer allProjectilesContainer = new AllProjectilesContainer();
+    private CalculateCollisions calculateCollisions;
 
     private boolean mousePressed = false;
     private boolean keyAPressed = false;
@@ -64,6 +65,7 @@ public class GameMainInfrastructure {
         playerRobot = new PlayerRobot(robotGraphicsContext, WINDOW_WIDTH / 2 - 32, WINDOW_HEIGH / 2 - 32);
         gameEnviroment = new GameEnviroment(enviromentGraphicsContext, playerRobot);
         allEnemiesContainer = new AllEnemiesContainer(enemyGraphicsContext, playerRobot, allProjectilesContainer);
+        calculateCollisions = new CalculateCollisions(allProjectilesContainer, allEnemiesContainer, playerRobot);
 
         gameCanvasPanel.getChildren().add(baseCanvas);
         gameCanvasPanel.getChildren().add(enemiesCanvas);
@@ -180,8 +182,8 @@ public class GameMainInfrastructure {
 
                 allEnemiesContainer.generateEnemies();
                 allEnemiesContainer.moveAllEnemies();
-                allEnemiesContainer.detectCollisionsOfAllEnemiesWithPlayerRobot();
-                allEnemiesContainer.detectCollisionsOfAllEnemiesWithShots();
+                calculateCollisions.detectCollisionsOfAllEnemiesWithPlayerRobot();
+                calculateCollisions.detectCollisionsOfAllEnemiesWithShots();
                 allEnemiesContainer.paintAllEnemies();
                 allEnemiesContainer.doAllDeathAnimations();
                 allEnemiesContainer.paintAllDeadEnemies();

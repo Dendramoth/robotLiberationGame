@@ -45,7 +45,7 @@ public class AllEnemiesContainer {
     }
 
     public void generateStaticTurret(double possX, double possY) {
-        StaticTurret staticTurret = new StaticTurret(allProjectilesContainer, 0, 30, 40, enemyGraphicsContext, possX, possY);
+        StaticTurret staticTurret = new StaticTurret(allProjectilesContainer, 0, 20, 40, enemyGraphicsContext, possX, possY);
         allLivingEnemiesList.add(staticTurret);
     }
 
@@ -58,40 +58,7 @@ public class AllEnemiesContainer {
         }
     }
 
-    public void detectCollisionsOfAllEnemiesWithShots() {
-        if (playerRobot.getAllShotsFromMinigun() != null && playerRobot.getAllShotsFromMinigun().size() > 0) {
-            ShotsFromMinigun shotFromMinigun = playerRobot.getAllShotsFromMinigun().get(0);
-            shotFromMinigun.getLineForDetection();
-
-            Iterator<Enemy> iterator = allLivingEnemiesList.iterator();
-            while (iterator.hasNext()) {
-                Enemy enemyWithCollision = iterator.next();
-                if (enemyWithCollision.detectCollision(shotFromMinigun.getLineForDetection())) {
-                    enemyWithCollision.doOnBeingHit();
-                    if (enemyWithCollision.getHitPoints() < 1) {
-                        enemyWithCollision.setAlive(false);
-                        allDyingEneniesList.add(enemyWithCollision);
-                        iterator.remove();
-                    }
-                }
-            }
-
-            playerRobot.getAllShotsFromMinigun().clear();
-        }
-    }
-
-    public void detectCollisionsOfAllEnemiesWithPlayerRobot() {
-        Iterator<Enemy> iterator = allLivingEnemiesList.iterator();
-        while (iterator.hasNext()) {
-            Enemy enemyWithCollision = iterator.next();
-            if (enemyWithCollision.detectCollision(playerRobot.getPlayerRobotPolygon())) {
-                playerRobot.removeHitPoints(1);
-                enemyWithCollision.setAlive(false);
-                allDyingEneniesList.add(enemyWithCollision);
-                iterator.remove();
-            }
-        }
-    }
+    
 
     public void doAllDeathAnimations() {
         Iterator<Enemy> iterator = allDyingEneniesList.iterator();
@@ -185,4 +152,18 @@ public class AllEnemiesContainer {
 
         }
     }
+
+    public ArrayList<Enemy> getAllLivingEnemiesList() {
+        return allLivingEnemiesList;
+    }
+
+    public ArrayList<Enemy> getAllDyingEneniesList() {
+        return allDyingEneniesList;
+    }
+
+    public ArrayList<Enemy> getAllDeadEneniesList() {
+        return allDeadEneniesList;
+    }
+    
+    
 }
