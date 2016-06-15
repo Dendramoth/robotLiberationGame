@@ -8,6 +8,7 @@ package com.mycompany.robotliberation;
 import GameObjects.GameObject;
 import Enemies.AllEnemiesContainer;
 import Enemies.Enemy;
+import Weapons.Rocket;
 import com.mycompany.robotliberation.playerRobot.PlayerRobot;
 import com.mycompany.robotliberation.playerRobot.ShotsFromMinigun;
 import java.util.ArrayList;
@@ -26,12 +27,16 @@ public class CalculateCollisions {
 
     private ArrayList<Enemy> allLivingEnemiesList = new ArrayList<Enemy>();
     private ArrayList<Enemy> allDyingEneniesList = new ArrayList<Enemy>();
+    
+    private ArrayList<Rocket> allRocketList = new ArrayList<Rocket>();
+    private ArrayList<Rocket> allExplodingRocketList = new ArrayList<Rocket>();
 
     public CalculateCollisions(AllProjectilesContainer allProjectilesContainer, AllEnemiesContainer allEnemiesContainer, PlayerRobot playerRobot) {
         this.allLivingEnemiesList = allEnemiesContainer.getAllLivingEnemiesList();
         this.allDyingEneniesList = allEnemiesContainer.getAllDyingEneniesList();
         
-        this.allProjectilesContainer = allProjectilesContainer;
+        this.allRocketList = allProjectilesContainer.getAllRocketList();
+        this.allExplodingRocketList = allProjectilesContainer.getAllExplodingRocketList();
         this.playerRobot = playerRobot;
     }
 
@@ -53,21 +58,21 @@ public class CalculateCollisions {
             ShotsFromMinigun shotFromMinigun = playerRobot.getAllShotsFromMinigun().get(0);
             shotFromMinigun.getLineForDetection();
 
-            for (GameObject gameObject : allLivingEnemiesList){
-                gameObject.setObjectForComparisonPosX(playerRobot.getPossitionOnCanvasX());
-                gameObject.setObjectForComparisonPosY(playerRobot.getPossitionOnCanvasY());
+            for (int i = 0; i < allLivingEnemiesList.size(); i++){
+                allLivingEnemiesList.get(i).setObjectForComparisonPosX(playerRobot.getPossitionOnCanvasX());
+                allLivingEnemiesList.get(i).setObjectForComparisonPosY(playerRobot.getPossitionOnCanvasY());
             }
             
-            Collections.sort(allGameObjects);
+            Collections.sort(allLivingEnemiesList);
             
             Iterator<Enemy> iterator = allLivingEnemiesList.iterator();
             while (iterator.hasNext()) {
-                Enemy enemyWithCollision = iterator.next();
-                if (enemyWithCollision.detectCollision(shotFromMinigun.getLineForDetection())) {
-                    enemyWithCollision.doOnBeingHit();
-                    if (enemyWithCollision.getHitPoints() < 1) {
-                        enemyWithCollision.setAlive(false);
-                        allDyingEneniesList.add(enemyWithCollision);
+                Enemy enemy = iterator.next();
+                if (enemy.detectCollision(shotFromMinigun.getLineForDetection())) {
+                    enemy.doOnBeingHit();
+                    if (enemy.getHitPoints() < 1) {
+                        enemy.setAlive(false);
+                        allDyingEneniesList.add(enemy);
                         iterator.remove();
                     }
                     break;
@@ -79,7 +84,15 @@ public class CalculateCollisions {
     }
     
     public void detectCollisionsWithRockets() {
-       
+       Iterator<Rocket> iterator = allRocketList.iterator();
+        while (iterator.hasNext()) {
+            Rocket rocket = iterator.next();
+           
+            if (rocket.hasProjectileReachedDestination()) {
+                allExplodingRocketList.add(rocket);
+                iterator.remove();
+            }
+        }
     }
 
 }

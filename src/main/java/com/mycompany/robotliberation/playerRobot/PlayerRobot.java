@@ -45,8 +45,7 @@ public class PlayerRobot extends GameObject implements GameObjectWithCollision {
     public PlayerRobot(GraphicsContext robotGraphicsContext, double possitionOnCanvasX, double possitionOnCanvasY) {
         super(possitionOnCanvasX, possitionOnCanvasY);
         this.robotGraphicsContext = robotGraphicsContext;
-        this.possitionOnCanvasX = possitionOnCanvasX;
-        this.possitionOnCanvasY = possitionOnCanvasY;
+        
         robotImage = LoadAllResources.getMapOfAllImages().get("basePassive");
         robotImageMoving = LoadAllResources.getMapOfAllImages().get("baseMoving");
         playerRobotTurret = new PlayerRobotTurret(robotGraphicsContext);

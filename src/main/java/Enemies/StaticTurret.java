@@ -92,7 +92,7 @@ public class StaticTurret extends Enemy {
     }
 
     private void paintRotatedGunOnTurret(GraphicsContext enemyGraphicsContext) {
-        if (hitPoints > 35) {
+        if (hitPoints > damagedStateTreshold) {
             enemyImage = LoadAllResources.getMapOfAllImages().get("turretTower");
         } else {
             enemyImage = LoadAllResources.getMapOfAllImages().get("turretDamaged");
@@ -203,7 +203,7 @@ public class StaticTurret extends Enemy {
     public void doOnBeingHit() {
         hitPoints--;
         allExplosionsOnEnemy.add(new Explosion());
-        if (hitPoints < 35) {
+        if (hitPoints < damagedStateTreshold) {
             turretAngleSpeed = 0.3;
         }
     }

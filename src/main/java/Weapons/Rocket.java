@@ -9,6 +9,7 @@ import com.mycompany.robotliberation.LoadAllResources;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
 
 /**
@@ -22,35 +23,9 @@ public class Rocket extends ProjectileWeapon {
     private int rocketExplosionCounter = 0;
     private int rocketDistanceCounter = 0;
 
-    public Rocket(double startPositionOfShotX, double startPositionOfShotY, double angleOfFiredShot, GraphicsContext graphicsContext) {
-        super(startPositionOfShotX, startPositionOfShotY, angleOfFiredShot, graphicsContext);
+    public Rocket(GraphicsContext graphicsContext, double angleOfFiredShot, double possitionOnCanvasX, double possitionOnCanvasY) {
+        super(graphicsContext, angleOfFiredShot, possitionOnCanvasX, possitionOnCanvasY);
         projectileImage = LoadAllResources.getMapOfAllImages().get("rocket1");
-    }
-
-    @Override
-    public Shape getShapeForDetection() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void paintProjectile() {
-        switchingRocketImageCounter++;
-        if (switchingRocketImageCounter > 8) {
-            switchingRocketImageCounter = 0;
-            if (rocket1Active) {
-                projectileImage = LoadAllResources.getMapOfAllImages().get("rocket2");
-                rocket1Active = false;
-            } else {
-                projectileImage = LoadAllResources.getMapOfAllImages().get("rocket1");
-                rocket1Active = true;
-            }
-        }
-
-        graphicsContext.save();
-        graphicsContext.translate(possitionX + projectileImage.getWidth() / 2, possitionY + projectileImage.getHeight() / 2);
-        graphicsContext.rotate(angleOfFiredShot - 180);
-        graphicsContext.drawImage(projectileImage, -projectileImage.getWidth() / 2, -projectileImage.getHeight() / 2);
-        graphicsContext.restore();
     }
 
     @Override
@@ -69,7 +44,7 @@ public class Rocket extends ProjectileWeapon {
         } else if (rocketExplosionCounter > 40) {
             return false;
         }
-        graphicsContext.drawImage(projectileImage, possitionX, possitionY);
+        graphicsContext.drawImage(projectileImage, possitionOnCanvasX, possitionOnCanvasY);
 
         return true;
     }
@@ -81,6 +56,55 @@ public class Rocket extends ProjectileWeapon {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean detectCollision(Shape shape) {
+        return false;
+    }
+
+    @Override
+    public Shape getShapeForDetection() {
+        Polygon polygon = new Polygon();
+        polygon.getPoints().addAll(new Double[]{
+            30.0 + possitionOnCanvasX - projectileImage.getWidth() / 2, 63.0 + possitionOnCanvasY - 32,
+            35.0 + possitionOnCanvasX - projectileImage.getWidth() / 2, 63.0 + possitionOnCanvasY - 32,
+            35.0 + possitionOnCanvasX - projectileImage.getWidth() / 2, 50.0 + possitionOnCanvasY - 32,
+            30.0 + possitionOnCanvasX - projectileImage.getWidth() / 2, 50.0 + possitionOnCanvasY - 32,
+            30.0 + possitionOnCanvasX - projectileImage.getWidth() / 2, 63.0 + possitionOnCanvasY - 32});
+        polygon.setRotate(angleOfFiredShot);
+        return polygon;
+    }
+
+    @Override
+    public boolean doOnCollision(GraphicsContext enemyGraphicsContext) {
+        return false;
+    }
+
+    @Override
+    public void doOnBeingHit() {
+        //do nothing for now, rocket cannot be hit by anything
+    }
+
+    @Override
+    public void paintGameObject() {
+        switchingRocketImageCounter++;
+        if (switchingRocketImageCounter > 8) {
+            switchingRocketImageCounter = 0;
+            if (rocket1Active) {
+                projectileImage = LoadAllResources.getMapOfAllImages().get("rocket2");
+                rocket1Active = false;
+            } else {
+                projectileImage = LoadAllResources.getMapOfAllImages().get("rocket1");
+                rocket1Active = true;
+            }
+        }
+
+        graphicsContext.save();
+        graphicsContext.translate(possitionOnCanvasX + projectileImage.getWidth() / 2, possitionOnCanvasY + projectileImage.getHeight() / 2);
+        graphicsContext.rotate(angleOfFiredShot - 180);
+        graphicsContext.drawImage(projectileImage, -projectileImage.getWidth() / 2, -projectileImage.getHeight() / 2);
+        graphicsContext.restore();
     }
 
 }

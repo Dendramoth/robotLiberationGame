@@ -24,8 +24,8 @@ public abstract class GameObject implements Comparable<GameObject> {
 
     @Override
     public int compareTo(GameObject o) {
-        double myDistance = Math.sqrt((this.possitionOnCanvasX - this.objectForComparisonPosX) * 2 + (this.possitionOnCanvasY - this.objectForComparisonPosY) * 2);
-        double otherDistance = Math.sqrt((o.getPossitionOnCanvasX() - o.getObjectForComparisonPosX()) * 2 + (o.getPossitionOnCanvasY() - o.getObjectForComparisonPosY()) * 2);
+        double myDistance = Math.sqrt((this.possitionOnCanvasX - this.objectForComparisonPosX) * (this.possitionOnCanvasX - this.objectForComparisonPosX) + (this.possitionOnCanvasY - this.objectForComparisonPosY) * (this.possitionOnCanvasY - this.objectForComparisonPosY));
+        double otherDistance = Math.sqrt((o.getPossitionOnCanvasX() - o.getObjectForComparisonPosX()) * (o.getPossitionOnCanvasX() - o.getObjectForComparisonPosX()) + (o.getPossitionOnCanvasY() - o.getObjectForComparisonPosY()) * (o.getPossitionOnCanvasY() - o.getObjectForComparisonPosY()));
         if (myDistance < otherDistance) {
             return -1;
         } else {

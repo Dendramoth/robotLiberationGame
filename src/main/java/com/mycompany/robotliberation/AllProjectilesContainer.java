@@ -38,7 +38,6 @@ public class AllProjectilesContainer {
             if (!rocket.projectileExplosion()) {
                 iterator.remove();
             }
-
         }
     }
 
@@ -49,7 +48,7 @@ public class AllProjectilesContainer {
             rocket.moveProjectileBasedOnPlayerMovement(changeX, changeY);
         }
     }
-    
+
     public void moveAllExplodingRocketsBasedOnPlayerMovement(double changeX, double changeY) {
         Iterator<Rocket> iterator = allExplodingRocketList.iterator();
         while (iterator.hasNext()) {
@@ -62,12 +61,21 @@ public class AllProjectilesContainer {
         Iterator<Rocket> iterator = allRocketList.iterator();
         while (iterator.hasNext()) {
             Rocket rocket = iterator.next();
-            rocket.paintProjectile();
+            rocket.paintGameObject();
         }
     }
-    
+
     public void addNewRocket(double possitionX, double possitionY, double turretAngle, GraphicsContext graphicsContext) {
-        Rocket rocket = new Rocket(possitionX, possitionY, turretAngle, graphicsContext);
+        Rocket rocket = new Rocket(graphicsContext, turretAngle, possitionX, possitionY);
         allRocketList.add(rocket);
     }
+
+    public ArrayList<Rocket> getAllRocketList() {
+        return allRocketList;
+    }
+
+    public ArrayList<Rocket> getAllExplodingRocketList() {
+        return allExplodingRocketList;
+    }
+
 }
