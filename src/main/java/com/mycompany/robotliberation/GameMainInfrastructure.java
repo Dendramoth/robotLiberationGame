@@ -47,6 +47,7 @@ public class GameMainInfrastructure {
     private boolean keySPressed = false;
     private boolean keyWPressed = false;
     private boolean keyDPressed = false;
+    private boolean keySpacePressed = false;
 
     private Label robotHpValueLabel;
     private Label gameOverLabel = new Label("");
@@ -150,7 +151,7 @@ public class GameMainInfrastructure {
     }
 
     private void setUpKeyAsPressed(final boolean pressed, final KeyEvent event) {
-        switch (event.getText().toUpperCase()) {
+        switch (event.getCode().toString().toUpperCase()) {
             case "A":
                 keyAPressed = pressed;
                 break;
@@ -162,7 +163,11 @@ public class GameMainInfrastructure {
                 break;
             case "D":
                 keyDPressed = pressed;
-        }
+                break;
+            case "SPACE":
+                keySpacePressed = pressed;
+             
+        }       
     }
 
     private void buildAndSetGameLoop(final Stage stage) {
@@ -239,6 +244,8 @@ public class GameMainInfrastructure {
         if (keyDPressed == true) {
             playerRobot.moveRobotRight();
         }
+        
+        playerRobot.setShieldActive(keySpacePressed);
     }
 
     protected static void setGameLoop(Timeline gameLoop) {

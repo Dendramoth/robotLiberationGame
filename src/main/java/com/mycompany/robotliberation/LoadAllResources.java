@@ -72,11 +72,22 @@ import javafx.scene.media.Media;
         image = new Image("/Cursor/cursor_target.png", 32, 32, false, false);
         mapOfAllImages.put("cursorTarget", image);
         
-        
+        loadShieldImages();
         loadTerrainImages();
         loadStaticTurretPictures();
         loadRocketImage();
         loadAllSounds();
+    }
+    
+    private void loadShieldImages(){
+        Image image = new Image("/Shield/robot_energy_shield_1.png", 128, 128, false, false);
+        mapOfAllImages.put("energyShield1", image);
+        
+        image = new Image("/Shield/robot_energy_shield_2.png", 128, 128, false, false);
+        mapOfAllImages.put("energyShield2", image);
+        
+        image = new Image("/Shield/robot_energy_shield_3.png", 128, 128, false, false);
+        mapOfAllImages.put("energyShield3", image);
     }
     
     private void loadTerrainImages(){

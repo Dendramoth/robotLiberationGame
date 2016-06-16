@@ -37,8 +37,13 @@ public class PlayerRobot extends GameObjectWithColision {
     private GraphicsContext robotGraphicsContext;
     private Image robotImage;
     private Image robotImageMoving;
+    private Image shieldImage = LoadAllResources.getMapOfAllImages().get("energyShield1");
     private PlayerRobotTurret playerRobotTurret;
     private int moveTracks = 0;
+    private boolean shieldActive = false;
+    private int shieldImageRotationCounter = 0;
+    private int previousShieldImage = 2;
+    private int currentShieldImage = 1;
 
     private AudioClip idleRobotSound = LoadAllResources.getMapOfAllSounds().get("idleRobotSound");
     private AudioClip movingRobotSound = LoadAllResources.getMapOfAllSounds().get("movingRobotSound");
@@ -46,7 +51,7 @@ public class PlayerRobot extends GameObjectWithColision {
     public PlayerRobot(GraphicsContext robotGraphicsContext, double possitionOnCanvasX, double possitionOnCanvasY) {
         super(possitionOnCanvasX, possitionOnCanvasY);
         this.robotGraphicsContext = robotGraphicsContext;
-        
+
         robotImage = LoadAllResources.getMapOfAllImages().get("basePassive");
         robotImageMoving = LoadAllResources.getMapOfAllImages().get("baseMoving");
         playerRobotTurret = new PlayerRobotTurret(robotGraphicsContext);
@@ -187,6 +192,40 @@ public class PlayerRobot extends GameObjectWithColision {
         robotGraphicsContext.restore();
 
         paintRobotTurret();
+
+        if (shieldActive) {
+            paintShield();
+        }
+
+    }
+
+    private void paintShield() {
+        shieldImageRotationCounter++;
+
+        if (shieldImageRotationCounter > 10) {
+            shieldImageRotationCounter = 0;
+            if (currentShieldImage == 1) {
+                currentShieldImage = 2;
+                previousShieldImage = 1;
+                shieldImage = LoadAllResources.getMapOfAllImages().get("energyShield2");
+            } else if (currentShieldImage == 3) {
+                currentShieldImage = 2;
+                previousShieldImage = 3;
+                shieldImage = LoadAllResources.getMapOfAllImages().get("energyShield2");
+            } else if (currentShieldImage == 2 && previousShieldImage == 1) {
+                currentShieldImage = 3;
+                shieldImage = LoadAllResources.getMapOfAllImages().get("energyShield3");
+            } else if (currentShieldImage == 2 && previousShieldImage == 3) {
+                currentShieldImage = 1;
+                shieldImage = LoadAllResources.getMapOfAllImages().get("energyShield1");
+            }
+        }
+
+        robotGraphicsContext.save();
+        robotGraphicsContext.translate(possitionOnCanvasX, possitionOnCanvasY);
+        robotGraphicsContext.rotate(facingAngle);
+        robotGraphicsContext.drawImage(shieldImage, -shieldImage.getWidth() / 2, -shieldImage.getHeight() / 2);
+        robotGraphicsContext.restore();
     }
 
     @Override
@@ -216,6 +255,14 @@ public class PlayerRobot extends GameObjectWithColision {
             default:
                 hitPoints--;
         }
+    }
+
+    public boolean isShieldActive() {
+        return shieldActive;
+    }
+
+    public void setShieldActive(boolean shieldActive) {
+        this.shieldActive = shieldActive;
     }
 
 }
