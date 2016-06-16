@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.robotliberation.playerRobot;
+package playerRobot;
 
 import Enemies.Explosion;
 import GameObjects.GameObject;
@@ -40,10 +40,10 @@ public class PlayerRobot extends GameObjectWithColision {
     private Image shieldImage = LoadAllResources.getMapOfAllImages().get("energyShield1");
     private PlayerRobotTurret playerRobotTurret;
     private int moveTracks = 0;
-    private boolean shieldActive = false;
     private int shieldImageRotationCounter = 0;
     private int previousShieldImage = 2;
     private int currentShieldImage = 1;
+    private PlayerRobotShield playerRobotShield;
 
     private AudioClip idleRobotSound = LoadAllResources.getMapOfAllSounds().get("idleRobotSound");
     private AudioClip movingRobotSound = LoadAllResources.getMapOfAllSounds().get("movingRobotSound");
@@ -55,6 +55,7 @@ public class PlayerRobot extends GameObjectWithColision {
         robotImage = LoadAllResources.getMapOfAllImages().get("basePassive");
         robotImageMoving = LoadAllResources.getMapOfAllImages().get("baseMoving");
         playerRobotTurret = new PlayerRobotTurret(robotGraphicsContext);
+        playerRobotShield = new PlayerRobotShield(100, this);
     }
 
     public void playRobotIdleSound() {
@@ -154,7 +155,11 @@ public class PlayerRobot extends GameObjectWithColision {
     }
 
     public void removeHitPoints(int hpToRemove) {
-        hitPoints = hitPoints - hpToRemove;
+        if (!playerRobotShield.isActive()) {
+            hitPoints = hitPoints - hpToRemove;
+        } else {
+            playerRobotShield.removeHitPointsFromShield(hpToRemove);
+        }
     }
 
     public void addHitPoints(int hpToAdd) {
@@ -193,7 +198,7 @@ public class PlayerRobot extends GameObjectWithColision {
 
         paintRobotTurret();
 
-        if (shieldActive) {
+        if (playerRobotShield.isActive()) {
             paintShield();
         }
 
@@ -247,22 +252,31 @@ public class PlayerRobot extends GameObjectWithColision {
     public void doOnBeingHit(String weaponType) {
         switch (weaponType) {
             case "rocket":
-                hitPoints = hitPoints - 20;
+                removeHitPoints(20);
                 break;
             case "minigun":
-                hitPoints = hitPoints - 1;
+                removeHitPoints(1);
                 break;
             default:
-                hitPoints--;
+                removeHitPoints(1);
         }
     }
 
-    public boolean isShieldActive() {
-        return shieldActive;
+    public void setShieldActive(boolean shieldActive) {
+        if (playerRobotShield.getShieldHitPoints() > 20) {
+            playerRobotShield.setActive(shieldActive);
+        }
+        
+        System.out.println(playerRobotShield.isActive());
+        if (playerRobotShield.isActive()){
+            playerRobotShield.removeHitPointsFromShield(0.15);
+        }else{
+            playerRobotShield.addHitPointsToShield(0.1);
+        }
     }
 
-    public void setShieldActive(boolean shieldActive) {
-        this.shieldActive = shieldActive;
+    public PlayerRobotShield getPlayerRobotShield() {
+        return playerRobotShield;
     }
 
 }

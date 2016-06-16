@@ -8,7 +8,7 @@ package Enemies;
 import Weapons.Rocket;
 import com.mycompany.robotliberation.AllProjectilesContainer;
 import com.mycompany.robotliberation.GameMainInfrastructure;
-import com.mycompany.robotliberation.playerRobot.PlayerRobot;
+import playerRobot.PlayerRobot;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;

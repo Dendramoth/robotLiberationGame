@@ -6,7 +6,7 @@
 package com.mycompany.robotliberation;
 
 import Enemies.AllEnemiesContainer;
-import com.mycompany.robotliberation.playerRobot.PlayerRobot;
+import playerRobot.PlayerRobot;
 import java.util.Random;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;

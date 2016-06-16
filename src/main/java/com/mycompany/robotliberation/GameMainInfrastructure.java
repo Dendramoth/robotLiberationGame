@@ -6,7 +6,8 @@
 package com.mycompany.robotliberation;
 
 import Enemies.AllEnemiesContainer;
-import com.mycompany.robotliberation.playerRobot.PlayerRobot;
+import java.text.DecimalFormat;
+import playerRobot.PlayerRobot;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -50,6 +51,7 @@ public class GameMainInfrastructure {
     private boolean keySpacePressed = false;
 
     private Label robotHpValueLabel;
+    private Label shieldHpValueLabel;
     private Label gameOverLabel = new Label("");
 
     public GameMainInfrastructure(Stage stage, VBox gamePanel) throws Exception {
@@ -80,9 +82,16 @@ public class GameMainInfrastructure {
         userProfilePanel.getChildren().add(robotHpLabel);
         userProfilePanel.getChildren().add(robotHpValueLabel);
         userProfilePanel.getChildren().add(gameOverLabel);
+        
+        HBox playerShiedInformation = new HBox();
+        Label shieldHpLabel = new Label("Shield Energy:");
+        shieldHpValueLabel = new Label(String.valueOf(playerRobot.getPlayerRobotShield().getShieldHitPoints()));
+        playerShiedInformation.getChildren().add(shieldHpLabel);
+        playerShiedInformation.getChildren().add(shieldHpValueLabel);
 
         VBox gameVerticalPanel = new VBox();
         gameVerticalPanel.getChildren().add(gameCanvasPanel);
+        gameVerticalPanel.getChildren().add(playerShiedInformation);
         gameVerticalPanel.getChildren().add(userProfilePanel);
 
         gamePanel.getChildren().add(gameVerticalPanel);
@@ -208,6 +217,8 @@ public class GameMainInfrastructure {
                 playerRobot.paintGameObject();
 
                 robotHpValueLabel.setText(String.valueOf(playerRobot.getHitPoints()));
+                DecimalFormat df = new DecimalFormat("#.#");
+                shieldHpValueLabel.setText(String.valueOf(df.format(playerRobot.getPlayerRobotShield().getShieldHitPoints())));
                 if (playerRobot.getHitPoints() < 1) {
                     stopGameLoop();
                     gameOverLabel.setText("GAME OVER!");
