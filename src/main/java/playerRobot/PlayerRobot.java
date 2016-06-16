@@ -267,7 +267,6 @@ public class PlayerRobot extends GameObjectWithColision {
             playerRobotShield.setActive(shieldActive);
         }
         
-        System.out.println(playerRobotShield.isActive());
         if (playerRobotShield.isActive()){
             playerRobotShield.removeHitPointsFromShield(0.15);
         }else{

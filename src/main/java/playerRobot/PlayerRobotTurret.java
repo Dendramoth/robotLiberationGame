@@ -27,8 +27,10 @@ public class PlayerRobotTurret {
     private double possitionX = 0;
     private double possitionY = 0;
     private int shootingCounter = 0;
-    private Image shootingMinigunFireImage = LoadAllResources.getMapOfAllImages().get("shotsMinigunLonger");
+    private Image shootingMinigunFireImage;
     private ArrayList<ShotsFromMinigun> allShotsFromMinigun = new ArrayList<ShotsFromMinigun>();
+    private int minigunImageCounter = 0;
+    private boolean turretIsShooting = false;
 
     public PlayerRobotTurret(GraphicsContext robotGraphicsContext) {
         this.robotGraphicsContext = robotGraphicsContext;
@@ -46,8 +48,23 @@ public class PlayerRobotTurret {
         mouseLocation.getY();
 
         robotGraphicsContext.drawImage(turretCurrentImage, -turretCurrentImage.getWidth() / 2, -turretCurrentImage.getHeight() / 2);
-        if (turretCurrentImage == turretShootingImage){
+        if (turretIsShooting) {
+            minigunImageCounter ++;
+            if (minigunImageCounter <= 4) {
+                shootingMinigunFireImage = LoadAllResources.getMapOfAllImages().get("minigunFire1");
+            } else if (minigunImageCounter > 4 && minigunImageCounter <= 8) {
+                shootingMinigunFireImage = LoadAllResources.getMapOfAllImages().get("minigunFire2");
+            } else if (minigunImageCounter > 8 && minigunImageCounter <= 12) {
+                shootingMinigunFireImage = LoadAllResources.getMapOfAllImages().get("minigunFire3");
+            } else if (minigunImageCounter > 12 && minigunImageCounter <= 16) {
+                shootingMinigunFireImage = LoadAllResources.getMapOfAllImages().get("minigunFire4");
+            }else{
+                shootingMinigunFireImage = LoadAllResources.getMapOfAllImages().get("minigunFire1");
+                minigunImageCounter = 0;
+            }
             robotGraphicsContext.drawImage(shootingMinigunFireImage, -shootingMinigunFireImage.getWidth() / 2, -shootingMinigunFireImage.getHeight() / 2);
+        }else{
+            minigunImageCounter = 0;
         }
     }
 
@@ -64,12 +81,13 @@ public class PlayerRobotTurret {
     }
 
     public void shootTurret(boolean shoot) {
+        turretIsShooting = shoot;
         if (shoot) {
             shootingCounter++;
             if (shootingCounter == 6) {
                 shootMinigunProjectile();
             }
-            if (shootingCounter > 5) {
+            if (shootingCounter > 8) {
                 if (turretCurrentImage == turretIdleImage) {
                     turretCurrentImage = turretShootingImage;
                     shootingCounter = 0;

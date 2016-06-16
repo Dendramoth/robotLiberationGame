@@ -30,7 +30,7 @@ public class AllEnemiesContainer {
     private ArrayList<Rocket> allRocketList = new ArrayList<Rocket>();
     AllProjectilesContainer allProjectilesContainer;
 
-    private int timeTogenerateNextDrone = 150;
+    private int timeTogenerateNextDrone = 200;
 
     public AllEnemiesContainer(GraphicsContext enemyGraphicsContext, PlayerRobot playerRobot, AllProjectilesContainer allProjectilesContainer) {
         this.playerRobot = playerRobot;
@@ -99,9 +99,7 @@ public class AllEnemiesContainer {
 
     public void generateEnemies() {
         generateEvilDrone();
-        if (allLivingEnemiesList.size() < 3){
         generateStaticTurret();
-        }
     }
 
     private void generateEvilDrone() {
@@ -133,7 +131,7 @@ public class AllEnemiesContainer {
         Random random = new Random();
 
         counterToGenerateStaticTurret++;
-        if (counterToGenerateStaticTurret > 200) {
+        if (counterToGenerateStaticTurret > 550) {
             counterToGenerateStaticTurret = 0;
 
             switch (random.nextInt(4)) {

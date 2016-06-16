@@ -86,6 +86,18 @@ import javafx.scene.media.Media;
         
         image = new Image("/playerRobot/shots_delsi.png", 256, 256, false, false);
         mapOfAllImages.put("shotsMinigunLonger", image);
+        
+        image = new Image("/playerRobot/minigun_fire1.png", 256, 256, false, false);
+        mapOfAllImages.put("minigunFire1", image);
+        
+        image = new Image("/playerRobot/minigun_fire2.png", 256, 256, false, false);
+        mapOfAllImages.put("minigunFire2", image);
+        
+        image = new Image("/playerRobot/minigun_fire3.png", 256, 256, false, false);
+        mapOfAllImages.put("minigunFire3", image);
+        
+        image = new Image("/playerRobot/minigun_fire4.png", 256, 256, false, false);
+        mapOfAllImages.put("minigunFire4", image);
     }
     
     private void loadShieldImages(){
