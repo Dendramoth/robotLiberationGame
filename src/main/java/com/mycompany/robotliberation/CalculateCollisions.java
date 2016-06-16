@@ -50,6 +50,7 @@ public class CalculateCollisions {
             Enemy enemyWithCollision = iterator.next();
             if (enemyWithCollision.detectCollision(playerRobot.getPlayerRobotPolygon())) {
                 playerRobot.doOnCollision(null);
+                playerRobot.removeHitPoints(40);
                 enemyWithCollision.setAlive(false);
                 allDyingEneniesList.add(enemyWithCollision);
                 iterator.remove();

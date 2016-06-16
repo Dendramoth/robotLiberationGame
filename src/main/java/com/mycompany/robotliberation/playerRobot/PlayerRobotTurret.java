@@ -27,6 +27,7 @@ public class PlayerRobotTurret {
     private double possitionX = 0;
     private double possitionY = 0;
     private int shootingCounter = 0;
+    private Image shootingMinigunFireImage = LoadAllResources.getMapOfAllImages().get("shotsMinigunLonger");
     private ArrayList<ShotsFromMinigun> allShotsFromMinigun = new ArrayList<ShotsFromMinigun>();
 
     public PlayerRobotTurret(GraphicsContext robotGraphicsContext) {
@@ -45,6 +46,9 @@ public class PlayerRobotTurret {
         mouseLocation.getY();
 
         robotGraphicsContext.drawImage(turretCurrentImage, -turretCurrentImage.getWidth() / 2, -turretCurrentImage.getHeight() / 2);
+        if (turretCurrentImage == turretShootingImage){
+            robotGraphicsContext.drawImage(shootingMinigunFireImage, -shootingMinigunFireImage.getWidth() / 2, -shootingMinigunFireImage.getHeight() / 2);
+        }
     }
 
     public void moveTurretToLeft() {

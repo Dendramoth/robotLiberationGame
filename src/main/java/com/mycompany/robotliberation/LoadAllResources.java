@@ -77,6 +77,15 @@ import javafx.scene.media.Media;
         loadStaticTurretPictures();
         loadRocketImage();
         loadAllSounds();
+        loadPlayerRobotImages();
+    }
+    
+    private void loadPlayerRobotImages(){
+        Image image = new Image("/playerRobot/shots.png", 256, 256, false, false);
+        mapOfAllImages.put("shotsMinigunShorter", image);
+        
+        image = new Image("/playerRobot/shots_delsi.png", 256, 256, false, false);
+        mapOfAllImages.put("shotsMinigunLonger", image);
     }
     
     private void loadShieldImages(){
