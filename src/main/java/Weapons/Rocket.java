@@ -82,8 +82,8 @@ public class Rocket extends ProjectileWeapon {
     }
 
     @Override
-    public void doOnBeingHit() {
-        //do nothing for now, rocket cannot be hit by anything
+    public void doOnBeingHit(String weaponType) {
+        rocketDistanceCounter = 200;
     }
 
     @Override

@@ -5,9 +5,9 @@
  */
 package com.mycompany.robotliberation.playerRobot;
 
+import Enemies.Explosion;
 import GameObjects.GameObject;
 import GameObjects.GameObjectWithColision;
-import GameObjects.GameObjectWithCollision;
 import com.mycompany.robotliberation.GameMainInfrastructure;
 import com.mycompany.robotliberation.LoadAllResources;
 import java.util.ArrayList;
@@ -16,6 +16,7 @@ import javafx.scene.image.Image;
 import javafx.scene.media.AudioClip;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
+import GameObjects.GameObjectWithCollisionInterface;
 
 //super dendrova hra :)
 //doufam ze na ni bude elfa otrocit
@@ -204,9 +205,17 @@ public class PlayerRobot extends GameObjectWithColision {
     }
 
     @Override
-    public void doOnBeingHit() {
-        hitPoints = hitPoints - 20;
-    //    System.out.println("HITTTTT");
+    public void doOnBeingHit(String weaponType) {
+        switch (weaponType) {
+            case "rocket":
+                hitPoints = hitPoints - 20;
+                break;
+            case "minigun":
+                hitPoints = hitPoints - 1;
+                break;
+            default:
+                hitPoints--;
+        }
     }
 
 }

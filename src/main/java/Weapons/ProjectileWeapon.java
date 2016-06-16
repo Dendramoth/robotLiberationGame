@@ -7,16 +7,16 @@ package Weapons;
 
 import Enemies.Enemy;
 import GameObjects.GameObject;
-import GameObjects.GameObjectWithCollision;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Shape;
+import GameObjects.GameObjectWithCollisionInterface;
 
 /**
  *
  * @author Dendra
  */
-public abstract class ProjectileWeapon extends GameObject implements GameObjectWithCollision{
+public abstract class ProjectileWeapon extends GameObject implements GameObjectWithCollisionInterface{
     protected double angleOfFiredShot = 0;
     protected Image projectileImage;
     protected GraphicsContext graphicsContext;

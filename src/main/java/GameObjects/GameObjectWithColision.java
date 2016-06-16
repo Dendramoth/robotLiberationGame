@@ -9,7 +9,7 @@ package GameObjects;
  *
  * @author Dendra
  */
-public abstract class GameObjectWithColision extends GameObject implements GameObjectWithCollision{
+public abstract class GameObjectWithColision extends GameObject implements GameObjectWithCollisionInterface{
     
     public GameObjectWithColision(double possitionOnCanvasX, double possitionOnCanvasY) {
         super(possitionOnCanvasX, possitionOnCanvasY);

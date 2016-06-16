@@ -6,6 +6,7 @@
 package com.mycompany.robotliberation;
 
 import Enemies.Enemy;
+import Weapons.ProjectileWeapon;
 import Weapons.Rocket;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -17,66 +18,68 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public class AllProjectilesContainer {
 
-    private ArrayList<Rocket> allRocketList = new ArrayList<Rocket>();
-    private ArrayList<Rocket> allExplodingRocketList = new ArrayList<Rocket>();
+    private ArrayList<ProjectileWeapon> allProjectilesList = new ArrayList<ProjectileWeapon>();
+    private ArrayList<ProjectileWeapon> allExplodingProjectilesList = new ArrayList<ProjectileWeapon>();
 
     public void moveAllRockets() {
-        Iterator<Rocket> iterator = allRocketList.iterator();
+        Iterator<ProjectileWeapon> iterator = allProjectilesList.iterator();
         while (iterator.hasNext()) {
-            Rocket rocket = iterator.next();
-            rocket.moveProjectile();
-            if (rocket.hasProjectileReachedDestination()) {
-                allExplodingRocketList.add(rocket);
+            ProjectileWeapon projectileWeapon = iterator.next();
+            projectileWeapon.moveProjectile();
+            if (projectileWeapon.hasProjectileReachedDestination()) {
+                allExplodingProjectilesList.add(projectileWeapon);
                 iterator.remove();
             }
         }
     }
 
     public void explodeAllExplodingRockets() {
-        Iterator<Rocket> iterator = allExplodingRocketList.iterator();
+        Iterator<ProjectileWeapon> iterator = allExplodingProjectilesList.iterator();
         while (iterator.hasNext()) {
-            Rocket rocket = iterator.next();
-            if (!rocket.projectileExplosion()) {
+            ProjectileWeapon projectileWeapon = iterator.next();
+            if (!projectileWeapon.projectileExplosion()) {
                 iterator.remove();
             }
         }
     }
 
     public void moveAllRocketsBasedOnPlayerMovement(double changeX, double changeY) {
-        Iterator<Rocket> iterator = allRocketList.iterator();
+        Iterator<ProjectileWeapon> iterator = allProjectilesList.iterator();
         while (iterator.hasNext()) {
-            Rocket rocket = iterator.next();
-            rocket.moveProjectileBasedOnPlayerMovement(changeX, changeY);
+            ProjectileWeapon projectileWeapon = iterator.next();
+            projectileWeapon.moveProjectileBasedOnPlayerMovement(changeX, changeY);
         }
     }
 
     public void moveAllExplodingRocketsBasedOnPlayerMovement(double changeX, double changeY) {
-        Iterator<Rocket> iterator = allExplodingRocketList.iterator();
+        Iterator<ProjectileWeapon> iterator = allExplodingProjectilesList.iterator();
         while (iterator.hasNext()) {
-            Rocket rocket = iterator.next();
-            rocket.moveProjectileBasedOnPlayerMovement(changeX, changeY);
+            ProjectileWeapon projectileWeapon = iterator.next();
+            projectileWeapon.moveProjectileBasedOnPlayerMovement(changeX, changeY);
         }
     }
 
     public void paintAllRockets() {
-        Iterator<Rocket> iterator = allRocketList.iterator();
+        Iterator<ProjectileWeapon> iterator = allProjectilesList.iterator();
         while (iterator.hasNext()) {
-            Rocket rocket = iterator.next();
-            rocket.paintGameObject();
+            ProjectileWeapon projectileWeapon = iterator.next();
+            projectileWeapon.paintGameObject();
         }
     }
 
     public void addNewRocket(double possitionX, double possitionY, double turretAngle, GraphicsContext graphicsContext, Enemy enemy) {
         Rocket rocket = new Rocket(graphicsContext, turretAngle, possitionX, possitionY, enemy);
-        allRocketList.add(rocket);
+        allProjectilesList.add(rocket);
     }
 
-    public ArrayList<Rocket> getAllRocketList() {
-        return allRocketList;
+    public ArrayList<ProjectileWeapon> getAllProjectilesList() {
+        return allProjectilesList;
     }
 
-    public ArrayList<Rocket> getAllExplodingRocketList() {
-        return allExplodingRocketList;
+    public ArrayList<ProjectileWeapon> getAllExplodingProjectilesList() {
+        return allExplodingProjectilesList;
     }
+
+
 
 }

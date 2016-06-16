@@ -9,13 +9,14 @@ import GameObjects.GameObject;
 import Enemies.AllEnemiesContainer;
 import Enemies.Enemy;
 import GameObjects.GameObjectWithColision;
-import GameObjects.GameObjectWithCollision;
 import Weapons.Rocket;
 import com.mycompany.robotliberation.playerRobot.PlayerRobot;
 import com.mycompany.robotliberation.playerRobot.ShotsFromMinigun;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import GameObjects.GameObjectWithCollisionInterface;
+import Weapons.ProjectileWeapon;
 
 /**
  *
@@ -30,15 +31,15 @@ public class CalculateCollisions {
     private ArrayList<Enemy> allLivingEnemiesList = new ArrayList<Enemy>();
     private ArrayList<Enemy> allDyingEneniesList = new ArrayList<Enemy>();
 
-    private ArrayList<Rocket> allRocketList = new ArrayList<Rocket>();
-    private ArrayList<Rocket> allExplodingRocketList = new ArrayList<Rocket>();
+    private ArrayList<ProjectileWeapon> allProjectilesList = new ArrayList<ProjectileWeapon>();
+    private ArrayList<ProjectileWeapon> allExplodingProjectilesList = new ArrayList<ProjectileWeapon>();
 
     public CalculateCollisions(AllProjectilesContainer allProjectilesContainer, AllEnemiesContainer allEnemiesContainer, PlayerRobot playerRobot) {
         this.allLivingEnemiesList = allEnemiesContainer.getAllLivingEnemiesList();
         this.allDyingEneniesList = allEnemiesContainer.getAllDyingEneniesList();
 
-        this.allRocketList = allProjectilesContainer.getAllRocketList();
-        this.allExplodingRocketList = allProjectilesContainer.getAllExplodingRocketList();
+        this.allProjectilesList = allProjectilesContainer.getAllProjectilesList();
+        this.allExplodingProjectilesList = allProjectilesContainer.getAllExplodingProjectilesList();
         this.playerRobot = playerRobot;
     }
 
@@ -71,7 +72,7 @@ public class CalculateCollisions {
             while (iterator.hasNext()) {
                 Enemy enemy = iterator.next();
                 if (enemy.detectCollision(shotFromMinigun.getLineForDetection())) {
-                    enemy.doOnBeingHit();
+                    enemy.doOnBeingHit("minigun");
                     if (enemy.getHitPoints() < 1) {
                         enemy.setAlive(false);
                         allDyingEneniesList.add(enemy);
@@ -87,30 +88,30 @@ public class CalculateCollisions {
 
     public void detectCollisionsWithRockets() {
 
-        Iterator<Rocket> iterator = allRocketList.iterator();
+        Iterator<ProjectileWeapon> iterator = allProjectilesList.iterator();
         while (iterator.hasNext()) {
-            Rocket rocket = iterator.next();
+            ProjectileWeapon projectileWeapon = iterator.next();
             
             allGameObjectsWithColisions.clear();
             for (int i = 0; i < allLivingEnemiesList.size(); i++) {
                 allGameObjectsWithColisions.add(allLivingEnemiesList.get(i));
-                allGameObjectsWithColisions.get(i).setObjectForComparisonPosX(rocket.getPossitionOnCanvasX());
-                allGameObjectsWithColisions.get(i).setObjectForComparisonPosY(rocket.getPossitionOnCanvasY());
+                allGameObjectsWithColisions.get(i).setObjectForComparisonPosX(projectileWeapon.getPossitionOnCanvasX());
+                allGameObjectsWithColisions.get(i).setObjectForComparisonPosY(projectileWeapon.getPossitionOnCanvasY());
             }
             allGameObjectsWithColisions.add(playerRobot);
-            playerRobot.setObjectForComparisonPosX(rocket.getPossitionOnCanvasX());
-            playerRobot.setObjectForComparisonPosY(rocket.getPossitionOnCanvasY());
+            playerRobot.setObjectForComparisonPosX(projectileWeapon.getPossitionOnCanvasX());
+            playerRobot.setObjectForComparisonPosY(projectileWeapon.getPossitionOnCanvasY());
             
-            allGameObjectsWithColisions.remove(rocket.getEnemyWhoShootedThisProjectile()); // remove shooting turret for detection who was hit
+            allGameObjectsWithColisions.remove(projectileWeapon.getEnemyWhoShootedThisProjectile()); // remove shooting turret for detection who was hit
             
             Collections.sort(allGameObjectsWithColisions);
             
             Iterator<GameObjectWithColision> iteratorEnemy = allGameObjectsWithColisions.iterator();
             while (iteratorEnemy.hasNext()) {
                 GameObjectWithColision gameObject = iteratorEnemy.next();
-                if (gameObject.detectCollision(rocket.getShapeForDetection())) {
-                    gameObject.doOnBeingHit();
-                    rocket.setRocketDistanceCounter(200);
+                if (gameObject.detectCollision(projectileWeapon.getShapeForDetection())) {
+                    gameObject.doOnBeingHit("rocket");
+                    projectileWeapon.doOnBeingHit("anything");
                     break;
                 }
             }

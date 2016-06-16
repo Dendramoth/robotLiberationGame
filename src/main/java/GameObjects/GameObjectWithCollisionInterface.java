@@ -12,10 +12,10 @@ import javafx.scene.shape.Shape;
  *
  * @author Dendra
  */
-public interface GameObjectWithCollision {
+public interface GameObjectWithCollisionInterface {
     public abstract boolean detectCollision(Shape shape);
     
     public abstract boolean doOnCollision(GraphicsContext enemyGraphicsContext);
     
-    public abstract void doOnBeingHit();
+    public abstract void doOnBeingHit(String weaponType);
 }

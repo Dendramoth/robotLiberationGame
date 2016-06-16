@@ -20,12 +20,13 @@ import javafx.scene.shape.Shape;
  * @author Dendra
  */
 public class EvilDroneMarkOne extends Enemy {
+
     private int blinkCounter = 0;
     private int explodingTimer = 0;
 
     public EvilDroneMarkOne(double movementSpeed, double damagedStateTreshold, int hitPoints, GraphicsContext graphicsContext, double possitionOnCanvasX, double possitionOnCanvasY) {
         super(movementSpeed, damagedStateTreshold, hitPoints, graphicsContext, possitionOnCanvasX, possitionOnCanvasY);
-        
+
         enemyImage = LoadAllResources.getMapOfAllImages().get("evilDroneIdle1");
         hitPoints = 30;
         damagedStateTreshold = 25;
@@ -37,12 +38,21 @@ public class EvilDroneMarkOne extends Enemy {
     }
 
     @Override
-    public void doOnBeingHit() {
-        hitPoints--;
+    public void doOnBeingHit(String weaponType) {
+        switch (weaponType) {
+            case "rocket":
+                hitPoints = hitPoints - 20;
+                break;
+            case "minigun":
+                hitPoints = hitPoints - 1;
+                allExplosionsOnEnemy.add(new Explosion());
+                break;
+            default:
+                hitPoints--;
+        }
         if (hitPoints < damagedStateTreshold) {
             movementSpeed = 0.5;
         }
-        allExplosionsOnEnemy.add(new Explosion());
     }
 
     @Override
@@ -73,7 +83,7 @@ public class EvilDroneMarkOne extends Enemy {
 
         enemyGraphicsContext.drawImage(enemyImage, possitionOnCanvasX, possitionOnCanvasY);
     }
-    
+
     @Override
     public void moveEnemy(double playerPossitionX, double playerPossitionY) {
         playerPossitionX = playerPossitionX - 32;
@@ -148,7 +158,7 @@ public class EvilDroneMarkOne extends Enemy {
 
     @Override
     public void paintDeadEnemy(GraphicsContext enemyGraphicsContext) {
-        
+
     }
 
     @Override
@@ -158,7 +168,5 @@ public class EvilDroneMarkOne extends Enemy {
     @Override
     public void moveGameObject() {
     }
-    
-    
 
 }

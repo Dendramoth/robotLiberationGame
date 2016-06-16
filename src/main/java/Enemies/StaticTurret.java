@@ -200,9 +200,18 @@ public class StaticTurret extends Enemy {
     }
 
     @Override
-    public void doOnBeingHit() {
-        hitPoints--;
-        allExplosionsOnEnemy.add(new Explosion());
+    public void doOnBeingHit(String weaponType) {
+        switch (weaponType) {
+            case "rocket":
+                hitPoints = hitPoints - 20;
+                break;
+            case "minigun":
+                hitPoints = hitPoints - 1;
+                allExplosionsOnEnemy.add(new Explosion());
+                break;
+            default:
+                hitPoints--;
+        }
         if (hitPoints < damagedStateTreshold) {
             turretAngleSpeed = 0.3;
         }
