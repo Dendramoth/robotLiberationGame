@@ -110,13 +110,9 @@ public class CalculateCollisions {
                 GameObjectWithColision gameObject = iteratorEnemy.next();
                 if (gameObject.detectCollision(rocket.getShapeForDetection())) {
                     gameObject.doOnBeingHit();
+                    rocket.setRocketDistanceCounter(200);
                     break;
                 }
-            }
-
-            if (rocket.hasProjectileReachedDestination()) {
-                allExplodingRocketList.add(rocket);
-                iteratorEnemy.remove();
             }
         }
     }

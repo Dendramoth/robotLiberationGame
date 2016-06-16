@@ -61,6 +61,8 @@ public class GameMainInfrastructure {
         GraphicsContext enemyGraphicsContext = enemiesCanvas.getGraphicsContext2D();
         final Canvas robotCanvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGH);
         GraphicsContext robotGraphicsContext = robotCanvas.getGraphicsContext2D();
+        final Canvas projectilesCanvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGH);
+        GraphicsContext projectilesGraphicsContext = projectilesCanvas.getGraphicsContext2D();
 
         playerRobot = new PlayerRobot(robotGraphicsContext, WINDOW_WIDTH / 2 - 32, WINDOW_HEIGH / 2 - 32);
         gameEnviroment = new GameEnviroment(enviromentGraphicsContext, playerRobot);

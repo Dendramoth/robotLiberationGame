@@ -98,8 +98,10 @@ public class AllEnemiesContainer {
     }
 
     public void generateEnemies() {
-        generateEvilDrone();
+    //    generateEvilDrone();
+        if (allLivingEnemiesList.size() < 1){
         generateStaticTurret();
+        }
     }
 
     private void generateEvilDrone() {

@@ -51,7 +51,7 @@ public class Rocket extends ProjectileWeapon {
     @Override
     public boolean hasProjectileReachedDestination() {
         rocketDistanceCounter++;
-        if (rocketDistanceCounter > 150) {
+        if (rocketDistanceCounter > 100) {
             return true;
         }
         return false;
@@ -65,12 +65,13 @@ public class Rocket extends ProjectileWeapon {
     @Override
     public Shape getShapeForDetection() {
         Polygon polygon = new Polygon();
-        polygon.getPoints().addAll(new Double[]{
-            30.0 + possitionOnCanvasX - projectileImage.getWidth() / 2, 63.0 + possitionOnCanvasY - 32,
-            35.0 + possitionOnCanvasX - projectileImage.getWidth() / 2, 63.0 + possitionOnCanvasY - 32,
-            35.0 + possitionOnCanvasX - projectileImage.getWidth() / 2, 50.0 + possitionOnCanvasY - 32,
-            30.0 + possitionOnCanvasX - projectileImage.getWidth() / 2, 50.0 + possitionOnCanvasY - 32,
-            30.0 + possitionOnCanvasX - projectileImage.getWidth() / 2, 63.0 + possitionOnCanvasY - 32});
+           polygon.getPoints().addAll(new Double[]{
+            30.0 + possitionOnCanvasX, 63.0 + possitionOnCanvasY,
+            35.0 + possitionOnCanvasX, 63.0 + possitionOnCanvasY,
+            35.0 + possitionOnCanvasX, 50.0 + possitionOnCanvasY,
+            30.0 + possitionOnCanvasX, 50.0 + possitionOnCanvasY,
+            30.0 + possitionOnCanvasX, 63.0 + possitionOnCanvasY});
+
         polygon.setRotate(angleOfFiredShot);
         return polygon;
     }
@@ -104,6 +105,14 @@ public class Rocket extends ProjectileWeapon {
         graphicsContext.rotate(angleOfFiredShot - 180);
         graphicsContext.drawImage(projectileImage, -projectileImage.getWidth() / 2, -projectileImage.getHeight() / 2);
         graphicsContext.restore();
+    }
+
+    public int getRocketDistanceCounter() {
+        return rocketDistanceCounter;
+    }
+
+    public void setRocketDistanceCounter(int rocketDistanceCounter) {
+        this.rocketDistanceCounter = rocketDistanceCounter;
     }
 
 }

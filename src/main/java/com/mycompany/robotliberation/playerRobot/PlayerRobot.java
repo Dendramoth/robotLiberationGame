@@ -31,7 +31,7 @@ public class PlayerRobot extends GameObjectWithColision {
     private double robotPositionChangeX = 0;
     private double robotPositionChangeY = 0;
 
-    private int hitPoints = 100;
+    private int hitPoints = 1000;
     private double facingAngle = 0.0;
     private GraphicsContext robotGraphicsContext;
     private Image robotImage;
@@ -133,25 +133,11 @@ public class PlayerRobot extends GameObjectWithColision {
     private Polygon createPolygonForColisionDetection() {
         Polygon polygon = new Polygon();
         polygon.getPoints().addAll(new Double[]{
-            3.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 28.0 + possitionOnCanvasY - 32,
-            5.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 55.0 + possitionOnCanvasY - 32,
-            7.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 50.0 + possitionOnCanvasY - 32,
-            20.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 64.0 + possitionOnCanvasY - 32,
-            42.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 64.0 + possitionOnCanvasY - 32,
-            55.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 50.0 + possitionOnCanvasY - 32,
-            59.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 55.0 + possitionOnCanvasY - 32,
-            61.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 28.0 + possitionOnCanvasY - 32,
-            57.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 28.0 + possitionOnCanvasY - 32,
-            57.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 40.0 + possitionOnCanvasY - 32,
-            40.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 44.0 + possitionOnCanvasY - 32,
-            40.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 10.0 + possitionOnCanvasY - 32,
-            36.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 0.0 + possitionOnCanvasY - 32,
-            28.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 0.0 + possitionOnCanvasY - 32,
-            24.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 10.0 + possitionOnCanvasY - 32,
-            24.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 44.0 + possitionOnCanvasY - 32,
-            7.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 40.0 + possitionOnCanvasY - 32,
-            5.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 28.0 + possitionOnCanvasY - 32,
-            3.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 28.0 + possitionOnCanvasY - 32});
+            0.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 0.0 + possitionOnCanvasY - 32,
+            0.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 64.0 + possitionOnCanvasY - 32,
+            64.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 64.0 + possitionOnCanvasY - 32,
+            64.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 0.0 + possitionOnCanvasY - 32,
+            0.0 + possitionOnCanvasX - robotImage.getWidth() / 2, 0.0 + possitionOnCanvasY - 32});
 
         polygon.setRotate(facingAngle);
         return polygon;
