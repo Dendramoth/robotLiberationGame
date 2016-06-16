@@ -5,9 +5,9 @@
  */
 package Weapons;
 
+import Enemies.Enemy;
 import GameObjects.GameObject;
 import GameObjects.GameObjectWithCollision;
-import com.mycompany.robotliberation.LoadAllResources;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Shape;
@@ -20,11 +20,13 @@ public abstract class ProjectileWeapon extends GameObject implements GameObjectW
     protected double angleOfFiredShot = 0;
     protected Image projectileImage;
     protected GraphicsContext graphicsContext;
+    protected Enemy enemyWhoShootedThisProjectile;
 
-    public ProjectileWeapon(GraphicsContext graphicsContext, double angleOfFiredShot, double possitionOnCanvasX, double possitionOnCanvasY) {
+    public ProjectileWeapon(GraphicsContext graphicsContext, double angleOfFiredShot, double possitionOnCanvasX, double possitionOnCanvasY, Enemy enemy) {
         super(possitionOnCanvasX, possitionOnCanvasY);
         this.graphicsContext = graphicsContext;
         this.angleOfFiredShot = angleOfFiredShot + 180;
+        this.enemyWhoShootedThisProjectile = enemy;
     }
     
     public void moveProjectile(){
@@ -42,4 +44,10 @@ public abstract class ProjectileWeapon extends GameObject implements GameObjectW
     public abstract Shape getShapeForDetection();
     
     public abstract boolean projectileExplosion();
+
+    public Enemy getEnemyWhoShootedThisProjectile() {
+        return enemyWhoShootedThisProjectile;
+    }
+    
+    
 }

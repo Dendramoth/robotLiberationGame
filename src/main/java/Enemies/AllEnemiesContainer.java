@@ -9,7 +9,6 @@ import Weapons.Rocket;
 import com.mycompany.robotliberation.AllProjectilesContainer;
 import com.mycompany.robotliberation.GameMainInfrastructure;
 import com.mycompany.robotliberation.playerRobot.PlayerRobot;
-import com.mycompany.robotliberation.playerRobot.ShotsFromMinigun;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
@@ -40,7 +39,7 @@ public class AllEnemiesContainer {
     }
 
     public void generateEvilDroneMark1(double possX, double possY) {
-        EvilDroneMarkOne evilDroneMarkOne = new EvilDroneMarkOne(3, 15, 20, enemyGraphicsContext, possX, possY);
+        EvilDroneMarkOne evilDroneMarkOne = new EvilDroneMarkOne(2, 15, 20, enemyGraphicsContext, possX, possY);
         allLivingEnemiesList.add(evilDroneMarkOne);
     }
 

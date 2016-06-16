@@ -5,10 +5,9 @@
  */
 package Weapons;
 
+import Enemies.Enemy;
 import com.mycompany.robotliberation.LoadAllResources;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
 
@@ -23,8 +22,8 @@ public class Rocket extends ProjectileWeapon {
     private int rocketExplosionCounter = 0;
     private int rocketDistanceCounter = 0;
 
-    public Rocket(GraphicsContext graphicsContext, double angleOfFiredShot, double possitionOnCanvasX, double possitionOnCanvasY) {
-        super(graphicsContext, angleOfFiredShot, possitionOnCanvasX, possitionOnCanvasY);
+    public Rocket(GraphicsContext graphicsContext, double angleOfFiredShot, double possitionOnCanvasX, double possitionOnCanvasY, Enemy enemy) {
+        super(graphicsContext, angleOfFiredShot, possitionOnCanvasX, possitionOnCanvasY, enemy);
         projectileImage = LoadAllResources.getMapOfAllImages().get("rocket1");
     }
 
@@ -52,7 +51,7 @@ public class Rocket extends ProjectileWeapon {
     @Override
     public boolean hasProjectileReachedDestination() {
         rocketDistanceCounter++;
-        if (rocketDistanceCounter > 75) {
+        if (rocketDistanceCounter > 150) {
             return true;
         }
         return false;

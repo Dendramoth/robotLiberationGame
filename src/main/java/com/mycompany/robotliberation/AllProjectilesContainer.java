@@ -5,6 +5,7 @@
  */
 package com.mycompany.robotliberation;
 
+import Enemies.Enemy;
 import Weapons.Rocket;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -65,8 +66,8 @@ public class AllProjectilesContainer {
         }
     }
 
-    public void addNewRocket(double possitionX, double possitionY, double turretAngle, GraphicsContext graphicsContext) {
-        Rocket rocket = new Rocket(graphicsContext, turretAngle, possitionX, possitionY);
+    public void addNewRocket(double possitionX, double possitionY, double turretAngle, GraphicsContext graphicsContext, Enemy enemy) {
+        Rocket rocket = new Rocket(graphicsContext, turretAngle, possitionX, possitionY, enemy);
         allRocketList.add(rocket);
     }
 

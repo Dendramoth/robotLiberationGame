@@ -6,6 +6,7 @@
 package com.mycompany.robotliberation.playerRobot;
 
 import GameObjects.GameObject;
+import GameObjects.GameObjectWithColision;
 import GameObjects.GameObjectWithCollision;
 import com.mycompany.robotliberation.GameMainInfrastructure;
 import com.mycompany.robotliberation.LoadAllResources;
@@ -13,7 +14,6 @@ import java.util.ArrayList;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.media.AudioClip;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
 
@@ -23,7 +23,7 @@ import javafx.scene.shape.Shape;
  *
  * @author Dendra
  */
-public class PlayerRobot extends GameObject implements GameObjectWithCollision {
+public class PlayerRobot extends GameObjectWithColision {
 
     private static double worldPossitionX = 500;
     private static double worldpossitionY = 400;
@@ -31,7 +31,7 @@ public class PlayerRobot extends GameObject implements GameObjectWithCollision {
     private double robotPositionChangeX = 0;
     private double robotPositionChangeY = 0;
 
-    private int hitPoints = 10;
+    private int hitPoints = 100;
     private double facingAngle = 0.0;
     private GraphicsContext robotGraphicsContext;
     private Image robotImage;
@@ -219,6 +219,8 @@ public class PlayerRobot extends GameObject implements GameObjectWithCollision {
 
     @Override
     public void doOnBeingHit() {
+        hitPoints = hitPoints - 20;
+    //    System.out.println("HITTTTT");
     }
 
 }

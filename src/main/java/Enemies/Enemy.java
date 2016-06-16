@@ -7,6 +7,7 @@ package Enemies;
 
 import GameObjects.GameMovingObject;
 import GameObjects.GameObject;
+import GameObjects.GameObjectWithColision;
 import GameObjects.GameObjectWithCollision;
 import java.util.ArrayList;
 import javafx.scene.canvas.GraphicsContext;
@@ -16,7 +17,7 @@ import javafx.scene.image.Image;
  *
  * @author Dendra
  */
-public abstract class Enemy extends GameObject implements GameObjectWithCollision, GameMovingObject{
+public abstract class Enemy extends GameObjectWithColision implements GameMovingObject{
     protected double movementSpeed;
     protected double damagedStateTreshold;
     protected Image enemyImage;

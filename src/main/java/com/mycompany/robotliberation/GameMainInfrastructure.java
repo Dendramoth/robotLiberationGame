@@ -184,6 +184,7 @@ public class GameMainInfrastructure {
                 allEnemiesContainer.moveAllEnemies();
                 calculateCollisions.detectCollisionsOfAllEnemiesWithPlayerRobot();
                 calculateCollisions.detectCollisionsOfAllEnemiesWithShots();
+                calculateCollisions.detectCollisionsWithRockets();
                 allEnemiesContainer.paintAllEnemies();
                 allEnemiesContainer.doAllDeathAnimations();
                 allEnemiesContainer.paintAllDeadEnemies();

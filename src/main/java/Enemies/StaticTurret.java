@@ -122,7 +122,7 @@ public class StaticTurret extends Enemy {
     }
 
     private void fireRocket(GraphicsContext graphicsContext) {
-        allProjectilesContainer.addNewRocket(possitionOnCanvasX, possitionOnCanvasY, turretAngle, graphicsContext);
+        allProjectilesContainer.addNewRocket(possitionOnCanvasX, possitionOnCanvasY, turretAngle, graphicsContext, this);
     }
 
     @Override
