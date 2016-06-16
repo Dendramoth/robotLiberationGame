@@ -8,6 +8,7 @@ package com.mycompany.robotliberation;
 import GameObjects.GameObject;
 import Enemies.AllEnemiesContainer;
 import Enemies.Enemy;
+import Enemies.EvilDroneMarkOne;
 import GameObjects.GameObjectWithColision;
 import Weapons.Rocket;
 import com.mycompany.robotliberation.playerRobot.PlayerRobot;
@@ -91,7 +92,7 @@ public class CalculateCollisions {
         Iterator<ProjectileWeapon> iterator = allProjectilesList.iterator();
         while (iterator.hasNext()) {
             ProjectileWeapon projectileWeapon = iterator.next();
-            
+
             allGameObjectsWithColisions.clear();
             for (int i = 0; i < allLivingEnemiesList.size(); i++) {
                 allGameObjectsWithColisions.add(allLivingEnemiesList.get(i));
@@ -101,17 +102,27 @@ public class CalculateCollisions {
             allGameObjectsWithColisions.add(playerRobot);
             playerRobot.setObjectForComparisonPosX(projectileWeapon.getPossitionOnCanvasX());
             playerRobot.setObjectForComparisonPosY(projectileWeapon.getPossitionOnCanvasY());
-            
+
             allGameObjectsWithColisions.remove(projectileWeapon.getEnemyWhoShootedThisProjectile()); // remove shooting turret for detection who was hit
-            
+
             Collections.sort(allGameObjectsWithColisions);
-            
+
             Iterator<GameObjectWithColision> iteratorEnemy = allGameObjectsWithColisions.iterator();
             while (iteratorEnemy.hasNext()) {
                 GameObjectWithColision gameObject = iteratorEnemy.next();
                 if (gameObject.detectCollision(projectileWeapon.getShapeForDetection())) {
                     gameObject.doOnBeingHit("rocket");
                     projectileWeapon.doOnBeingHit("anything");
+                    if (gameObject instanceof EvilDroneMarkOne) {
+                        EvilDroneMarkOne evilDroneMarkOne = (EvilDroneMarkOne) gameObject;
+                        if (evilDroneMarkOne.getHitPoints() < 1) {
+                            evilDroneMarkOne.setAlive(false);
+                            allDyingEneniesList.add(evilDroneMarkOne);
+                            allLivingEnemiesList.remove(evilDroneMarkOne);
+                            iterator.remove();
+                        }
+                    }
+
                     break;
                 }
             }
