@@ -22,7 +22,7 @@ public class GameEnviroment {
     private double possitionY = 0;
 
     private GraphicsContext gameEnviromentGraphicsContext;
-    private Image[][] masterImage = new Image[10][10];
+    private Image[][] masterImage = new Image[30][30];
 
     public GameEnviroment(GraphicsContext gameEnviromentGraphicsContext, PlayerRobot playerRobot) {
         this.gameEnviromentGraphicsContext = gameEnviromentGraphicsContext;
@@ -37,8 +37,8 @@ public class GameEnviroment {
     private void generateBackground() {
         Image image;
         Random random = new Random();
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
+        for (int i = 0; i < 30; i++) {
+            for (int j = 0; j < 30; j++) {
                 switch (random.nextInt(15)) {
                     case 0:
                         image = LoadAllResources.getMapOfAllImages().get("terrainCrater");
@@ -100,8 +100,8 @@ public class GameEnviroment {
 
         gameEnviromentGraphicsContext.clearRect(0, 0, GameMainInfrastructure.WINDOW_WIDTH, GameMainInfrastructure.WINDOW_HEIGH);
 
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
+        for (int i = 0; i < 30; i++) {
+            for (int j = 0; j < 30; j++) {
                 switch (random.nextInt(4)) {
                     case 0:
                         angle = 0;
@@ -116,12 +116,7 @@ public class GameEnviroment {
                         angle = 270;
                         break;
                 }
-                /*           gameEnviromentGraphicsContext.save();
-                gameEnviromentGraphicsContext.translate(possitionX + 256 * (i - 2), possitionY + 256 * (j - 2));
-                gameEnviromentGraphicsContext.rotate(angle);
-                gameEnviromentGraphicsContext.drawImage(masterImage[i][j], -masterImage[i][j].getWidth() / 2, -masterImage[i][j].getHeight() / 2);
-                gameEnviromentGraphicsContext.restore();*/
-                gameEnviromentGraphicsContext.drawImage(masterImage[i][j], possitionX + 256 * (i - 2), possitionY + 256 * (j - 2));
+                gameEnviromentGraphicsContext.drawImage(masterImage[i][j], possitionX + 256 * (i - 10), possitionY + 256 * (j - 10));
             }
         }
 
