@@ -44,6 +44,7 @@ public class GameMainInfrastructure {
     private AllProjectilesContainer allProjectilesContainer = new AllProjectilesContainer();
     private CalculateCollisions calculateCollisions;
     private AudioClip dispatchSound = LoadAllResources.getMapOfAllSounds().get("dispatchSound");
+    private AudioClip gameOverSound = LoadAllResources.getMapOfAllSounds().get("gameOverSound");
 
     private boolean mousePressed = false;
     private boolean keyAPressed = false;
@@ -271,6 +272,7 @@ public class GameMainInfrastructure {
     }
 
     public void stopGameLoop() {
+        gameOverSound.play();
         gameLoop.stop();
     }
 

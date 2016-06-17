@@ -32,7 +32,7 @@ public class PlayerRobot extends GameObjectWithColision {
     private double robotPositionChangeX = 0;
     private double robotPositionChangeY = 0;
 
-    private int hitPoints = 1000;
+    private int hitPoints = 100;
     private double facingAngle = 0.0;
     private GraphicsContext robotGraphicsContext;
     private Image robotImage;
