@@ -5,18 +5,15 @@
  */
 package com.mycompany.robotliberation;
 
-import GameObjects.GameObject;
 import Enemies.AllEnemiesContainer;
 import Enemies.Enemy;
 import Enemies.EvilDroneMarkOne;
 import GameObjects.GameObjectWithColision;
-import Weapons.Rocket;
 import playerRobot.PlayerRobot;
 import playerRobot.ShotsFromMinigun;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
-import GameObjects.GameObjectWithCollisionInterface;
 import Weapons.ProjectileWeapon;
 
 /**
@@ -27,21 +24,23 @@ public class CalculateCollisions {
 
     private AllProjectilesContainer allProjectilesContainer;
     private PlayerRobot playerRobot;
-    private ArrayList<GameObjectWithColision> allGameObjectsWithColisions = new ArrayList<GameObjectWithColision>();
+    private GameEnviroment gameEnviroment;
 
+    private ArrayList<GameObjectWithColision> allGameObjectsWithColisions = new ArrayList<GameObjectWithColision>();
     private ArrayList<Enemy> allLivingEnemiesList = new ArrayList<Enemy>();
     private ArrayList<Enemy> allDyingEneniesList = new ArrayList<Enemy>();
 
     private ArrayList<ProjectileWeapon> allProjectilesList = new ArrayList<ProjectileWeapon>();
     private ArrayList<ProjectileWeapon> allExplodingProjectilesList = new ArrayList<ProjectileWeapon>();
 
-    public CalculateCollisions(AllProjectilesContainer allProjectilesContainer, AllEnemiesContainer allEnemiesContainer, PlayerRobot playerRobot) {
+    public CalculateCollisions(AllProjectilesContainer allProjectilesContainer, AllEnemiesContainer allEnemiesContainer, PlayerRobot playerRobot, GameEnviroment gameEnviroment) {
         this.allLivingEnemiesList = allEnemiesContainer.getAllLivingEnemiesList();
         this.allDyingEneniesList = allEnemiesContainer.getAllDyingEneniesList();
 
         this.allProjectilesList = allProjectilesContainer.getAllProjectilesList();
         this.allExplodingProjectilesList = allProjectilesContainer.getAllExplodingProjectilesList();
         this.playerRobot = playerRobot;
+        this.gameEnviroment = gameEnviroment;
     }
 
     public void detectCollisionsOfAllEnemiesWithPlayerRobot() {
@@ -58,10 +57,10 @@ public class CalculateCollisions {
         }
     }
 
-    public void detectCollisionsOfAllEnemiesWithShots() {
+    public void detectCollisionsOfAllEnemiesWithPlayerMinigunShots() {
         if (playerRobot.getAllShotsFromMinigun() != null && playerRobot.getAllShotsFromMinigun().size() > 0) {
             ShotsFromMinigun shotFromMinigun = playerRobot.getAllShotsFromMinigun().get(0);
-            shotFromMinigun.getLineForDetection();
+            Boolean shotHitSomething = false;
 
             for (int i = 0; i < allLivingEnemiesList.size(); i++) {
                 allLivingEnemiesList.get(i).setObjectForComparisonPosX(playerRobot.getPossitionOnCanvasX());
@@ -80,10 +79,14 @@ public class CalculateCollisions {
                         allDyingEneniesList.add(enemy);
                         iterator.remove();
                     }
+                    shotHitSomething = true;
                     break;
                 }
             }
 
+            if (!shotHitSomething) {
+                gameEnviroment.generateNewMinigunHitOnGround(shotFromMinigun.getEndPositionOfShotX(), shotFromMinigun.getEndPositionOfShotY());
+            }
             playerRobot.getAllShotsFromMinigun().clear();
         }
     }

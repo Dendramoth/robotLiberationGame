@@ -6,12 +6,10 @@
 package Enemies;
 
 import GameObjects.GameMovingObject;
-import GameObjects.GameObject;
 import GameObjects.GameObjectWithColision;
 import java.util.ArrayList;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import GameObjects.GameObjectWithCollisionInterface;
 
 /**
  *

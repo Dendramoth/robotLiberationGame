@@ -76,8 +76,34 @@ import javafx.scene.media.Media;
         loadTerrainImages();
         loadStaticTurretPictures();
         loadRocketImage();
-        loadAllSounds();
+        loadMinigunMissImages();
         loadPlayerRobotImages();
+        
+        loadAllSounds();
+        
+    }
+    
+    private void loadMinigunMissImages(){
+        Image image = new Image("/MinigunsHits/miss_1.png", 64, 64, false, false);
+        mapOfAllImages.put("minigunMiss1", image);
+        
+        image = new Image("/MinigunsHits/miss_2.png", 64, 64, false, false);
+        mapOfAllImages.put("minigunMiss2", image);
+        
+        image = new Image("/MinigunsHits/miss_3.png", 64, 64, false, false);
+        mapOfAllImages.put("minigunMiss3", image);
+        
+        image = new Image("/MinigunsHits/miss_4.png", 64, 64, false, false);
+        mapOfAllImages.put("minigunMiss4", image);
+        
+        image = new Image("/MinigunsHits/miss_5.png", 64, 64, false, false);
+        mapOfAllImages.put("minigunMiss5", image);
+        
+        image = new Image("/MinigunsHits/miss_6.png", 64, 64, false, false);
+        mapOfAllImages.put("minigunMiss6", image);
+        
+        image = new Image("/MinigunsHits/miss_7.png", 64, 64, false, false);
+        mapOfAllImages.put("minigunMiss7", image);
     }
     
     private void loadPlayerRobotImages(){

@@ -5,11 +5,7 @@
  */
 package Enemies;
 
-import Enemies.Enemy;
-import Enemies.ObjectWithCollision;
-import Enemies.Explosion;
 import com.mycompany.robotliberation.LoadAllResources;
-import playerRobot.PlayerRobot;
 import java.util.Iterator;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.Circle;

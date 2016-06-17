@@ -17,11 +17,16 @@ public class ShotsFromMinigun {
 
     private double startPositionOfShotX = 0;
     private double startPositionOfShotY = 0;
+    private double endPositionOfShotX = 0;
+    private double endPositionOfShotY = 0;
     private double angleOfFiredShot = 0;
 
     public ShotsFromMinigun(double startPositionOfShotX, double startPositionOfShotY, double angleOfFiredShot) {
         this.startPositionOfShotX = startPositionOfShotX;
         this.startPositionOfShotY = startPositionOfShotY;
+        this.endPositionOfShotX = startPositionOfShotX - Math.cos(Math.toRadians(angleOfFiredShot + 90)) * 450;
+        this.endPositionOfShotY = startPositionOfShotY - Math.sin(Math.toRadians(angleOfFiredShot + 90)) * 450;
+                
         this.angleOfFiredShot = angleOfFiredShot;
     }
 
@@ -33,10 +38,20 @@ public class ShotsFromMinigun {
         Line line = new Line();
         line.setStartX(startPositionOfShotX );
         line.setStartY(startPositionOfShotY );
-        line.setEndX(startPositionOfShotX - Math.cos(Math.toRadians(angleOfFiredShot + 90)) * 1000);
-        line.setEndY(startPositionOfShotY - Math.sin(Math.toRadians(angleOfFiredShot + 90)) * 1000);
+        line.setEndX(endPositionOfShotX);
+        line.setEndY(endPositionOfShotY);
 
         return line;
     }
+
+    public double getEndPositionOfShotX() {
+        return endPositionOfShotX;
+    }
+
+    public double getEndPositionOfShotY() {
+        return endPositionOfShotY;
+    }
+    
+    
 
 }

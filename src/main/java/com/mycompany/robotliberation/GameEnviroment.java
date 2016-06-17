@@ -6,6 +6,9 @@
 package com.mycompany.robotliberation;
 
 import Enemies.AllEnemiesContainer;
+import Enemies.Explosion;
+import java.util.ArrayList;
+import java.util.Iterator;
 import playerRobot.PlayerRobot;
 import java.util.Random;
 import javafx.scene.canvas.GraphicsContext;
@@ -23,6 +26,8 @@ public class GameEnviroment {
 
     private GraphicsContext gameEnviromentGraphicsContext;
     private Image[][] masterImage = new Image[10][10];
+    
+    protected ArrayList<MinigunHitIntoGround> allMinigunHitsOnGround = new ArrayList<MinigunHitIntoGround>();
 
     public GameEnviroment(GraphicsContext gameEnviromentGraphicsContext, PlayerRobot playerRobot) {
         this.gameEnviromentGraphicsContext = gameEnviromentGraphicsContext;
@@ -97,7 +102,6 @@ public class GameEnviroment {
     public void paintEnviroment() {
         Random random = new Random();
         double angle = 0;
-
         gameEnviromentGraphicsContext.clearRect(0, 0, GameMainInfrastructure.WINDOW_WIDTH, GameMainInfrastructure.WINDOW_HEIGH);
 
         for (int i = 0; i < 10; i++) {
@@ -116,15 +120,26 @@ public class GameEnviroment {
                         angle = 270;
                         break;
                 }
-                /*           gameEnviromentGraphicsContext.save();
-                gameEnviromentGraphicsContext.translate(possitionX + 256 * (i - 2), possitionY + 256 * (j - 2));
-                gameEnviromentGraphicsContext.rotate(angle);
-                gameEnviromentGraphicsContext.drawImage(masterImage[i][j], -masterImage[i][j].getWidth() / 2, -masterImage[i][j].getHeight() / 2);
-                gameEnviromentGraphicsContext.restore();*/
                 gameEnviromentGraphicsContext.drawImage(masterImage[i][j], possitionX + 256 * (i - 2), possitionY + 256 * (j - 2));
             }
         }
-
+        
+        paintAllMinigunsHitsOnGround();
+    }
+    
+    public void paintAllMinigunsHitsOnGround() {
+        Iterator<MinigunHitIntoGround> iterator = allMinigunHitsOnGround.iterator();
+        while (iterator.hasNext()) {
+            MinigunHitIntoGround minigunHitIntoGround = iterator.next();
+            minigunHitIntoGround.paint(gameEnviromentGraphicsContext);
+            if (minigunHitIntoGround.getNumberOfFramesBeingDisplayed() < 1) {
+                iterator.remove();
+            }
+        }
+    }
+    
+    public void generateNewMinigunHitOnGround(double hitPossX, double hitPossY){
+        allMinigunHitsOnGround.add(new MinigunHitIntoGround(hitPossX, hitPossY));
     }
 
 }
