@@ -26,6 +26,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
 import javafx.stage.Screen;
 
 public class GameMainInfrastructure {
@@ -42,6 +43,7 @@ public class GameMainInfrastructure {
     private PlayerRobot playerRobot;
     private AllProjectilesContainer allProjectilesContainer = new AllProjectilesContainer();
     private CalculateCollisions calculateCollisions;
+    private AudioClip dispatchSound = LoadAllResources.getMapOfAllSounds().get("dispatchSound");
 
     private boolean mousePressed = false;
     private boolean keyAPressed = false;
@@ -264,6 +266,7 @@ public class GameMainInfrastructure {
     }
 
     public void beginGameLoop() {
+        dispatchSound.play();
         gameLoop.play();
     }
 

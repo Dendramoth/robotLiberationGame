@@ -223,6 +223,15 @@ import javafx.scene.media.Media;
         
         audioClip = new AudioClip(this.getClass().getResource("/Sounds/movingRobot.mp3").toExternalForm());
         mapOfAllSounds.put("movingRobotSound", audioClip);
+        
+        audioClip = new AudioClip(this.getClass().getResource("/Sounds/GaOv.mp3").toExternalForm());
+        mapOfAllSounds.put("gameOverSound", audioClip);
+        
+        audioClip = new AudioClip(this.getClass().getResource("/Sounds/kulas.mp3").toExternalForm());
+        mapOfAllSounds.put("minigunSound", audioClip);
+        
+        audioClip = new AudioClip(this.getClass().getResource("/Sounds/dispatch.mp3").toExternalForm());
+        mapOfAllSounds.put("dispatchSound", audioClip);
     }
     
     public static HashMap<String, Image> getMapOfAllImages() {

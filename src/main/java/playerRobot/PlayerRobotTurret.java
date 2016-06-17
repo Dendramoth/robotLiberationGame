@@ -16,6 +16,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.media.AudioClip;
 
 public class PlayerRobotTurret {
 
@@ -31,6 +32,8 @@ public class PlayerRobotTurret {
     private ArrayList<ShotsFromMinigun> allShotsFromMinigun = new ArrayList<ShotsFromMinigun>();
     private int minigunImageCounter = 0;
     private boolean turretIsShooting = false;
+    
+    private AudioClip minigunSound = LoadAllResources.getMapOfAllSounds().get("minigunSound");
 
     public PlayerRobotTurret(GraphicsContext robotGraphicsContext) {
         this.robotGraphicsContext = robotGraphicsContext;
@@ -48,7 +51,12 @@ public class PlayerRobotTurret {
         mouseLocation.getY();
 
         robotGraphicsContext.drawImage(turretCurrentImage, -turretCurrentImage.getWidth() / 2, -turretCurrentImage.getHeight() / 2);
+        
         if (turretIsShooting) {
+            if (!minigunSound.isPlaying()){
+                minigunSound.play();
+            }
+            
             minigunImageCounter ++;
             if (minigunImageCounter <= 4) {
                 shootingMinigunFireImage = LoadAllResources.getMapOfAllImages().get("minigunFire1");
@@ -64,6 +72,9 @@ public class PlayerRobotTurret {
             }
             robotGraphicsContext.drawImage(shootingMinigunFireImage, -shootingMinigunFireImage.getWidth() / 2, -shootingMinigunFireImage.getHeight() / 2);
         }else{
+            if (minigunSound.isPlaying()){
+                minigunSound.stop();
+            }
             minigunImageCounter = 0;
         }
     }
