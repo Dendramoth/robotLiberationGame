@@ -20,8 +20,8 @@ public class EvilDroneMarkOne extends Enemy {
     private int blinkCounter = 0;
     private int explodingTimer = 0;
 
-    public EvilDroneMarkOne(double movementSpeed, double damagedStateTreshold, int hitPoints, GraphicsContext graphicsContext, double possitionOnCanvasX, double possitionOnCanvasY) {
-        super(movementSpeed, damagedStateTreshold, hitPoints, graphicsContext, possitionOnCanvasX, possitionOnCanvasY);
+    public EvilDroneMarkOne(double movementSpeed, double damagedStateTreshold, int hitPoints, GraphicsContext graphicsContext, double possitionOnCanvasX, double possitionOnCanvasY, PathFinding pathFinding) {
+        super(movementSpeed, damagedStateTreshold, hitPoints, graphicsContext, possitionOnCanvasX, possitionOnCanvasY, pathFinding);
 
         enemyImage = LoadAllResources.getMapOfAllImages().get("evilDroneIdle1");
         hitPoints = 30;
@@ -90,6 +90,11 @@ public class EvilDroneMarkOne extends Enemy {
 
         possitionOnCanvasX = possitionOnCanvasX - Math.cos(Math.toRadians(angle + 90)) * movementSpeed;
         possitionOnCanvasY = possitionOnCanvasY - Math.sin(Math.toRadians(angle + 90)) * movementSpeed;
+
+        if (!pathFinding.detectFreeSpaceForMovement(this, new Circle(possitionOnCanvasX + enemyImage.getWidth() / 2, possitionOnCanvasY + enemyImage.getHeight() / 2, (enemyImage.getHeight() / 2)))) {
+            possitionOnCanvasX = possitionOnCanvasX + Math.cos(Math.toRadians(angle + 90)) * movementSpeed;
+            possitionOnCanvasY = possitionOnCanvasY + Math.sin(Math.toRadians(angle + 90)) * movementSpeed;
+        }
     }
 
     private double calculateAngleBetweenPlayerAndDrone(double x, double y) {

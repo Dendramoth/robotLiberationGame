@@ -28,7 +28,8 @@ public class AllEnemiesContainer {
     private int counterToGenerateStaticTurret = 0;
     private GraphicsContext enemyGraphicsContext;
     private ArrayList<Rocket> allRocketList = new ArrayList<Rocket>();
-    AllProjectilesContainer allProjectilesContainer;
+    private AllProjectilesContainer allProjectilesContainer;
+    private PathFinding pathFinding = new PathFinding(allLivingEnemiesList);
 
     private int timeTogenerateNextDrone = 200;
 
@@ -39,12 +40,12 @@ public class AllEnemiesContainer {
     }
 
     public void generateEvilDroneMark1(double possX, double possY) {
-        EvilDroneMarkOne evilDroneMarkOne = new EvilDroneMarkOne(2, 15, 20, enemyGraphicsContext, possX, possY);
+        EvilDroneMarkOne evilDroneMarkOne = new EvilDroneMarkOne(2, 15, 20, enemyGraphicsContext, possX, possY, pathFinding);
         allLivingEnemiesList.add(evilDroneMarkOne);
     }
 
     public void generateStaticTurret(double possX, double possY) {
-        StaticTurret staticTurret = new StaticTurret(allProjectilesContainer, 0, 20, 40, enemyGraphicsContext, possX, possY);
+        StaticTurret staticTurret = new StaticTurret(allProjectilesContainer, 0, 20, 40, enemyGraphicsContext, possX, possY, pathFinding);
         allLivingEnemiesList.add(staticTurret);
     }
 
@@ -56,8 +57,6 @@ public class AllEnemiesContainer {
             enemy.moveEnemy(playerRobot.getPossitionOnCanvasX(), playerRobot.getPossitionOnCanvasY());
         }
     }
-
-    
 
     public void doAllDeathAnimations() {
         Iterator<Enemy> iterator = allDyingEneniesList.iterator();
@@ -123,7 +122,6 @@ public class AllEnemiesContainer {
                     generateEvilDroneMark1(600, random.nextDouble() * 800);
                     break;
             }
-
         }
     }
 

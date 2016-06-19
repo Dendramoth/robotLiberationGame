@@ -23,13 +23,15 @@ public abstract class Enemy extends GameObjectWithColision implements GameMoving
     protected int hitPoints;
     protected ArrayList<Explosion> allExplosionsOnEnemy = new ArrayList<Explosion>();
     protected GraphicsContext graphicsContext;
+    protected PathFinding pathFinding;
     
-    public Enemy(double movementSpeed, double damagedStateTreshold, int hitPoints, GraphicsContext graphicsContext, double possitionOnCanvasX, double possitionOnCanvasY) {
+    public Enemy(double movementSpeed, double damagedStateTreshold, int hitPoints, GraphicsContext graphicsContext, double possitionOnCanvasX, double possitionOnCanvasY, PathFinding pathFinding) {
         super(possitionOnCanvasX, possitionOnCanvasY);
         this.movementSpeed = movementSpeed;
         this.damagedStateTreshold = damagedStateTreshold;
         this.hitPoints = hitPoints;
         this.graphicsContext = graphicsContext;
+        this.pathFinding = pathFinding;
     }
     
     public abstract void moveEnemy(double playerPossitionX, double playerPossitionY);

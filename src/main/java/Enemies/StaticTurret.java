@@ -35,8 +35,8 @@ public class StaticTurret extends Enemy {
     private double turretAngleSpeed = 1;
     private AllProjectilesContainer allProjectilesContainer;
 
-    public StaticTurret(AllProjectilesContainer allProjectilesContainer, double movementSpeed, double damagedStateTreshold, int hitPoints, GraphicsContext graphicsContext, double possitionOnCanvasX, double possitionOnCanvasY) {
-        super(movementSpeed, damagedStateTreshold, hitPoints, graphicsContext, possitionOnCanvasX, possitionOnCanvasY);
+    public StaticTurret(AllProjectilesContainer allProjectilesContainer, double movementSpeed, double damagedStateTreshold, int hitPoints, GraphicsContext graphicsContext, double possitionOnCanvasX, double possitionOnCanvasY, PathFinding pathFinding) {
+        super(movementSpeed, damagedStateTreshold, hitPoints, graphicsContext, possitionOnCanvasX, possitionOnCanvasY, pathFinding);
         enemyImage = LoadAllResources.getMapOfAllImages().get("idleTurret");
         this.allProjectilesContainer = allProjectilesContainer;
     }
