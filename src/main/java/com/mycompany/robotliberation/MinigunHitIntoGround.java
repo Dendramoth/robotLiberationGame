@@ -18,7 +18,7 @@ public class MinigunHitIntoGround {
     private double possitionX = 0;
     private double possitionY = 0;
     private Image explosionImage;
-    private int numberOfFramesBeingDisplayed = 10;
+    private int numberOfFramesBeingDisplayed = 120;
 
     public MinigunHitIntoGround(double possitionX, double possitionY) {
         Random random = new Random();
@@ -58,5 +58,10 @@ public class MinigunHitIntoGround {
 
     public int getNumberOfFramesBeingDisplayed() {
         return numberOfFramesBeingDisplayed;
+    }
+    
+    public void changeEnemyPositionBasedOnRobotMovement(double changeX, double changeY){
+        possitionX = possitionX + changeX;
+        possitionY = possitionY + changeY;
     }
 }

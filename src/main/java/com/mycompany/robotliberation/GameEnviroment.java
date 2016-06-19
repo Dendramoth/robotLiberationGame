@@ -26,11 +26,13 @@ public class GameEnviroment {
 
     private GraphicsContext gameEnviromentGraphicsContext;
     private Image[][] masterImage = new Image[10][10];
+    private PlayerRobot playerRobot;
     
     protected ArrayList<MinigunHitIntoGround> allMinigunHitsOnGround = new ArrayList<MinigunHitIntoGround>();
 
     public GameEnviroment(GraphicsContext gameEnviromentGraphicsContext, PlayerRobot playerRobot) {
         this.gameEnviromentGraphicsContext = gameEnviromentGraphicsContext;
+        this.playerRobot = playerRobot;
         generateBackground();
     }
 
@@ -123,7 +125,6 @@ public class GameEnviroment {
                 gameEnviromentGraphicsContext.drawImage(masterImage[i][j], possitionX + 256 * (i - 2), possitionY + 256 * (j - 2));
             }
         }
-        
         paintAllMinigunsHitsOnGround();
     }
     
@@ -131,6 +132,7 @@ public class GameEnviroment {
         Iterator<MinigunHitIntoGround> iterator = allMinigunHitsOnGround.iterator();
         while (iterator.hasNext()) {
             MinigunHitIntoGround minigunHitIntoGround = iterator.next();
+            minigunHitIntoGround.changeEnemyPositionBasedOnRobotMovement(playerRobot.getRobotPositionChangeX(), playerRobot.getRobotPositionChangeY());
             minigunHitIntoGround.paint(gameEnviromentGraphicsContext);
             if (minigunHitIntoGround.getNumberOfFramesBeingDisplayed() < 1) {
                 iterator.remove();
