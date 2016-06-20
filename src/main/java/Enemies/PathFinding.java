@@ -5,6 +5,8 @@
  */
 package Enemies;
 
+import EnviromentObjects.Rock;
+import GameObjects.GameObjectWithColision;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javafx.scene.shape.Shape;
@@ -16,18 +18,27 @@ import javafx.scene.shape.Shape;
 public class PathFinding {
 
     private ArrayList<Enemy> allLivingEnemiesList = new ArrayList<Enemy>();
+    private ArrayList<Rock> allRocks = new ArrayList<Rock>();
 
-    public PathFinding(ArrayList<Enemy> allLivingEnemiesList) {
+    public PathFinding(ArrayList<Enemy> allLivingEnemiesList, ArrayList<Rock> allRocks) {
         this.allLivingEnemiesList = allLivingEnemiesList;
+        this.allRocks = allRocks;
     }
 
     public boolean detectFreeSpaceForMovement(Enemy enemy, Shape shape) {
+        ArrayList<GameObjectWithColision> gameObjects = new ArrayList<GameObjectWithColision>();
+        for (GameObjectWithColision gameObjectWithColision : allLivingEnemiesList){
+            gameObjects.add(gameObjectWithColision);
+        }
+        for (GameObjectWithColision gameObjectWithColision : allRocks){
+            gameObjects.add(gameObjectWithColision);
+        }
 
-        Iterator<Enemy> iterator = allLivingEnemiesList.iterator();
+        Iterator<GameObjectWithColision> iterator = gameObjects.iterator();
         while (iterator.hasNext()) {
-            Enemy enemyWithCollision = iterator.next();
-            if (enemyWithCollision != enemy) {
-                if (enemyWithCollision.detectCollision(shape)) {
+            GameObjectWithColision gameObjectWithColision = iterator.next();
+            if (gameObjectWithColision != enemy) {
+                if (gameObjectWithColision.detectCollision(shape)) {
                     return false;
                 }
             }

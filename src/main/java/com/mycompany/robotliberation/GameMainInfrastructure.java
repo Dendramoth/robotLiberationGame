@@ -5,6 +5,7 @@
  */
 package com.mycompany.robotliberation;
 
+import EnviromentObjects.GameEnviroment;
 import Enemies.AllEnemiesContainer;
 import java.text.DecimalFormat;
 import playerRobot.PlayerRobot;
@@ -72,7 +73,7 @@ public class GameMainInfrastructure {
 
         playerRobot = new PlayerRobot(robotGraphicsContext, WINDOW_WIDTH / 2 - 32, WINDOW_HEIGH / 2 - 32);
         gameEnviroment = new GameEnviroment(enviromentGraphicsContext, playerRobot);
-        allEnemiesContainer = new AllEnemiesContainer(enemyGraphicsContext, playerRobot, allProjectilesContainer);
+        allEnemiesContainer = new AllEnemiesContainer(enemyGraphicsContext, playerRobot, allProjectilesContainer, gameEnviroment.getAllRocks());
         calculateCollisions = new CalculateCollisions(allProjectilesContainer, allEnemiesContainer, playerRobot, gameEnviroment);
 
         gameCanvasPanel.getChildren().add(baseCanvas);
@@ -201,13 +202,14 @@ public class GameMainInfrastructure {
 
                 allEnemiesContainer.generateEnemies();
                 allEnemiesContainer.moveAllEnemies();
-                calculateCollisions.detectCollisionsOfAllEnemiesWithPlayerRobot();
-                calculateCollisions.detectCollisionsOfAllEnemiesWithPlayerMinigunShots();
-                calculateCollisions.detectCollisionsWithRockets();
                 allEnemiesContainer.paintAllEnemies();
                 allEnemiesContainer.doAllDeathAnimations();
                 allEnemiesContainer.paintAllDeadEnemies();
                 allEnemiesContainer.paintAllExplosionsEnemies();
+                
+                calculateCollisions.detectCollisionsOfAllEnemiesWithPlayerRobot();
+                calculateCollisions.detectCollisionsOfAllEnemiesWithPlayerMinigunShots();
+                calculateCollisions.detectCollisionsWithRockets();
 
                 allProjectilesContainer.moveAllRockets();
                 allProjectilesContainer.moveAllRocketsBasedOnPlayerMovement(playerRobot.getRobotPositionChangeX(), playerRobot.getRobotPositionChangeY());

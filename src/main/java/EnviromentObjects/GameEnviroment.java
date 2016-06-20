@@ -3,10 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.robotliberation;
+package EnviromentObjects;
 
 import Enemies.AllEnemiesContainer;
+import Enemies.Enemy;
 import Enemies.Explosion;
+import com.mycompany.robotliberation.GameMainInfrastructure;
+import com.mycompany.robotliberation.LoadAllResources;
+import com.mycompany.robotliberation.MinigunHitIntoGround;
 import java.util.ArrayList;
 import java.util.Iterator;
 import playerRobot.PlayerRobot;
@@ -29,11 +33,15 @@ public class GameEnviroment {
     private PlayerRobot playerRobot;
     
     protected ArrayList<MinigunHitIntoGround> allMinigunHitsOnGround = new ArrayList<MinigunHitIntoGround>();
+    private ArrayList<Rock> allRocks = new ArrayList<Rock>();
 
     public GameEnviroment(GraphicsContext gameEnviromentGraphicsContext, PlayerRobot playerRobot) {
         this.gameEnviromentGraphicsContext = gameEnviromentGraphicsContext;
         this.playerRobot = playerRobot;
         generateBackground();
+        
+        Rock rock = new Rock(500, 800, gameEnviromentGraphicsContext);
+        allRocks.add(rock);
     }
 
     public void moveEnviromentBasedOnRobotMovement(double robotMovementX, double robotMovementY) {
@@ -126,6 +134,7 @@ public class GameEnviroment {
             }
         }
         paintAllMinigunsHitsOnGround();
+        paintAllRocks();
     }
     
     public void paintAllMinigunsHitsOnGround() {
@@ -142,6 +151,19 @@ public class GameEnviroment {
     
     public void generateNewMinigunHitOnGround(double hitPossX, double hitPossY){
         allMinigunHitsOnGround.add(new MinigunHitIntoGround(hitPossX, hitPossY));
+    }
+    
+    public void paintAllRocks() {
+        Iterator<Rock> iterator = allRocks.iterator();
+        while (iterator.hasNext()) {
+            Rock rock = iterator.next();
+            rock.changeEnemyPositionBasedOnRobotMovement(playerRobot.getRobotPositionChangeX(), playerRobot.getRobotPositionChangeY());
+            rock.paintGameObject();
+        }
+    }
+
+    public ArrayList<Rock> getAllRocks() {
+        return allRocks;
     }
 
 }

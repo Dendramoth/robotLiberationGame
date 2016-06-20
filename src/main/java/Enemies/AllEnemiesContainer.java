@@ -5,6 +5,7 @@
  */
 package Enemies;
 
+import EnviromentObjects.Rock;
 import Weapons.Rocket;
 import com.mycompany.robotliberation.AllProjectilesContainer;
 import com.mycompany.robotliberation.GameMainInfrastructure;
@@ -29,14 +30,15 @@ public class AllEnemiesContainer {
     private GraphicsContext enemyGraphicsContext;
     private ArrayList<Rocket> allRocketList = new ArrayList<Rocket>();
     private AllProjectilesContainer allProjectilesContainer;
-    private PathFinding pathFinding = new PathFinding(allLivingEnemiesList);
+    private PathFinding pathFinding;
 
     private int timeTogenerateNextDrone = 200;
 
-    public AllEnemiesContainer(GraphicsContext enemyGraphicsContext, PlayerRobot playerRobot, AllProjectilesContainer allProjectilesContainer) {
+    public AllEnemiesContainer(GraphicsContext enemyGraphicsContext, PlayerRobot playerRobot, AllProjectilesContainer allProjectilesContainer, ArrayList<Rock> allRocks) {
         this.playerRobot = playerRobot;
         this.enemyGraphicsContext = enemyGraphicsContext;
         this.allProjectilesContainer = allProjectilesContainer;
+        pathFinding = new PathFinding(allLivingEnemiesList, allRocks);
     }
 
     public void generateEvilDroneMark1(double possX, double possY) {
@@ -97,11 +99,14 @@ public class AllEnemiesContainer {
     }
 
     public void generateEnemies() {
-        generateEvilDrone();
-        generateStaticTurret();
+        if (allLivingEnemiesList.size() < 1) {
+            generateEvilDrone();
+        }
+        //     generateStaticTurret();
     }
 
     private void generateEvilDrone() {
+
         Random random = new Random();
 
         counterToGenerateDrone++;
@@ -161,6 +166,5 @@ public class AllEnemiesContainer {
     public ArrayList<Enemy> getAllDeadEneniesList() {
         return allDeadEneniesList;
     }
-    
-    
+
 }

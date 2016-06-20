@@ -5,9 +5,11 @@
  */
 package com.mycompany.robotliberation;
 
+import EnviromentObjects.GameEnviroment;
 import Enemies.AllEnemiesContainer;
 import Enemies.Enemy;
 import Enemies.EvilDroneMarkOne;
+import EnviromentObjects.Rock;
 import GameObjects.GameObjectWithColision;
 import playerRobot.PlayerRobot;
 import playerRobot.ShotsFromMinigun;
@@ -33,6 +35,8 @@ public class CalculateCollisions {
 
     private ArrayList<ProjectileWeapon> allProjectilesList = new ArrayList<ProjectileWeapon>();
     private ArrayList<ProjectileWeapon> allExplodingProjectilesList = new ArrayList<ProjectileWeapon>();
+    
+    private ArrayList<Rock> allRocks = new ArrayList<Rock>();
 
     public CalculateCollisions(AllProjectilesContainer allProjectilesContainer, AllEnemiesContainer allEnemiesContainer, PlayerRobot playerRobot, GameEnviroment gameEnviroment) {
         this.allLivingEnemiesList = allEnemiesContainer.getAllLivingEnemiesList();
@@ -40,6 +44,7 @@ public class CalculateCollisions {
 
         this.allProjectilesList = allProjectilesContainer.getAllProjectilesList();
         this.allExplodingProjectilesList = allProjectilesContainer.getAllExplodingProjectilesList();
+        this.allRocks = gameEnviroment.getAllRocks();
         this.playerRobot = playerRobot;
         this.gameEnviroment = gameEnviroment;
     }
